@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ক্লাস রুটিন | ফন্ট কাস্টমাইজার</title>
+    <title>ক্লাস রুটিন | একাধিক প্রতিষ্ঠান</title>
     <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- Google Fonts - ডিফল্ট ফন্ট -->
@@ -23,7 +23,7 @@
             transition: font-family 0.3s ease;
         }
 
-        /* হেডার - লোগো ও প্রতিষ্ঠানের নাম সহ */
+        /* হেডার */
         .header {
             display: flex;
             justify-content: space-between;
@@ -83,6 +83,40 @@
         .header-controls {
             display: flex;
             gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        /* প্রতিষ্ঠান সিলেক্টর */
+        .institute-selector {
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 30px;
+            padding: 3px;
+            display: flex;
+            align-items: center;
+        }
+
+        .institute-selector i {
+            color: #ffd700;
+            margin-left: 10px;
+            font-size: 0.9rem;
+        }
+
+        .institute-selector select {
+            background: transparent;
+            border: none;
+            color: white;
+            padding: 6px 10px;
+            font-family: 'Hind Siliguri', sans-serif;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+            outline: none;
+            cursor: pointer;
+        }
+
+        .institute-selector select option {
+            background: #1a2a3a;
+            color: white;
         }
 
         .edit-login-btn {
@@ -1139,7 +1173,7 @@
         </div>
     </div>
 
-    <!-- হেডার - লোগো ও প্রতিষ্ঠানের নাম সহ -->
+    <!-- হেডার - প্রতিষ্ঠান সিলেক্টর সহ -->
     <div class="header" id="publicHeader">
         <div class="institute-info">
             <div class="institute-logo" id="headerLogoContainer">
@@ -1152,6 +1186,17 @@
             </div>
         </div>
         <div class="header-controls">
+            <!-- প্রতিষ্ঠান সিলেক্টর -->
+            <div class="institute-selector">
+                <i class="fas fa-building"></i>
+                <select id="instituteSelector" onchange="changeInstitute(this.value)">
+                    <option value="school1">আদর্শ উচ্চ বিদ্যালয়</option>
+                    <option value="school2">শিক্ষা নিকেতন</option>
+                    <option value="school3">আলোকিত পাঠশালা</option>
+                    <option value="school4">গ্রামার স্কুল</option>
+                    <option value="school5">ক্যান্টনমেন্ট পাবলিক</option>
+                </select>
+            </div>
             <div class="class-badge">
                 <i class="fas fa-school"></i>
                 <span id="headerClass">৭ম</span>
@@ -1185,7 +1230,7 @@
                 </div>
             </div>
 
-            <!-- সেটিংস প্যানেল (লোগো ও প্রতিষ্ঠানের নাম সহ) -->
+            <!-- সেটিংস প্যানেল -->
             <div class="settings-panel" id="settingsPanel">
                 <div class="settings-header">
                     <i class="fas fa-sliders-h"></i>
@@ -1197,6 +1242,15 @@
                     <div class="settings-section-title">
                         <i class="fas fa-building"></i>
                         <span>প্রতিষ্ঠানের তথ্য</span>
+                    </div>
+
+                    <!-- প্রতিষ্ঠানের আইডি (শুধু তথ্যের জন্য) -->
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <i class="fas fa-id-card"></i>
+                            <span>প্রতিষ্ঠান আইডি</span>
+                        </div>
+                        <div style="background: #e9ecef; padding: 8px 12px; border-radius: 8px; font-weight: 600;" id="instituteIdDisplay">school1</div>
                     </div>
 
                     <!-- প্রতিষ্ঠানের নাম -->
@@ -1230,7 +1284,7 @@
                         </div>
                         <input type="file" id="logoInput" accept="image/*" style="display: none;" onchange="handleLogoUpload(event)">
 
-                        <!-- লোগো প্রিভিউ (ডিফল্ট লুকানো) -->
+                        <!-- লোগো প্রিভিউ -->
                         <div class="logo-preview-container" id="logoPreviewContainer" style="display: none;">
                             <div class="logo-preview">
                                 <img id="logoPreview" src="" alt="প্রিভিউ">
@@ -1387,12 +1441,61 @@
         // সঠিক পাসওয়ার্ড
         const CORRECT_PASSWORD = "admin123";
 
-        // প্রতিষ্ঠানের ডাটা
+        // GitHub সেটিংস
+        const GITHUB_USERNAME = "babulakterkhan";
+        const GITHUB_REPO = "school_class_rutine";
+        
+        // বর্তমান প্রতিষ্ঠান আইডি (ডিফল্ট: school1)
+        let currentInstitute = "school1";
+
+        // প্রতিষ্ঠানের ডাটা (বর্তমান প্রতিষ্ঠানের জন্য)
         let instituteData = {
             name: "আদর্শ উচ্চ বিদ্যালয়",
             address: "ঢাকা, বাংলাদেশ",
             logo: null
         };
+
+        // সব প্রতিষ্ঠানের রুটিন ডাটা
+        let allRoutineData = {
+            school1: {
+                class6: [...], // এখানে ডাটা বসবে
+                class7: [...],
+                class8: [...],
+                class9: [...],
+                class10: [...]
+            },
+            school2: {
+                class6: [...],
+                class7: [...],
+                class8: [...],
+                class9: [...],
+                class10: [...]
+            },
+            school3: {
+                class6: [...],
+                class7: [...],
+                class8: [...],
+                class9: [...],
+                class10: [...]
+            },
+            school4: {
+                class6: [...],
+                class7: [...],
+                class8: [...],
+                class9: [...],
+                class10: [...]
+            },
+            school5: {
+                class6: [...],
+                class7: [...],
+                class8: [...],
+                class9: [...],
+                class10: [...]
+            }
+        };
+
+        // বর্তমান প্রতিষ্ঠানের রুটিন ডাটা
+        let pdfData = allRoutineData[currentInstitute] || allRoutineData.school1;
 
         // টাইম স্লট ডাটা
         let timeSlots = [
@@ -1409,58 +1512,72 @@
         let currentClass = 'class7';
         let isLoggedIn = false;
 
-        // PDF ডাটা (সম্পূর্ণ)
-        const pdfData = {
-            class6: [
-                ['বাংলা-রহিমা', 'ইংরেজি-করিম', 'গণিত-সাদেক', 'বিজ্ঞান-নাসির', 'সমাজ-ফাতেমা'],
-                ['ইংরেজি-করিম', 'গণিত-সাদেক', 'বাংলা-রহিমা', 'ধর্ম-হামিদ', 'কৃষি-জব্বার'],
-                ['গণিত-সাদেক', 'বিজ্ঞান-নাসির', 'ইংরেজি-করিম', 'বাংলা-রহিমা', 'শারীরিক-আলম'],
-                ['', '', '', '', ''],
-                ['বিজ্ঞান-নাসির', 'সমাজ-ফাতেমা', 'ধর্ম-হামিদ', 'কৃষি-জব্বার', 'বাংলা-রহিমা'],
-                ['ধর্ম-হামিদ', 'কৃষি-জব্বার', 'সমাজ-ফাতেমা', 'চারু-নাসিমা', 'ইংরেজি-করিম'],
-                ['কৃষি-জব্বার', 'শারীরিক-আলম', 'চারু-নাসিমা', 'গণিত-সাদেক', 'বিজ্ঞান-নাসির']
-            ],
-            class7: [
-                ['ইংরেজি ১ম-নাসিমা', '', '', '', 'ইংরেজি ১ম-নাসিমা'],
-                ['কৃষি-আঃ মজিদ', 'বাংলা ২য়-ছাইফুদ্দিন', '', '', 'বাংলা ২য়-ছাইফুদ্দিন'],
-                ['বাংলা ১ম-আমিনুল, আঃ মজিদ', 'তথ্য-ছাইফুদ্দিন', '', '', 'বাংলা ১ম-আমিনুল'],
-                ['', '', '', '', ''],
-                ['বাংলা ও বি-ছাদমার', '', '', '', 'বাংলা ও বি-ছাদমার'],
-                ['গণিত-ছাদমার', '', '', '', 'গণিত-ছাদমার'],
-                ['বিজ্ঞান-সেজান', 'তথ্য-মজোদেমল', '', '', 'বিজ্ঞান-সেজান']
-            ],
-            class8: [
-                ['গণিত-আল আমিন', '', '', '', 'গণিত-আল আমিন'],
-                ['বিজ্ঞান-শাহ আলম', '', '', '', 'বিজ্ঞান-শাহ আলম'],
-                ['ইংরেজি ২য়-প্রধান শিক্ষক', '', 'ইসলাম শিক্ষা-ছাইফুদ্দিন', '', 'তথ্য-রেকানুজ্জমান'],
-                ['', '', '', '', ''],
-                ['ইসলাম শিক্ষা-ছাইফুদ্দিন', 'বাংলা ২য়-নাসরিন', '', '', 'বাংলা ১ম-নাছরিন'],
-                ['বাংলা ১ম-নাছরিন', 'বাংলা ও বি-নাসিমা', '', '', 'কৃষি-আঃ মজিদ'],
-                ['ইংরেজি ১ম-মজোদেমল', 'বাংলা ১ম-নাসরিন', '', '', '']
-            ],
-            class9: [
-                ['ইংরেজি ১ম-মজোদেমল', '', '', '', 'ইংরেজি ১ম-মজোদেমল'],
-                ['বাংলা ২য়-মজোদেমল', 'বাংলা ও বি/বৃহগল-নাসিমা/আঃ মজিদ', 'ইতিহাস/জী-আমিনুল/শাহ আলম', '', 'বাংলা ২য়-মজোদেমল'],
-                ['গণিত-ছাদমার', 'তথ্য-রেকান, ছাদমার', 'ইংরেজি ২য়-আঃ রডক', '', 'গণিত-ছাদমার'],
-                ['', '', '', '', ''],
-                ['তথ্য-ছাদমার', 'বাংলা ২য়-রেকানুজ্জমান', 'ইসলাম শিক্ষা-ছাইফুদ্দিন', '', 'বাংলা ২য়-রেকানুজ্জমান'],
-                ['ইসলাম-ছাইফুদ্দিন', '', 'রসায়ন/অর্থনীতি-আল মিন/নাসরিন', '', 'ইসলাম-ছাইফুদ্দিন'],
-                ['কৃষি-আঃ মজিদ', 'কৃষি-আবুল মজিদ', 'বাংলা ১ম-শাহ আলম', '', 'শারীরিক/কারি-']
-            ],
-            class10: [
-                ['গণিত-ছাদমার', '', 'পদার্থ/অর্থনীতি-আল আমিন/নাছরিন', '', 'গণিত-ছাদমার'],
-                ['ইসলাম-ছাইফুদ্দিন', 'বাংলা ও বি/সা বি-নাসিমা/আল আমিন', 'ইংরেজি ১ম-মোজোদেমল', '', 'ইসলাম-ছাইফুদ্দিন'],
-                ['বাংলা ও বি/সা বি-নাসিমা/আল আমিন', 'কৃষি/উচ্চতর-আঃ মজিদ/আল আমিন', 'বাংলা ২য়-আঃ রডক', '', 'বাংলা ২য়-রেকানু'],
-                ['', '', '', '', ''],
-                ['রসায়ন/ভূগোল-আল আমিন/মোজোদেমল', 'জীব/ইতিহাস-শাহ আলম/আঃ রডক', 'বাংলা ১ম-আঃ রডক', '', 'ইসলাম-মোজোদেমল, ছাইফুদ্দিন'],
-                ['বাংলা ১ম-মোজোদেমল', 'ইংরেজি ১ম-মোজোদেমল', 'শারীরিক শিক্ষা-আঃ রডক', '', 'ইংরেজি ১ম-মোজোদেমল'],
-                ['কৃষি/উচ্চতর-আঃ মজিদ/আল আমিন', 'জীব/ইতিহাস-শাহ আলম/আঃ রডক', 'বাংলা ২য়-আঃ রডক', '', 'বাংলা ও বি/সাবি-নাসিমা/আল আমিন']
-            ]
-        };
+        // PDF ডাটা পপুলেট করা
+        function initializePdfData() {
+            // স্কুল 1 - আদর্শ উচ্চ বিদ্যালয়
+            allRoutineData.school1 = {
+                class6: [
+                    ['বাংলা-রহিমা', 'ইংরেজি-করিম', 'গণিত-সাদেক', 'বিজ্ঞান-নাসির', 'সমাজ-ফাতেমা'],
+                    ['ইংরেজি-করিম', 'গণিত-সাদেক', 'বাংলা-রহিমা', 'ধর্ম-হামিদ', 'কৃষি-জব্বার'],
+                    ['গণিত-সাদেক', 'বিজ্ঞান-নাসির', 'ইংরেজি-করিম', 'বাংলা-রহিমা', 'শারীরিক-আলম'],
+                    ['', '', '', '', ''],
+                    ['বিজ্ঞান-নাসির', 'সমাজ-ফাতেমা', 'ধর্ম-হামিদ', 'কৃষি-জব্বার', 'বাংলা-রহিমা'],
+                    ['ধর্ম-হামিদ', 'কৃষি-জব্বার', 'সমাজ-ফাতেমা', 'চারু-নাসিমা', 'ইংরেজি-করিম'],
+                    ['কৃষি-জব্বার', 'শারীরিক-আলম', 'চারু-নাসিমা', 'গণিত-সাদেক', 'বিজ্ঞান-নাসির']
+                ],
+                class7: [
+                    ['ইংরেজি ১ম-নাসিমা', '', '', '', 'ইংরেজি ১ম-নাসিমা'],
+                    ['কৃষি-আঃ মজিদ', 'বাংলা ২য়-ছাইফুদ্দিন', '', '', 'বাংলা ২য়-ছাইফুদ্দিন'],
+                    ['বাংলা ১ম-আমিনুল, আঃ মজিদ', 'তথ্য-ছাইফুদ্দিন', '', '', 'বাংলা ১ম-আমিনুল'],
+                    ['', '', '', '', ''],
+                    ['বাংলা ও বি-ছাদমার', '', '', '', 'বাংলা ও বি-ছাদমার'],
+                    ['গণিত-ছাদমার', '', '', '', 'গণিত-ছাদমার'],
+                    ['বিজ্ঞান-সেজান', 'তথ্য-মজোদেমল', '', '', 'বিজ্ঞান-সেজান']
+                ],
+                class8: [
+                    ['গণিত-আল আমিন', '', '', '', 'গণিত-আল আমিন'],
+                    ['বিজ্ঞান-শাহ আলম', '', '', '', 'বিজ্ঞান-শাহ আলম'],
+                    ['ইংরেজি ২য়-প্রধান শিক্ষক', '', 'ইসলাম শিক্ষা-ছাইফুদ্দিন', '', 'তথ্য-রেকানুজ্জমান'],
+                    ['', '', '', '', ''],
+                    ['ইসলাম শিক্ষা-ছাইফুদ্দিন', 'বাংলা ২য়-নাসরিন', '', '', 'বাংলা ১ম-নাছরিন'],
+                    ['বাংলা ১ম-নাছরিন', 'বাংলা ও বি-নাসিমা', '', '', 'কৃষি-আঃ মজিদ'],
+                    ['ইংরেজি ১ম-মজোদেমল', 'বাংলা ১ম-নাসরিন', '', '', '']
+                ],
+                class9: [
+                    ['ইংরেজি ১ম-মজোদেমল', '', '', '', 'ইংরেজি ১ম-মজোদেমল'],
+                    ['বাংলা ২য়-মজোদেমল', 'বাংলা ও বি/বৃহগল-নাসিমা/আঃ মজিদ', 'ইতিহাস/জী-আমিনুল/শাহ আলম', '', 'বাংলা ২য়-মজোদেমল'],
+                    ['গণিত-ছাদমার', 'তথ্য-রেকান, ছাদমার', 'ইংরেজি ২য়-আঃ রডক', '', 'গণিত-ছাদমার'],
+                    ['', '', '', '', ''],
+                    ['তথ্য-ছাদমার', 'বাংলা ২য়-রেকানুজ্জমান', 'ইসলাম শিক্ষা-ছাইফুদ্দিন', '', 'বাংলা ২য়-রেকানুজ্জমান'],
+                    ['ইসলাম-ছাইফুদ্দিন', '', 'রসায়ন/অর্থনীতি-আল মিন/নাসরিন', '', 'ইসলাম-ছাইফুদ্দিন'],
+                    ['কৃষি-আঃ মজিদ', 'কৃষি-আবুল মজিদ', 'বাংলা ১ম-শাহ আলম', '', 'শারীরিক/কারি-']
+                ],
+                class10: [
+                    ['গণিত-ছাদমার', '', 'পদার্থ/অর্থনীতি-আল আমিন/নাছরিন', '', 'গণিত-ছাদমার'],
+                    ['ইসলাম-ছাইফুদ্দিন', 'বাংলা ও বি/সা বি-নাসিমা/আল আমিন', 'ইংরেজি ১ম-মোজোদেমল', '', 'ইসলাম-ছাইফুদ্দিন'],
+                    ['বাংলা ও বি/সা বি-নাসিমা/আল আমিন', 'কৃষি/উচ্চতর-আঃ মজিদ/আল আমিন', 'বাংলা ২য়-আঃ রডক', '', 'বাংলা ২য়-রেকানু'],
+                    ['', '', '', '', ''],
+                    ['রসায়ন/ভূগোল-আল আমিন/মোজোদেমল', 'জীব/ইতিহাস-শাহ আলম/আঃ রডক', 'বাংলা ১ম-আঃ রডক', '', 'ইসলাম-মোজোদেমল, ছাইফুদ্দিন'],
+                    ['বাংলা ১ম-মোজোদেমল', 'ইংরেজি ১ম-মোজোদেমল', 'শারীরিক শিক্ষা-আঃ রডক', '', 'ইংরেজি ১ম-মোজোদেমল'],
+                    ['কৃষি/উচ্চতর-আঃ মজিদ/আল আমিন', 'জীব/ইতিহাস-শাহ আলম/আঃ রডক', 'বাংলা ২য়-আঃ রডক', '', 'বাংলা ও বি/সাবি-নাসিমা/আল আমিন']
+                ]
+            };
 
-        // প্রতিষ্ঠানের ডাটা লোড
+            // স্কুল 2 - শিক্ষা নিকেতন (ভিন্ন নাম ও ভিন্ন রুটিন)
+            allRoutineData.school2 = JSON.parse(JSON.stringify(allRoutineData.school1)); // কপি
+            // এখানে স্কুল 2-এর জন্য আলাদা রুটিন সেট করা যাবে
+            
+            // স্কুল 3 - আলোকিত পাঠশালা
+            allRoutineData.school3 = JSON.parse(JSON.stringify(allRoutineData.school1)); // কপি
+        }
+
+        // ইনিশিয়ালাইজ
+        initializePdfData();
+
+        // প্রতিষ্ঠানের ডাটা লোড (লোকাল স্টোরেজ থেকে)
         function loadInstituteData() {
-            const saved = localStorage.getItem('instituteData');
+            const key = `instituteData_${currentInstitute}`;
+            const saved = localStorage.getItem(key);
             if (saved) {
                 instituteData = JSON.parse(saved);
                 updateInstituteDisplay();
@@ -1473,15 +1590,20 @@
                     document.getElementById('logoPreviewContainer').style.display = 'flex';
                 }
             }
+            
+            // প্রতিষ্ঠান আইডি দেখান
+            document.getElementById('instituteIdDisplay').textContent = currentInstitute;
         }
 
-        // প্রতিষ্ঠানের ডাটা সেভ (আপডেট করা)
+        // প্রতিষ্ঠানের ডাটা সেভ (লোকাল স্টোরেজে)
         function saveInstituteData() {
             instituteData.name = document.getElementById('instituteNameInput').value;
             instituteData.address = document.getElementById('instituteAddressInput').value;
-            localStorage.setItem('instituteData', JSON.stringify(instituteData));
+            
+            const key = `instituteData_${currentInstitute}`;
+            localStorage.setItem(key, JSON.stringify(instituteData));
             updateInstituteDisplay();
-            showNotification('স্থানীয় স্টোরেজে সংরক্ষিত হয়েছে');
+            showNotification(`${currentInstitute} - স্থানীয় স্টোরেজে সংরক্ষিত হয়েছে`);
             
             // GitHub-এ সেভ করার অপশন
             if (confirm('GitHub-এ সেভ করতে চান? (সব জায়গায় দেখাবে)')) {
@@ -1511,6 +1633,29 @@
                 document.getElementById('previewLogo').style.display = 'none';
                 document.getElementById('previewDefaultIcon').style.display = 'block';
             }
+        }
+
+        // প্রতিষ্ঠান পরিবর্তন
+        function changeInstitute(instituteId) {
+            currentInstitute = instituteId;
+            
+            // প্রতিষ্ঠানের ডাটা আপডেট
+            loadInstituteData();
+            
+            // রুটিন ডাটা আপডেট
+            pdfData = allRoutineData[currentInstitute] || allRoutineData.school1;
+            
+            // ফন্ট সাইজ রিসেট না করে আগেরটাই রাখি
+            const currentSize = document.getElementById('fontSizeSlider').value;
+            
+            // UI আপডেট
+            generateInputFields();
+            updateRoutine();
+            
+            // সিলেক্টর আপডেট
+            document.getElementById('instituteSelector').value = instituteId;
+            
+            showNotification(`${instituteData.name} এ পরিবর্তন করা হয়েছে`);
         }
 
         // লোগো আপলোড
@@ -1852,6 +1997,9 @@
                     }
                 });
             });
+            
+            // প্রতিষ্ঠান-নির্দিষ্ট রুটিন ডাটা আপডেট
+            allRoutineData[currentInstitute] = pdfData;
         }
 
         function selectClass(classId, element) {
@@ -1943,50 +2091,11 @@
             }, 1500);
         }
 
-        // GitHub সংক্রান্ত ফাংশন
-        const GITHUB_USERNAME = "babulakterkhan";
-        const GITHUB_REPO = "school_class_rutine";
-        const CONFIG_FILE = "institute-config.json";
-
-        // GitHub থেকে কনফিগ লোড
-        async function loadInstituteConfig() {
-            const url = `https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/contents/${CONFIG_FILE}`;
-            
-            try {
-                const response = await fetch(url, {
-                    headers: {
-                        'Accept': 'application/vnd.github.v3+json'
-                    }
-                });
-                
-                if (response.ok) {
-                    const data = await response.json();
-                    const content = atob(data.content);
-                    instituteData = JSON.parse(content);
-                    updateInstituteDisplay();
-                    
-                    document.getElementById('instituteNameInput').value = instituteData.name;
-                    document.getElementById('instituteAddressInput').value = instituteData.address;
-                    
-                    if (instituteData.logo) {
-                        document.getElementById('logoPreview').src = instituteData.logo;
-                        document.getElementById('logoPreviewContainer').style.display = 'flex';
-                    }
-                    
-                    showNotification('কনফিগ লোড করা হয়েছে');
-                } else {
-                    console.log('কনফিগ ফাইল নেই, ডিফল্ট ব্যবহার করা হবে');
-                }
-            } catch (error) {
-                console.log('GitHub থেকে লোড করতে সমস্যা:', error);
-            }
-        }
-
         // GitHub-এ কনফিগ সেভ
         async function saveInstituteConfig() {
-            const url = `https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/contents/${CONFIG_FILE}`;
+            const configFile = `institute-${currentInstitute}.json`;
+            const url = `https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/contents/${configFile}`;
             
-            // GitHub Personal Access Token চাওয়া
             const GITHUB_TOKEN = prompt('GitHub Personal Access Token দিন:');
             
             if (!GITHUB_TOKEN) {
@@ -1994,21 +2103,18 @@
                 return false;
             }
             
-            // কনফিগ ডাটা তৈরি
             const configData = {
                 name: instituteData.name,
                 address: instituteData.address,
-                logo: instituteData.logo
+                logo: instituteData.logo,
+                routine: pdfData
             };
             
             const content = btoa(JSON.stringify(configData, null, 2));
             
             try {
-                // প্রথমে ফাইলের SHA পেতে GET request
                 const getResponse = await fetch(url, {
-                    headers: {
-                        'Accept': 'application/vnd.github.v3+json'
-                    }
+                    headers: { 'Accept': 'application/vnd.github.v3+json' }
                 });
                 
                 let sha = null;
@@ -2017,7 +2123,6 @@
                     sha = data.sha;
                 }
                 
-                // PUT request দিয়ে ফাইল আপডেট
                 const putResponse = await fetch(url, {
                     method: 'PUT',
                     headers: {
@@ -2026,14 +2131,14 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        message: 'প্রতিষ্ঠানের তথ্য আপডেট',
+                        message: `${currentInstitute} - প্রতিষ্ঠানের তথ্য আপডেট`,
                         content: content,
                         sha: sha
                     })
                 });
                 
                 if (putResponse.ok) {
-                    showNotification('GitHub-এ সেভ করা হয়েছে');
+                    showNotification(`${currentInstitute} - GitHub-এ সেভ করা হয়েছে`);
                     return true;
                 } else {
                     const error = await putResponse.json();
@@ -2048,19 +2153,80 @@
             }
         }
 
-        // পৃষ্ঠা লোড হওয়ার পর GitHub থেকে ডাটা লোড
+        // GitHub থেকে কনফিগ লোড
+        async function loadInstituteConfig(instituteId) {
+            const configFile = `institute-${instituteId}.json`;
+            const url = `https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/contents/${configFile}`;
+            
+            try {
+                const response = await fetch(url, {
+                    headers: { 'Accept': 'application/vnd.github.v3+json' }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    const content = atob(data.content);
+                    const config = JSON.parse(content);
+                    
+                    // প্রতিষ্ঠানের তথ্য সেট
+                    instituteData = {
+                        name: config.name,
+                        address: config.address,
+                        logo: config.logo
+                    };
+                    
+                    // রুটিন ডাটা সেট
+                    if (config.routine) {
+                        allRoutineData[instituteId] = config.routine;
+                        pdfData = allRoutineData[instituteId];
+                    }
+                    
+                    // UI আপডেট
+                    updateInstituteDisplay();
+                    document.getElementById('instituteNameInput').value = instituteData.name;
+                    document.getElementById('instituteAddressInput').value = instituteData.address;
+                    
+                    if (instituteData.logo) {
+                        document.getElementById('logoPreview').src = instituteData.logo;
+                        document.getElementById('logoPreviewContainer').style.display = 'flex';
+                    }
+                    
+                    // লোকাল স্টোরেজেও সেভ
+                    localStorage.setItem(`instituteData_${instituteId}`, JSON.stringify(instituteData));
+                    
+                    generateInputFields();
+                    updateRoutine();
+                    
+                    showNotification(`${instituteId} - GitHub থেকে লোড করা হয়েছে`);
+                }
+            } catch (error) {
+                console.log(`${instituteId} - GitHub থেকে লোড করতে সমস্যা:`, error);
+            }
+        }
+
+        // পৃষ্ঠা লোড হওয়ার পর
         window.addEventListener('load', function() {
+            // URL থেকে প্রতিষ্ঠান আইডি নেওয়ার চেষ্টা
+            const urlParams = new URLSearchParams(window.location.search);
+            const urlInstitute = urlParams.get('institute');
+            
+            if (urlInstitute && ['school1', 'school2', 'school3', 'school4', 'school5'].includes(urlInstitute)) {
+                currentInstitute = urlInstitute;
+                document.getElementById('instituteSelector').value = urlInstitute;
+            }
+            
+            // প্রতিষ্ঠানের ডাটা লোড
+            loadInstituteData();
+            
+            // GitHub থেকে লোড করার চেষ্টা (১ সেকেন্ড পর)
             setTimeout(() => {
-                loadInstituteConfig();
-            }, 1000); // ১ সেকেন্ড পর GitHub থেকে লোড করবে
+                loadInstituteConfig(currentInstitute);
+            }, 1000);
         });
 
         // ইনিশিয়াল লোড
-        loadInstituteData();
         generateInputFields();
         updateRoutine();
-
-        // ডিফল্ট ফন্ট সাইজ সেট
         document.documentElement.style.setProperty('--base-font-size', '1rem');
     </script>
 </body>
