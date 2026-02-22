@@ -1,0 +1,1957 @@
+<!DOCTYPE html>
+<html lang="bn" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ক্লাস রুটিন | ফন্ট কাস্টমাইজার</title>
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts - ডিফল্ট ফন্ট -->
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Hind Siliguri', 'Arial', sans-serif;
+            background: linear-gradient(145deg, #667eea, #764ba2);
+            min-height: 100vh;
+            padding: 15px;
+            transition: font-family 0.3s ease;
+        }
+
+        /* হেডার - লোগো ও প্রতিষ্ঠানের নাম সহ */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            color: white;
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
+            padding: 10px 20px;
+            border-radius: 40px;
+            border: 1px solid rgba(255,255,255,0.2);
+            width: 100%;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+        }
+
+        .institute-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .institute-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 2px solid #ffd700;
+        }
+
+        .institute-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .institute-logo i {
+            font-size: 2rem;
+            color: #667eea;
+        }
+
+        .institute-text h1 {
+            font-size: calc(var(--base-font-size, 1rem) * 1.3);
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .institute-text p {
+            font-size: calc(var(--base-font-size, 1rem) * 0.8);
+            opacity: 0.9;
+            margin: 0;
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .edit-login-btn {
+            background: #ffd700;
+            color: #1a2a3a;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-family: 'Hind Siliguri', sans-serif;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .edit-login-btn.logged-in {
+            background: #48bb78;
+            color: white;
+        }
+
+        .class-badge {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border: 1px solid rgba(255,255,255,0.3);
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+        }
+
+        /* পাসওয়ার্ড মোডাল */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .password-modal {
+            background: white;
+            border-radius: 30px;
+            padding: 30px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            transform: scale(0.9);
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.show .password-modal {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header i {
+            font-size: 3rem;
+            color: #667eea;
+            background: #f0f3f8;
+            width: 70px;
+            height: 70px;
+            border-radius: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+        }
+
+        .modal-header h2 {
+            color: #1a2a3a;
+            font-size: calc(var(--base-font-size, 1rem) * 1.5);
+            margin-bottom: 5px;
+        }
+
+        .modal-header p {
+            color: #718096;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+        }
+
+        .password-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-family: 'Hind Siliguri', sans-serif;
+            font-size: calc(var(--base-font-size, 1rem) * 1);
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .password-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Hind Siliguri', sans-serif;
+            font-size: calc(var(--base-font-size, 1rem) * 1);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .login-btn {
+            background: linear-gradient(145deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .cancel-btn {
+            background: #f0f3f8;
+            color: #4a5568;
+        }
+
+        .cancel-btn:hover {
+            background: #e2e8f0;
+        }
+
+        .error-message {
+            color: #f56565;
+            font-size: calc(var(--base-font-size, 1rem) * 0.85);
+            margin-top: 5px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        /* ফ্লেক্স কন্টেইনার */
+        .flex-container {
+            display: flex;
+            gap: 15px;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        /* ===== ইনপুট প্যানেল - লাইট মুড ===== */
+        .input-panel {
+            width: 800px;
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 15px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+            border: 1px solid rgba(255,255,255,0.5);
+            overflow-y: auto;
+            height: calc(100vh - 130px);
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .input-panel.closed {
+            width: 0;
+            padding: 0;
+            opacity: 0;
+            visibility: hidden;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .panel-header {
+            background: linear-gradient(145deg, #667eea, #764ba2);
+            margin: -15px -15px 15px -15px;
+            padding: 12px 15px;
+            border-radius: 20px 20px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            font-size: calc(var(--base-font-size, 1rem) * 1);
+        }
+
+        .panel-header-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .panel-header-left i {
+            font-size: calc(var(--base-font-size, 1rem) * 1.2);
+            color: #ffd700;
+        }
+
+        .panel-header-left h3 {
+            font-size: calc(var(--base-font-size, 1rem) * 1.1);
+            font-weight: 600;
+        }
+
+        .panel-header-right {
+            display: flex;
+            gap: 8px;
+        }
+
+        /* সেটিংস বাটন */
+        .settings-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: calc(var(--base-font-size, 1rem) * 1.1);
+            transition: all 0.3s ease;
+        }
+
+        .settings-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: rotate(90deg);
+        }
+
+        .logout-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-family: 'Hind Siliguri', sans-serif;
+            font-size: calc(var(--base-font-size, 1rem) * 0.8);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .minimize-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+            transition: all 0.3s ease;
+        }
+
+        .minimize-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        /* সেটিংস প্যানেল */
+        .settings-panel {
+            background: #f8fafd;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid #e2e8f0;
+            display: none;
+            font-size: calc(var(--base-font-size, 1rem) * 0.95);
+        }
+
+        .settings-panel.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .settings-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 15px;
+            color: #4a5568;
+            font-weight: 600;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: calc(var(--base-font-size, 1rem) * 1);
+        }
+
+        .settings-header i {
+            color: #667eea;
+        }
+
+        .settings-section {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+
+        .settings-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .settings-section-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #2d3748;
+            font-size: calc(var(--base-font-size, 1rem) * 1);
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .settings-section-title i {
+            color: #667eea;
+            width: 24px;
+            font-size: calc(var(--base-font-size, 1rem) * 1.1);
+        }
+
+        .setting-item {
+            margin-bottom: 15px;
+        }
+
+        .setting-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            color: #4a5568;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+            font-weight: 500;
+        }
+
+        .setting-label i {
+            width: 20px;
+            color: #667eea;
+            font-size: calc(var(--base-font-size, 1rem) * 1);
+        }
+
+        /* ইনপুট ফিল্ড */
+        .text-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #cbd5e0;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+            color: #2d3748;
+            background: white;
+        }
+
+        .text-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+        }
+
+        /* লোগো আপলোড */
+        .logo-upload-area {
+            border: 2px dashed #cbd5e0;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            background: #f7fafc;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .logo-upload-area:hover {
+            border-color: #667eea;
+            background: #ebf4ff;
+        }
+
+        .logo-upload-area i {
+            font-size: calc(var(--base-font-size, 1rem) * 2);
+            color: #667eea;
+            margin-bottom: 8px;
+        }
+
+        .logo-upload-area p {
+            color: #4a5568;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+            margin-bottom: 4px;
+        }
+
+        .logo-upload-area small {
+            color: #718096;
+            font-size: calc(var(--base-font-size, 1rem) * 0.75);
+        }
+
+        .logo-preview-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 10px;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .logo-preview {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            background: #f0f3f8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .logo-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .logo-preview i {
+            font-size: calc(var(--base-font-size, 1rem) * 1.8);
+            color: #a0aec0;
+        }
+
+        .logo-info {
+            flex: 1;
+        }
+
+        .logo-info p {
+            color: #2d3748;
+            font-weight: 500;
+            margin-bottom: 2px;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+        }
+
+        .logo-info small {
+            color: #718096;
+            font-size: calc(var(--base-font-size, 1rem) * 0.7);
+        }
+
+        .remove-logo-btn {
+            background: #f56565;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: calc(var(--base-font-size, 1rem) * 0.8);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-family: inherit;
+        }
+
+        .remove-logo-btn:hover {
+            background: #e53e3e;
+        }
+
+        /* প্রিভিউ বক্স */
+        .preview-box {
+            background: linear-gradient(145deg, #667eea, #764ba2);
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: white;
+            margin-top: 10px;
+        }
+
+        .preview-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .preview-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .preview-logo i {
+            font-size: calc(var(--base-font-size, 1rem) * 2);
+            color: #667eea;
+        }
+
+        .preview-text h4 {
+            font-size: calc(var(--base-font-size, 1rem) * 1.1);
+            margin: 0 0 4px 0;
+        }
+
+        .preview-text p {
+            font-size: calc(var(--base-font-size, 1rem) * 0.8);
+            opacity: 0.9;
+            margin: 0;
+        }
+
+        /* ফন্ট সেটিংস */
+        .font-selector {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #cbd5e0;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+            color: #2d3748;
+            background: white;
+            cursor: pointer;
+        }
+
+        .size-slider-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .size-slider {
+            flex: 1;
+            height: 6px;
+            -webkit-appearance: none;
+            background: linear-gradient(to right, #667eea, #764ba2);
+            border-radius: 3px;
+            outline: none;
+        }
+
+        .size-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .size-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            background: #667eea;
+        }
+
+        .size-value {
+            min-width: 50px;
+            text-align: center;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 4px 10px;
+            font-size: calc(var(--base-font-size, 1rem) * 0.85);
+            color: #2d3748;
+            font-weight: 600;
+        }
+
+        .size-presets {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .size-preset-btn {
+            flex: 1;
+            padding: 6px 0;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            background: white;
+            color: #4a5568;
+            font-family: inherit;
+            font-size: calc(var(--base-font-size, 1rem) * 0.8);
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .size-preset-btn:hover {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        /* ক্লাস সিলেক্টর */
+        .class-selector {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .class-btn {
+            flex: 1;
+            min-width: 50px;
+            padding: 6px 0;
+            border: none;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: calc(var(--base-font-size, 1rem) * 0.85);
+            font-weight: 600;
+            background: #f0f3f8;
+            color: #4a5568;
+            cursor: pointer;
+        }
+
+        .class-btn.active {
+            background: linear-gradient(145deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        /* টাইম স্লট কন্ট্রোল */
+        .time-controls {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+
+        .add-slot-btn {
+            background: #48bb78;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .remove-slot-btn {
+            background: #f56565;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .slot-count {
+            background: #edf2f7;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+            color: #4a5568;
+            font-weight: 600;
+        }
+
+        /* টাইম স্লট ইনপুট */
+        .time-slots {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .time-slot-card {
+            background: #f8fafd;
+            border-radius: 12px;
+            padding: 10px;
+            border: 1px solid #e2e8f0;
+            position: relative;
+        }
+
+        .slot-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .slot-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .slot-number {
+            background: #667eea;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: calc(var(--base-font-size, 1rem) * 0.8);
+            font-weight: 600;
+        }
+
+        .break-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: calc(var(--base-font-size, 1rem) * 0.8);
+            color: #4a5568;
+        }
+
+        .break-checkbox input {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .time-inputs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .time-input {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: white;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            padding: 4px 8px;
+        }
+
+        .time-input i {
+            color: #718096;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+        }
+
+        .time-input input {
+            width: 100%;
+            border: none;
+            outline: none;
+            font-family: inherit;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+        }
+
+        .delete-slot {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #f56565;
+            color: white;
+            border: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: calc(var(--base-font-size, 1rem) * 0.8);
+        }
+
+        .day-inputs {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 4px;
+            margin-top: 8px;
+        }
+
+        .day-input {
+            text-align: center;
+        }
+
+        .day-label {
+            font-size: calc(var(--base-font-size, 1rem) * 0.7);
+            color: #718096;
+            margin-bottom: 2px;
+        }
+
+        .day-input input {
+            width: 100%;
+            padding: 4px 2px;
+            border: 1px solid #cbd5e0;
+            border-radius: 5px;
+            background: white;
+            font-family: inherit;
+            font-size: calc(var(--base-font-size, 1rem) * 0.8);
+            text-align: center;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .save-btn, .reset-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: calc(var(--base-font-size, 1rem) * 0.95);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .save-btn {
+            background: linear-gradient(145deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .reset-btn {
+            background: #f56565;
+            color: white;
+        }
+
+        /* ===== আউটপুট প্যানেল ===== */
+        .output-panel {
+            flex: 1;
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            overflow-y: auto;
+            height: calc(100vh - 130px);
+            transition: all 0.3s ease;
+            font-size: calc(var(--base-font-size, 1rem) * 1);
+        }
+
+        .output-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .output-header h2 {
+            color: #1a2a3a;
+            font-size: calc(var(--base-font-size, 1rem) * 1.5);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .current-class-large {
+            background: linear-gradient(145deg, #667eea, #764ba2);
+            color: white;
+            padding: 5px 18px;
+            border-radius: 25px;
+            font-size: calc(var(--base-font-size, 1rem) * 1.1);
+            font-weight: 600;
+        }
+
+        /* পাবলিক ক্লাস সিলেক্টর */
+        .public-class-selector {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .public-class-btn {
+            padding: 5px 12px;
+            border: none;
+            border-radius: 18px;
+            font-family: inherit;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+            font-weight: 600;
+            background: #f0f3f8;
+            color: #4a5568;
+            cursor: pointer;
+        }
+
+        .public-class-btn.active {
+            background: linear-gradient(145deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        /* রুটিন টেবিল */
+        .routine-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: calc(var(--base-font-size, 1rem) * 1);
+            table-layout: fixed;
+        }
+
+        .routine-table th:first-child {
+            width: 70px;
+            background: #2d3748;
+            color: white;
+            padding: 8px 2px;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+        }
+
+        .routine-table th:not(:first-child) {
+            width: calc((100% - 70px) / 5);
+            background: #2d3748;
+            color: white;
+            padding: 8px 2px;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+        }
+
+        .routine-table td {
+            padding: 8px 2px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+            word-break: break-word;
+        }
+
+        .routine-table .time-col {
+            background: #edf2f7;
+            font-weight: 600;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+            padding: 8px 2px;
+            color: #2d3748;
+        }
+
+        .routine-table .time-col small {
+            display: block;
+            font-size: calc(var(--base-font-size, 1rem) * 0.75);
+            color: #718096;
+        }
+
+        .subject-name {
+            font-weight: 600;
+            color: #2d3748;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+            line-height: 1.2;
+        }
+
+        .teacher-name {
+            font-size: calc(var(--base-font-size, 1rem) * 0.75);
+            color: #667eea;
+            line-height: 1.1;
+            margin-top: 2px;
+        }
+
+        .break-row {
+            background: #fef3c7;
+        }
+
+        .break-row td {
+            background: #fef3c7;
+            color: #b45309;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+            padding: 8px 2px;
+        }
+
+        .empty-cell {
+            color: #a0aec0;
+            font-size: calc(var(--base-font-size, 1rem) * 0.85);
+        }
+
+        .footer {
+            margin-top: 10px;
+            text-align: right;
+            color: #718096;
+            font-size: calc(var(--base-font-size, 1rem) * 0.8);
+        }
+
+        /* নোটিফিকেশন */
+        .notification {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background: #48bb78;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: calc(var(--base-font-size, 1rem) * 0.85);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 5px 15px rgba(72, 187, 120, 0.3);
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <span id="notificationMessage">আপডেট হয়েছে</span>
+    </div>
+
+    <!-- পাসওয়ার্ড মোডাল -->
+    <div class="modal-overlay" id="passwordModal">
+        <div class="password-modal">
+            <div class="modal-header">
+                <i class="fas fa-lock"></i>
+                <h2>পাসওয়ার্ড প্রয়োজন</h2>
+                <p>এডিট প্যানেলে প্রবেশের জন্য পাসওয়ার্ড দিন</p>
+            </div>
+            <input type="password" class="password-input" id="passwordInput" placeholder="পাসওয়ার্ড লিখুন" onkeypress="handleKeyPress(event)">
+            <div class="error-message" id="passwordError">
+                <i class="fas fa-exclamation-circle"></i> ভুল পাসওয়ার্ড! আবার চেষ্টা করুন
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-btn login-btn" onclick="checkPassword()">
+                    <i class="fas fa-sign-in-alt"></i> প্রবেশ
+                </button>
+                <button class="modal-btn cancel-btn" onclick="closeModal()">
+                    <i class="fas fa-times"></i> বাতিল
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- হেডার - লোগো ও প্রতিষ্ঠানের নাম সহ -->
+    <div class="header" id="publicHeader">
+        <div class="institute-info">
+            <div class="institute-logo" id="headerLogoContainer">
+                <img id="headerLogo" src="" alt="লোগো" style="display: none;">
+                <i class="fas fa-school" id="defaultLogoIcon"></i>
+            </div>
+            <div class="institute-text">
+                <h1 id="headerInstituteName">আদর্শ উচ্চ বিদ্যালয়</h1>
+                <p id="headerInstituteAddress">ঢাকা, বাংলাদেশ</p>
+            </div>
+        </div>
+        <div class="header-controls">
+            <div class="class-badge">
+                <i class="fas fa-school"></i>
+                <span id="headerClass">৭ম</span>
+            </div>
+            <button class="edit-login-btn" id="editLoginBtn" onclick="showLoginModal()">
+                <i class="fas fa-pen-alt"></i>
+                <span>এডিট</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- ফ্লেক্স কন্টেইনার -->
+    <div class="flex-container" id="flexContainer">
+        <!-- ইনপুট প্যানেল -->
+        <div class="input-panel closed" id="inputPanel">
+            <div class="panel-header">
+                <div class="panel-header-left">
+                    <i class="fas fa-edit"></i>
+                    <h3>রুটিন এডিটর</h3>
+                </div>
+                <div class="panel-header-right">
+                    <button class="settings-btn" onclick="toggleSettings()" title="সেটিংস">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                    <button class="logout-btn" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> লগআউট
+                    </button>
+                    <button class="minimize-btn" onclick="closePanel()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- সেটিংস প্যানেল (লোগো ও প্রতিষ্ঠানের নাম সহ) -->
+            <div class="settings-panel" id="settingsPanel">
+                <div class="settings-header">
+                    <i class="fas fa-sliders-h"></i>
+                    <span>সব সেটিংস</span>
+                </div>
+                
+                <!-- প্রতিষ্ঠান সেটিংস সেকশন -->
+                <div class="settings-section">
+                    <div class="settings-section-title">
+                        <i class="fas fa-building"></i>
+                        <span>প্রতিষ্ঠানের তথ্য</span>
+                    </div>
+
+                    <!-- প্রতিষ্ঠানের নাম -->
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <i class="fas fa-font"></i>
+                            <span>প্রতিষ্ঠানের নাম</span>
+                        </div>
+                        <input type="text" class="text-input" id="instituteNameInput" placeholder="যেমন: আদর্শ উচ্চ বিদ্যালয়" value="আদর্শ উচ্চ বিদ্যালয়">
+                    </div>
+
+                    <!-- প্রতিষ্ঠানের ঠিকানা -->
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>ঠিকানা</span>
+                        </div>
+                        <input type="text" class="text-input" id="instituteAddressInput" placeholder="যেমন: ঢাকা, বাংলাদেশ" value="ঢাকা, বাংলাদেশ">
+                    </div>
+
+                    <!-- লোগো আপলোড -->
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <i class="fas fa-image"></i>
+                            <span>লোগো আপলোড</span>
+                        </div>
+                        <div class="logo-upload-area" onclick="document.getElementById('logoInput').click()">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>লোগো আপলোড করতে ক্লিক করুন</p>
+                            <small>PNG, JPG বা GIF (সর্বোচ্চ ১MB)</small>
+                        </div>
+                        <input type="file" id="logoInput" accept="image/*" style="display: none;" onchange="handleLogoUpload(event)">
+
+                        <!-- লোগো প্রিভিউ (ডিফল্ট লুকানো) -->
+                        <div class="logo-preview-container" id="logoPreviewContainer" style="display: none;">
+                            <div class="logo-preview">
+                                <img id="logoPreview" src="" alt="প্রিভিউ">
+                            </div>
+                            <div class="logo-info">
+                                <p id="logoFileName">logo.png</p>
+                                <small>লোগো প্রিভিউ</small>
+                            </div>
+                            <button class="remove-logo-btn" onclick="removeLogo()">
+                                <i class="fas fa-times"></i> সরান
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- লাইভ প্রিভিউ -->
+                    <div class="preview-box">
+                        <div class="preview-logo" id="previewLogoContainer">
+                            <img id="previewLogo" src="" style="display: none;">
+                            <i class="fas fa-school" id="previewDefaultIcon"></i>
+                        </div>
+                        <div class="preview-text">
+                            <h4 id="previewName">আদর্শ উচ্চ বিদ্যালয়</h4>
+                            <p id="previewAddress">ঢাকা, বাংলাদেশ</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ফন্ট সেটিংস সেকশন -->
+                <div class="settings-section">
+                    <div class="settings-section-title">
+                        <i class="fas fa-paint-brush"></i>
+                        <span>ফন্ট সেটিংস</span>
+                    </div>
+
+                    <!-- ফন্ট সিলেক্টর -->
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <i class="fas fa-font"></i>
+                            <span>ফন্ট স্টাইল</span>
+                        </div>
+                        <select class="font-selector" id="fontSelector" onchange="changeFont(this.value)">
+                            <option value="Hind+Siliguri">হিন্দ সিলিগুরি (ডিফল্ট)</option>
+                            <option value="Noto+Sans+Bengali">নোটো সান্স বাংলা</option>
+                            <option value="Baloo+Da+2">বালু দা ২</option>
+                            <option value="Galada">গালাদা</option>
+                            <option value="Anek+Bangla">অনেক বাংলা</option>
+                            <option value="Atma">আতমা</option>
+                            <option value="Mina">মিনা</option>
+                            <option value="Poppins">পপিন্স (ইংরেজি)</option>
+                            <option value="Roboto">রোবোটো (ইংরেজি)</option>
+                            <option value="Open+Sans">ওপেন সান্স (ইংরেজি)</option>
+                        </select>
+                    </div>
+
+                    <!-- ফন্ট সাইজ স্লাইডার -->
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <i class="fas fa-text-height"></i>
+                            <span>ফন্ট সাইজ</span>
+                        </div>
+                        <div class="size-slider-container">
+                            <input type="range" min="0.7" max="1.5" step="0.05" value="1" class="size-slider" id="fontSizeSlider" oninput="changeFontSize(this.value)">
+                            <span class="size-value" id="fontSizeValue">100%</span>
+                        </div>
+                        
+                        <!-- প্রিসেট বাটন -->
+                        <div class="size-presets">
+                            <button class="size-preset-btn" onclick="setFontSize(0.8)">ছোট</button>
+                            <button class="size-preset-btn" onclick="setFontSize(1.0)">মাঝারি</button>
+                            <button class="size-preset-btn" onclick="setFontSize(1.2)">বড়</button>
+                        </div>
+                    </div>
+
+                    <!-- ফন্ট প্রিভিউ -->
+                    <div class="current-font-info" style="background: #edf2f7; padding: 10px; border-radius: 8px; margin-top: 10px;">
+                        <i class="fas fa-check-circle" style="color: #667eea;"></i>
+                        <span>বর্তমান ফন্ট: <span id="currentFontName">হিন্দ সিলিগুরি</span> | সাইজ: <span id="currentFontSize">100%</span></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ক্লাস সিলেক্টর -->
+            <div class="class-selector">
+                <button class="class-btn" onclick="selectClass('class6', this)">৬ষ্ঠ</button>
+                <button class="class-btn active" onclick="selectClass('class7', this)">৭ম</button>
+                <button class="class-btn" onclick="selectClass('class8', this)">৮ম</button>
+                <button class="class-btn" onclick="selectClass('class9', this)">৯ম</button>
+                <button class="class-btn" onclick="selectClass('class10', this)">১০ম</button>
+            </div>
+
+            <!-- টাইম স্লট কন্ট্রোল -->
+            <div class="time-controls">
+                <button class="add-slot-btn" onclick="addTimeSlot()">
+                    <i class="fas fa-plus"></i> নতুন
+                </button>
+                <button class="remove-slot-btn" onclick="removeLastSlot()">
+                    <i class="fas fa-minus"></i> শেষ
+                </button>
+                <span class="slot-count" id="slotCount">৭টি স্লট</span>
+            </div>
+
+            <!-- ডায়নামিক ইনপুট ফিল্ড -->
+            <div id="dynamicInputs"></div>
+
+            <div class="action-buttons">
+                <button class="save-btn" onclick="updateRoutine()">
+                    <i class="fas fa-save"></i> সংরক্ষণ
+                </button>
+                <button class="reset-btn" onclick="resetInputs()">
+                    <i class="fas fa-undo"></i> রিসেট
+                </button>
+            </div>
+        </div>
+
+        <!-- আউটপুট প্যানেল -->
+        <div class="output-panel" id="outputPanel">
+            <div class="output-header">
+                <h2>
+                    <i class="fas fa-calendar-check" style="color: #667eea;"></i>
+                    ক্লাস রুটিন
+                </h2>
+                <div class="current-class-large" id="currentClassLarge">৭ম</div>
+            </div>
+
+            <div class="public-class-selector">
+                <button class="public-class-btn" onclick="selectClassPublic('class6', this)">৬ষ্ঠ</button>
+                <button class="public-class-btn active" onclick="selectClassPublic('class7', this)">৭ম</button>
+                <button class="public-class-btn" onclick="selectClassPublic('class8', this)">৮ম</button>
+                <button class="public-class-btn" onclick="selectClassPublic('class9', this)">৯ম</button>
+                <button class="public-class-btn" onclick="selectClassPublic('class10', this)">১০ম</button>
+            </div>
+
+            <table class="routine-table">
+                <thead>
+                    <tr>
+                        <th>সময়</th>
+                        <th>রবিবার</th>
+                        <th>সোমবার</th>
+                        <th>মঙ্গলবার</th>
+                        <th>বুধবার</th>
+                        <th>বৃহস্পতিবার</th>
+                    </tr>
+                </thead>
+                <tbody id="routineBody"></tbody>
+            </table>
+
+            <div class="footer">
+                <i class="fas fa-clock"></i> সময় কাস্টমাইজযোগ্য
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // সঠিক পাসওয়ার্ড
+        const CORRECT_PASSWORD = "admin123";
+
+        // প্রতিষ্ঠানের ডাটা
+        let instituteData = {
+            name: "আদর্শ উচ্চ বিদ্যালয়",
+            address: "ঢাকা, বাংলাদেশ",
+            logo: null
+        };
+
+        // টাইম স্লট ডাটা
+        let timeSlots = [
+            { period: '১ম', start: '১০:০০', end: '১০:৫০', isBreak: false },
+            { period: '২য়', start: '১০:৫০', end: '১১:৪০', isBreak: false },
+            { period: '৩য়', start: '১১:৪০', end: '১২:৩০', isBreak: false },
+            { period: 'বিরতি', start: '১২:৩০', end: '১২:৫০', isBreak: true },
+            { period: '৪র্থ', start: '১২:৫০', end: '১:৪০', isBreak: false },
+            { period: '৫ম', start: '১:৪০', end: '২:৩০', isBreak: false },
+            { period: '৬ষ্ঠ', start: '২:৩০', end: '৩:২০', isBreak: false }
+        ];
+
+        const daysShort = ['রবি', 'সোম', 'মঙ্গল', 'বুধ', 'বৃহ'];
+        let currentClass = 'class7';
+        let isLoggedIn = false;
+
+        // PDF ডাটা (সম্পূর্ণ)
+        const pdfData = {
+            class6: [
+                ['বাংলা-রহিমা', 'ইংরেজি-করিম', 'গণিত-সাদেক', 'বিজ্ঞান-নাসির', 'সমাজ-ফাতেমা'],
+                ['ইংরেজি-করিম', 'গণিত-সাদেক', 'বাংলা-রহিমা', 'ধর্ম-হামিদ', 'কৃষি-জব্বার'],
+                ['গণিত-সাদেক', 'বিজ্ঞান-নাসির', 'ইংরেজি-করিম', 'বাংলা-রহিমা', 'শারীরিক-আলম'],
+                ['', '', '', '', ''],
+                ['বিজ্ঞান-নাসির', 'সমাজ-ফাতেমা', 'ধর্ম-হামিদ', 'কৃষি-জব্বার', 'বাংলা-রহিমা'],
+                ['ধর্ম-হামিদ', 'কৃষি-জব্বার', 'সমাজ-ফাতেমা', 'চারু-নাসিমা', 'ইংরেজি-করিম'],
+                ['কৃষি-জব্বার', 'শারীরিক-আলম', 'চারু-নাসিমা', 'গণিত-সাদেক', 'বিজ্ঞান-নাসির']
+            ],
+            class7: [
+                ['ইংরেজি ১ম-নাসিমা', '', '', '', 'ইংরেজি ১ম-নাসিমা'],
+                ['কৃষি-আঃ মজিদ', 'বাংলা ২য়-ছাইফুদ্দিন', '', '', 'বাংলা ২য়-ছাইফুদ্দিন'],
+                ['বাংলা ১ম-আমিনুল, আঃ মজিদ', 'তথ্য-ছাইফুদ্দিন', '', '', 'বাংলা ১ম-আমিনুল'],
+                ['', '', '', '', ''],
+                ['বাংলা ও বি-ছাদমার', '', '', '', 'বাংলা ও বি-ছাদমার'],
+                ['গণিত-ছাদমার', '', '', '', 'গণিত-ছাদমার'],
+                ['বিজ্ঞান-সেজান', 'তথ্য-মজোদেমল', '', '', 'বিজ্ঞান-সেজান']
+            ],
+            class8: [
+                ['গণিত-আল আমিন', '', '', '', 'গণিত-আল আমিন'],
+                ['বিজ্ঞান-শাহ আলম', '', '', '', 'বিজ্ঞান-শাহ আলম'],
+                ['ইংরেজি ২য়-প্রধান শিক্ষক', '', 'ইসলাম শিক্ষা-ছাইফুদ্দিন', '', 'তথ্য-রেকানুজ্জমান'],
+                ['', '', '', '', ''],
+                ['ইসলাম শিক্ষা-ছাইফুদ্দিন', 'বাংলা ২য়-নাসরিন', '', '', 'বাংলা ১ম-নাছরিন'],
+                ['বাংলা ১ম-নাছরিন', 'বাংলা ও বি-নাসিমা', '', '', 'কৃষি-আঃ মজিদ'],
+                ['ইংরেজি ১ম-মজোদেমল', 'বাংলা ১ম-নাসরিন', '', '', '']
+            ],
+            class9: [
+                ['ইংরেজি ১ম-মজোদেমল', '', '', '', 'ইংরেজি ১ম-মজোদেমল'],
+                ['বাংলা ২য়-মজোদেমল', 'বাংলা ও বি/বৃহগল-নাসিমা/আঃ মজিদ', 'ইতিহাস/জী-আমিনুল/শাহ আলম', '', 'বাংলা ২য়-মজোদেমল'],
+                ['গণিত-ছাদমার', 'তথ্য-রেকান, ছাদমার', 'ইংরেজি ২য়-আঃ রডক', '', 'গণিত-ছাদমার'],
+                ['', '', '', '', ''],
+                ['তথ্য-ছাদমার', 'বাংলা ২য়-রেকানুজ্জমান', 'ইসলাম শিক্ষা-ছাইফুদ্দিন', '', 'বাংলা ২য়-রেকানুজ্জমান'],
+                ['ইসলাম-ছাইফুদ্দিন', '', 'রসায়ন/অর্থনীতি-আল মিন/নাসরিন', '', 'ইসলাম-ছাইফুদ্দিন'],
+                ['কৃষি-আঃ মজিদ', 'কৃষি-আবুল মজিদ', 'বাংলা ১ম-শাহ আলম', '', 'শারীরিক/কারি-']
+            ],
+            class10: [
+                ['গণিত-ছাদমার', '', 'পদার্থ/অর্থনীতি-আল আমিন/নাছরিন', '', 'গণিত-ছাদমার'],
+                ['ইসলাম-ছাইফুদ্দিন', 'বাংলা ও বি/সা বি-নাসিমা/আল আমিন', 'ইংরেজি ১ম-মোজোদেমল', '', 'ইসলাম-ছাইফুদ্দিন'],
+                ['বাংলা ও বি/সা বি-নাসিমা/আল আমিন', 'কৃষি/উচ্চতর-আঃ মজিদ/আল আমিন', 'বাংলা ২য়-আঃ রডক', '', 'বাংলা ২য়-রেকানু'],
+                ['', '', '', '', ''],
+                ['রসায়ন/ভূগোল-আল আমিন/মোজোদেমল', 'জীব/ইতিহাস-শাহ আলম/আঃ রডক', 'বাংলা ১ম-আঃ রডক', '', 'ইসলাম-মোজোদেমল, ছাইফুদ্দিন'],
+                ['বাংলা ১ম-মোজোদেমল', 'ইংরেজি ১ম-মোজোদেমল', 'শারীরিক শিক্ষা-আঃ রডক', '', 'ইংরেজি ১ম-মোজোদেমল'],
+                ['কৃষি/উচ্চতর-আঃ মজিদ/আল আমিন', 'জীব/ইতিহাস-শাহ আলম/আঃ রডক', 'বাংলা ২য়-আঃ রডক', '', 'বাংলা ও বি/সাবি-নাসিমা/আল আমিন']
+            ]
+        };
+
+        // প্রতিষ্ঠানের ডাটা লোড
+        function loadInstituteData() {
+            const saved = localStorage.getItem('instituteData');
+            if (saved) {
+                instituteData = JSON.parse(saved);
+                updateInstituteDisplay();
+                
+                document.getElementById('instituteNameInput').value = instituteData.name;
+                document.getElementById('instituteAddressInput').value = instituteData.address;
+                
+                if (instituteData.logo) {
+                    document.getElementById('logoPreview').src = instituteData.logo;
+                    document.getElementById('logoPreviewContainer').style.display = 'flex';
+                }
+            }
+        }
+
+        // প্রতিষ্ঠানের ডাটা সেভ
+        function saveInstituteData() {
+            instituteData.name = document.getElementById('instituteNameInput').value;
+            instituteData.address = document.getElementById('instituteAddressInput').value;
+            localStorage.setItem('instituteData', JSON.stringify(instituteData));
+            updateInstituteDisplay();
+            showNotification('প্রতিষ্ঠানের তথ্য সংরক্ষিত হয়েছে');
+        }
+
+        // হেডার আপডেট
+        function updateInstituteDisplay() {
+            document.getElementById('headerInstituteName').textContent = instituteData.name;
+            document.getElementById('headerInstituteAddress').textContent = instituteData.address;
+            document.getElementById('previewName').textContent = instituteData.name;
+            document.getElementById('previewAddress').textContent = instituteData.address;
+            
+            if (instituteData.logo) {
+                document.getElementById('headerLogo').src = instituteData.logo;
+                document.getElementById('headerLogo').style.display = 'block';
+                document.getElementById('defaultLogoIcon').style.display = 'none';
+                
+                document.getElementById('previewLogo').src = instituteData.logo;
+                document.getElementById('previewLogo').style.display = 'block';
+                document.getElementById('previewDefaultIcon').style.display = 'none';
+            } else {
+                document.getElementById('headerLogo').style.display = 'none';
+                document.getElementById('defaultLogoIcon').style.display = 'block';
+                
+                document.getElementById('previewLogo').style.display = 'none';
+                document.getElementById('previewDefaultIcon').style.display = 'block';
+            }
+        }
+
+        // লোগো আপলোড
+        function handleLogoUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    instituteData.logo = e.target.result;
+                    document.getElementById('logoPreview').src = e.target.result;
+                    document.getElementById('logoPreviewContainer').style.display = 'flex';
+                    document.getElementById('logoFileName').textContent = file.name;
+                    
+                    updateInstituteDisplay();
+                    saveInstituteData();
+                    showNotification('লোগো আপলোড করা হয়েছে');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // লোগো রিমুভ
+        function removeLogo() {
+            instituteData.logo = null;
+            document.getElementById('logoPreviewContainer').style.display = 'none';
+            document.getElementById('logoInput').value = '';
+            
+            updateInstituteDisplay();
+            saveInstituteData();
+            showNotification('লোগো সরানো হয়েছে');
+        }
+
+        // সেটিংস প্যানেল টগল
+        function toggleSettings() {
+            const panel = document.getElementById('settingsPanel');
+            panel.classList.toggle('show');
+        }
+
+        // ফন্ট পরিবর্তন
+        function changeFont(fontName) {
+            const link = document.createElement('link');
+            link.href = `https://fonts.googleapis.com/css2?family=${fontName}:wght@300;400;500;600;700&display=swap`;
+            link.rel = 'stylesheet';
+            link.id = 'dynamic-font';
+            
+            const old = document.getElementById('dynamic-font');
+            if (old) old.remove();
+            
+            document.head.appendChild(link);
+            
+            const fontFamily = fontName.replace('+', ' ');
+            document.body.style.fontFamily = `'${fontFamily}', 'Hind Siliguri', sans-serif`;
+            
+            const fontNames = {
+                'Hind+Siliguri': 'হিন্দ সিলিগুরি',
+                'Noto+Sans+Bengali': 'নোটো সান্স বাংলা',
+                'Baloo+Da+2': 'বালু দা ২',
+                'Galada': 'গালাদা',
+                'Anek+Bangla': 'অনেক বাংলা',
+                'Atma': 'আতমা',
+                'Mina': 'মিনা',
+                'Poppins': 'পপিন্স',
+                'Roboto': 'রোবোটো',
+                'Open+Sans': 'ওপেন সান্স'
+            };
+            document.getElementById('currentFontName').textContent = fontNames[fontName] || fontFamily;
+            showNotification('ফন্ট পরিবর্তন করা হয়েছে');
+        }
+
+        // ফন্ট সাইজ পরিবর্তন - এখানেই মূল সমাধান
+        function changeFontSize(size) {
+            // CSS ভেরিয়েবল সেট করুন
+            document.documentElement.style.setProperty('--base-font-size', size + 'rem');
+            
+            // স্লাইডার ভ্যালু আপডেট
+            document.getElementById('fontSizeValue').textContent = Math.round(size * 100) + '%';
+            
+            // বর্তমান সাইজ ইনফো আপডেট
+            document.getElementById('currentFontSize').textContent = Math.round(size * 100) + '%';
+            
+            // আউটপুট প্যানেলের ফন্ট সাইজ সরাসরি সেট করুন (নিশ্চিত করার জন্য)
+            const outputPanel = document.getElementById('outputPanel');
+            if (outputPanel) {
+                outputPanel.style.fontSize = size + 'rem';
+            }
+            
+            // টেবিলের ভিতরের সব এলিমেন্টের জন্য
+            const routineTable = document.querySelector('.routine-table');
+            if (routineTable) {
+                routineTable.style.fontSize = size + 'rem';
+            }
+            
+            showNotification('ফন্ট সাইজ পরিবর্তন করা হয়েছে');
+        }
+
+        function setFontSize(size) {
+            document.getElementById('fontSizeSlider').value = size;
+            changeFontSize(size);
+        }
+
+        // পাসওয়ার্ড ফাংশন
+        function showLoginModal() {
+            document.getElementById('passwordModal').classList.add('show');
+            document.getElementById('passwordInput').focus();
+        }
+
+        function closeModal() {
+            document.getElementById('passwordModal').classList.remove('show');
+        }
+
+        function handleKeyPress(e) {
+            if (e.key === 'Enter') checkPassword();
+        }
+
+        function checkPassword() {
+            if (document.getElementById('passwordInput').value === CORRECT_PASSWORD) {
+                document.getElementById('passwordModal').classList.remove('show');
+                login();
+            } else {
+                document.getElementById('passwordError').classList.add('show');
+            }
+        }
+
+        function login() {
+            isLoggedIn = true;
+            document.getElementById('inputPanel').classList.remove('closed');
+            document.getElementById('editLoginBtn').innerHTML = '<i class="fas fa-edit"></i> <span>এডিটিং</span>';
+            document.getElementById('editLoginBtn').classList.add('logged-in');
+            showNotification('এডিট প্যানেল খোলা হয়েছে');
+        }
+
+        function logout() {
+            isLoggedIn = false;
+            document.getElementById('inputPanel').classList.add('closed');
+            document.getElementById('editLoginBtn').innerHTML = '<i class="fas fa-pen-alt"></i> <span>এডিট</span>';
+            document.getElementById('editLoginBtn').classList.remove('logged-in');
+            document.getElementById('settingsPanel').classList.remove('show');
+            showNotification('লগআউট করা হয়েছে');
+        }
+
+        function closePanel() {
+            if (isLoggedIn) logout();
+        }
+
+        // ইনপুট ফিল্ড জেনারেট
+        function generateInputFields() {
+            const container = document.getElementById('dynamicInputs');
+            if (!container) return;
+            
+            container.innerHTML = '';
+
+            timeSlots.forEach((slot, slotIndex) => {
+                const card = document.createElement('div');
+                card.className = 'time-slot-card';
+                card.id = `slot_${slotIndex}`;
+
+                const header = document.createElement('div');
+                header.className = 'slot-header';
+                header.innerHTML = `
+                    <div class="slot-title">
+                        <span class="slot-number">${slotIndex + 1}</span>
+                        <input type="text" value="${slot.period}" placeholder="পিরিয়ড নাম" id="period_${slotIndex}" style="width: 80px; padding: 4px; border: 1px solid #cbd5e0; border-radius: 4px; font-family: inherit; font-size: 0.9rem;">
+                    </div>
+                    <label class="break-checkbox">
+                        <input type="checkbox" ${slot.isBreak ? 'checked' : ''} onchange="toggleBreak(${slotIndex})">
+                        বিরতি
+                    </label>
+                `;
+                card.appendChild(header);
+
+                const timeDiv = document.createElement('div');
+                timeDiv.className = 'time-inputs';
+                timeDiv.innerHTML = `
+                    <div class="time-input">
+                        <i class="far fa-clock"></i>
+                        <input type="text" value="${slot.start}" placeholder="শুরু" id="start_${slotIndex}">
+                    </div>
+                    <div class="time-input">
+                        <i class="far fa-clock"></i>
+                        <input type="text" value="${slot.end}" placeholder="শেষ" id="end_${slotIndex}">
+                    </div>
+                `;
+                card.appendChild(timeDiv);
+
+                const dayInputs = document.createElement('div');
+                dayInputs.className = 'day-inputs';
+
+                daysShort.forEach((day, dayIndex) => {
+                    const dayDiv = document.createElement('div');
+                    dayDiv.className = 'day-input';
+
+                    const label = document.createElement('div');
+                    label.className = 'day-label';
+                    label.textContent = day;
+                    dayDiv.appendChild(label);
+
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.id = `input_${currentClass}_${slotIndex}_${dayIndex}`;
+                    input.placeholder = 'বিষয়-শিক্ষক';
+                    
+                    const classData = pdfData[currentClass];
+                    if (classData && classData[slotIndex] && classData[slotIndex][dayIndex]) {
+                        input.value = classData[slotIndex][dayIndex];
+                    }
+
+                    dayDiv.appendChild(input);
+                    dayInputs.appendChild(dayDiv);
+                });
+
+                card.appendChild(dayInputs);
+                
+                if (timeSlots.length > 1) {
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.className = 'delete-slot';
+                    deleteBtn.innerHTML = '<i class="fas fa-times"></i>';
+                    deleteBtn.onclick = () => removeSlot(slotIndex);
+                    card.appendChild(deleteBtn);
+                }
+
+                container.appendChild(card);
+            });
+
+            updateSlotCount();
+        }
+
+        function toggleBreak(slotIndex) {
+            const checkbox = document.getElementById(`period_${slotIndex}`);
+            if (checkbox) {
+                timeSlots[slotIndex].isBreak = checkbox.checked;
+            }
+        }
+
+        function addTimeSlot() {
+            const newSlotNumber = timeSlots.length + 1;
+            timeSlots.push({
+                period: `${newSlotNumber}ম`,
+                start: '০০:০০',
+                end: '০০:০০',
+                isBreak: false
+            });
+            
+            if (!pdfData[currentClass][timeSlots.length - 1]) {
+                pdfData[currentClass][timeSlots.length - 1] = ['', '', '', '', ''];
+            }
+            
+            generateInputFields();
+            updateRoutine();
+            showNotification('নতুন স্লট যোগ করা হয়েছে');
+        }
+
+        function removeLastSlot() {
+            if (timeSlots.length > 1) {
+                timeSlots.pop();
+                pdfData[currentClass].pop();
+                generateInputFields();
+                updateRoutine();
+                showNotification('শেষ স্লট সরানো হয়েছে');
+            }
+        }
+
+        function removeSlot(index) {
+            if (timeSlots.length > 1) {
+                timeSlots.splice(index, 1);
+                pdfData[currentClass].splice(index, 1);
+                generateInputFields();
+                updateRoutine();
+                showNotification('স্লট সরানো হয়েছে');
+            }
+        }
+
+        function updateSlotCount() {
+            document.getElementById('slotCount').textContent = `${timeSlots.length}টি স্লট`;
+        }
+
+        function updateRoutine() {
+            timeSlots.forEach((slot, index) => {
+                const periodInput = document.getElementById(`period_${index}`);
+                const startInput = document.getElementById(`start_${index}`);
+                const endInput = document.getElementById(`end_${index}`);
+                
+                if (periodInput) slot.period = periodInput.value;
+                if (startInput) slot.start = startInput.value;
+                if (endInput) slot.end = endInput.value;
+            });
+
+            const tbody = document.getElementById('routineBody');
+            tbody.innerHTML = '';
+
+            timeSlots.forEach((slot, slotIndex) => {
+                const row = document.createElement('tr');
+                if (slot.isBreak) {
+                    row.className = 'break-row';
+                }
+
+                const timeCell = document.createElement('td');
+                timeCell.className = 'time-col';
+                timeCell.innerHTML = `${slot.period}<br><small>${slot.start}</small>`;
+                row.appendChild(timeCell);
+
+                if (slot.isBreak) {
+                    const cell = document.createElement('td');
+                    cell.colSpan = 5;
+                    cell.innerHTML = '🍴 ' + slot.period;
+                    row.appendChild(cell);
+                } else {
+                    daysShort.forEach((day, dayIndex) => {
+                        const cell = document.createElement('td');
+                        
+                        const input = document.getElementById(`input_${currentClass}_${slotIndex}_${dayIndex}`);
+                        let value = input ? input.value : '';
+
+                        if (value && value.trim() !== '') {
+                            const parts = value.split('-');
+                            const subject = parts[0] || '';
+                            const teacher = parts[1] || '';
+                            
+                            cell.innerHTML = `
+                                <div class="subject-name">${subject}</div>
+                                <div class="teacher-name">${teacher}</div>
+                            `;
+                        } else {
+                            cell.innerHTML = '<span class="empty-cell">-</span>';
+                        }
+
+                        row.appendChild(cell);
+                    });
+                }
+
+                tbody.appendChild(row);
+            });
+
+            updatePdfData();
+            showNotification('রুটিন আপডেট হয়েছে');
+        }
+
+        function updatePdfData() {
+            timeSlots.forEach((slot, slotIndex) => {
+                daysShort.forEach((day, dayIndex) => {
+                    const input = document.getElementById(`input_${currentClass}_${slotIndex}_${dayIndex}`);
+                    if (input) {
+                        if (!pdfData[currentClass][slotIndex]) {
+                            pdfData[currentClass][slotIndex] = [];
+                        }
+                        pdfData[currentClass][slotIndex][dayIndex] = input.value;
+                    }
+                });
+            });
+        }
+
+        function selectClass(classId, element) {
+            if (!isLoggedIn) {
+                showNotification('প্রথমে লগইন করুন', 'error');
+                showLoginModal();
+                return;
+            }
+            
+            currentClass = classId;
+
+            document.querySelectorAll('.class-btn').forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+
+            updateClassLabels();
+            generateInputFields();
+            updateRoutine();
+        }
+
+        function selectClassPublic(classId, element) {
+            currentClass = classId;
+
+            document.querySelectorAll('.public-class-btn').forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+
+            document.querySelectorAll('.class-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.includes(getClassNumber(classId))) {
+                    btn.classList.add('active');
+                }
+            });
+
+            updateClassLabels();
+            generateInputFields();
+            updateRoutine();
+        }
+
+        function getClassNumber(classId) {
+            const map = {
+                class6: '৬ষ্ঠ',
+                class7: '৭ম',
+                class8: '৮ম',
+                class9: '৯ম',
+                class10: '১০ম'
+            };
+            return map[classId];
+        }
+
+        function updateClassLabels() {
+            const classNames = {
+                class6: '৬ষ্ঠ',
+                class7: '৭ম',
+                class8: '৮ম',
+                class9: '৯ম',
+                class10: '১০ম'
+            };
+            document.getElementById('headerClass').textContent = classNames[currentClass];
+            document.getElementById('currentClassLarge').textContent = classNames[currentClass];
+        }
+
+        function resetInputs() {
+            if (!isLoggedIn) {
+                showNotification('প্রথমে লগইন করুন', 'error');
+                showLoginModal();
+                return;
+            }
+            
+            generateInputFields();
+            updateRoutine();
+            showNotification('রিসেট করা হয়েছে');
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            const messageSpan = document.getElementById('notificationMessage');
+            
+            messageSpan.textContent = message;
+            
+            if (type === 'error') {
+                notification.style.background = '#f56565';
+            } else {
+                notification.style.background = '#48bb78';
+            }
+            
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 1500);
+        }
+
+        // ইনিশিয়াল লোড
+        loadInstituteData();
+        generateInputFields();
+        updateRoutine();
+
+        // ডিফল্ট ফন্ট সাইজ সেট
+        document.documentElement.style.setProperty('--base-font-size', '1rem');
+    </script>
+</body>
+</html>
