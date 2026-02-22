@@ -1456,46 +1456,7 @@
         };
 
         // সব প্রতিষ্ঠানের রুটিন ডাটা
-        let allRoutineData = {
-            school1: {
-                class6: [...], // এখানে ডাটা বসবে
-                class7: [...],
-                class8: [...],
-                class9: [...],
-                class10: [...]
-            },
-            school2: {
-                class6: [...],
-                class7: [...],
-                class8: [...],
-                class9: [...],
-                class10: [...]
-            },
-            school3: {
-                class6: [...],
-                class7: [...],
-                class8: [...],
-                class9: [...],
-                class10: [...]
-            },
-            school4: {
-                class6: [...],
-                class7: [...],
-                class8: [...],
-                class9: [...],
-                class10: [...]
-            },
-            school5: {
-                class6: [...],
-                class7: [...],
-                class8: [...],
-                class9: [...],
-                class10: [...]
-            }
-        };
-
-        // বর্তমান প্রতিষ্ঠানের রুটিন ডাটা
-        let pdfData = allRoutineData[currentInstitute] || allRoutineData.school1;
+        let allRoutineData = {};
 
         // টাইম স্লট ডাটা
         let timeSlots = [
@@ -1512,7 +1473,10 @@
         let currentClass = 'class7';
         let isLoggedIn = false;
 
-        // PDF ডাটা পপুলেট করা
+        // বর্তমান প্রতিষ্ঠানের রুটিন ডাটা
+        let pdfData = {};
+
+        // PDF ডাটা ইনিশিয়ালাইজ
         function initializePdfData() {
             // স্কুল 1 - আদর্শ উচ্চ বিদ্যালয়
             allRoutineData.school1 = {
@@ -1536,7 +1500,7 @@
                 ],
                 class8: [
                     ['গণিত-আল আমিন', '', '', '', 'গণিত-আল আমিন'],
-                    ['বিজ্ঞান-শাহ আলম', '', '', '', 'বিজ্ঞান-শাহ আলম'],
+                    ['বিজ্ঞান-শাহ আলম', '', '', '', 'বিজ্ঞান-শাহ আলم'],
                     ['ইংরেজি ২য়-প্রধান শিক্ষক', '', 'ইসলাম শিক্ষা-ছাইফুদ্দিন', '', 'তথ্য-রেকানুজ্জমান'],
                     ['', '', '', '', ''],
                     ['ইসলাম শিক্ষা-ছাইফুদ্দিন', 'বাংলা ২য়-নাসরিন', '', '', 'বাংলা ১ম-নাছরিন'],
@@ -1562,13 +1526,15 @@
                     ['কৃষি/উচ্চতর-আঃ মজিদ/আল আমিন', 'জীব/ইতিহাস-শাহ আলম/আঃ রডক', 'বাংলা ২য়-আঃ রডক', '', 'বাংলা ও বি/সাবি-নাসিমা/আল আমিন']
                 ]
             };
-
-            // স্কুল 2 - শিক্ষা নিকেতন (ভিন্ন নাম ও ভিন্ন রুটিন)
-            allRoutineData.school2 = JSON.parse(JSON.stringify(allRoutineData.school1)); // কপি
-            // এখানে স্কুল 2-এর জন্য আলাদা রুটিন সেট করা যাবে
             
-            // স্কুল 3 - আলোকিত পাঠশালা
-            allRoutineData.school3 = JSON.parse(JSON.stringify(allRoutineData.school1)); // কপি
+            // অন্যান্য স্কুলের জন্য কপি (প্রয়োজনমতো পরিবর্তন করা যাবে)
+            allRoutineData.school2 = JSON.parse(JSON.stringify(allRoutineData.school1));
+            allRoutineData.school3 = JSON.parse(JSON.stringify(allRoutineData.school1));
+            allRoutineData.school4 = JSON.parse(JSON.stringify(allRoutineData.school1));
+            allRoutineData.school5 = JSON.parse(JSON.stringify(allRoutineData.school1));
+            
+            // বর্তমান প্রতিষ্ঠানের ডাটা সেট
+            pdfData = allRoutineData[currentInstitute];
         }
 
         // ইনিশিয়ালাইজ
@@ -1580,15 +1546,17 @@
             const saved = localStorage.getItem(key);
             if (saved) {
                 instituteData = JSON.parse(saved);
-                updateInstituteDisplay();
-                
-                document.getElementById('instituteNameInput').value = instituteData.name;
-                document.getElementById('instituteAddressInput').value = instituteData.address;
-                
-                if (instituteData.logo) {
-                    document.getElementById('logoPreview').src = instituteData.logo;
-                    document.getElementById('logoPreviewContainer').style.display = 'flex';
-                }
+            }
+            updateInstituteDisplay();
+            
+            document.getElementById('instituteNameInput').value = instituteData.name;
+            document.getElementById('instituteAddressInput').value = instituteData.address;
+            
+            if (instituteData.logo) {
+                document.getElementById('logoPreview').src = instituteData.logo;
+                document.getElementById('logoPreviewContainer').style.display = 'flex';
+            } else {
+                document.getElementById('logoPreviewContainer').style.display = 'none';
             }
             
             // প্রতিষ্ঠান আইডি দেখান
@@ -1643,10 +1611,11 @@
             loadInstituteData();
             
             // রুটিন ডাটা আপডেট
-            pdfData = allRoutineData[currentInstitute] || allRoutineData.school1;
-            
-            // ফন্ট সাইজ রিসেট না করে আগেরটাই রাখি
-            const currentSize = document.getElementById('fontSizeSlider').value;
+            if (allRoutineData[currentInstitute]) {
+                pdfData = allRoutineData[currentInstitute];
+            } else {
+                pdfData = allRoutineData.school1;
+            }
             
             // UI আপডেট
             generateInputFields();
@@ -1730,17 +1699,6 @@
             document.documentElement.style.setProperty('--base-font-size', size + 'rem');
             document.getElementById('fontSizeValue').textContent = Math.round(size * 100) + '%';
             document.getElementById('currentFontSize').textContent = Math.round(size * 100) + '%';
-            
-            const outputPanel = document.getElementById('outputPanel');
-            if (outputPanel) {
-                outputPanel.style.fontSize = size + 'rem';
-            }
-            
-            const routineTable = document.querySelector('.routine-table');
-            if (routineTable) {
-                routineTable.style.fontSize = size + 'rem';
-            }
-            
             showNotification('ফন্ট সাইজ পরিবর্তন করা হয়েছে');
         }
 
@@ -1850,9 +1808,8 @@
                     input.id = `input_${currentClass}_${slotIndex}_${dayIndex}`;
                     input.placeholder = 'বিষয়-শিক্ষক';
                     
-                    const classData = pdfData[currentClass];
-                    if (classData && classData[slotIndex] && classData[slotIndex][dayIndex]) {
-                        input.value = classData[slotIndex][dayIndex];
+                    if (pdfData && pdfData[currentClass] && pdfData[currentClass][slotIndex] && pdfData[currentClass][slotIndex][dayIndex]) {
+                        input.value = pdfData[currentClass][slotIndex][dayIndex];
                     }
 
                     dayDiv.appendChild(input);
@@ -1891,6 +1848,9 @@
                 isBreak: false
             });
             
+            if (!pdfData[currentClass]) {
+                pdfData[currentClass] = [];
+            }
             if (!pdfData[currentClass][timeSlots.length - 1]) {
                 pdfData[currentClass][timeSlots.length - 1] = ['', '', '', '', ''];
             }
@@ -1903,7 +1863,9 @@
         function removeLastSlot() {
             if (timeSlots.length > 1) {
                 timeSlots.pop();
-                pdfData[currentClass].pop();
+                if (pdfData[currentClass]) {
+                    pdfData[currentClass].pop();
+                }
                 generateInputFields();
                 updateRoutine();
                 showNotification('শেষ স্লট সরানো হয়েছে');
@@ -1913,7 +1875,9 @@
         function removeSlot(index) {
             if (timeSlots.length > 1) {
                 timeSlots.splice(index, 1);
-                pdfData[currentClass].splice(index, 1);
+                if (pdfData[currentClass]) {
+                    pdfData[currentClass].splice(index, 1);
+                }
                 generateInputFields();
                 updateRoutine();
                 showNotification('স্লট সরানো হয়েছে');
@@ -1936,6 +1900,8 @@
             });
 
             const tbody = document.getElementById('routineBody');
+            if (!tbody) return;
+            
             tbody.innerHTML = '';
 
             timeSlots.forEach((slot, slotIndex) => {
@@ -1955,7 +1921,7 @@
                     cell.innerHTML = '🍴 ' + slot.period;
                     row.appendChild(cell);
                 } else {
-                    daysShort.forEach((day, dayIndex) => {
+                    for (let dayIndex = 0; dayIndex < 5; dayIndex++) {
                         const cell = document.createElement('td');
                         
                         const input = document.getElementById(`input_${currentClass}_${slotIndex}_${dayIndex}`);
@@ -1968,14 +1934,14 @@
                             
                             cell.innerHTML = `
                                 <div class="subject-name">${subject}</div>
-                                <div class="teacher-name">${teacher}</div>
+                                <div class="teacher-name">${teacher ? '👨‍🏫 ' + teacher : ''}</div>
                             `;
                         } else {
                             cell.innerHTML = '<span class="empty-cell">-</span>';
                         }
 
                         row.appendChild(cell);
-                    });
+                    }
                 }
 
                 tbody.appendChild(row);
@@ -1986,13 +1952,18 @@
         }
 
         function updatePdfData() {
+            if (!pdfData[currentClass]) {
+                pdfData[currentClass] = [];
+            }
+            
             timeSlots.forEach((slot, slotIndex) => {
+                if (!pdfData[currentClass][slotIndex]) {
+                    pdfData[currentClass][slotIndex] = ['', '', '', '', ''];
+                }
+                
                 daysShort.forEach((day, dayIndex) => {
                     const input = document.getElementById(`input_${currentClass}_${slotIndex}_${dayIndex}`);
                     if (input) {
-                        if (!pdfData[currentClass][slotIndex]) {
-                            pdfData[currentClass][slotIndex] = [];
-                        }
                         pdfData[currentClass][slotIndex][dayIndex] = input.value;
                     }
                 });
@@ -2218,15 +2189,22 @@
             // প্রতিষ্ঠানের ডাটা লোড
             loadInstituteData();
             
+            // রুটিন ডাটা সেট
+            if (allRoutineData[currentInstitute]) {
+                pdfData = allRoutineData[currentInstitute];
+            }
+            
+            // UI আপডেট
+            generateInputFields();
+            updateRoutine();
+            
             // GitHub থেকে লোড করার চেষ্টা (১ সেকেন্ড পর)
             setTimeout(() => {
                 loadInstituteConfig(currentInstitute);
             }, 1000);
         });
 
-        // ইনিশিয়াল লোড
-        generateInputFields();
-        updateRoutine();
+        // ডিফল্ট ফন্ট সাইজ সেট
         document.documentElement.style.setProperty('--base-font-size', '1rem');
     </script>
 </body>
