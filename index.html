@@ -1475,13 +1475,18 @@
             }
         }
 
-        // প্রতিষ্ঠানের ডাটা সেভ
+        // প্রতিষ্ঠানের ডাটা সেভ (আপডেট করা)
         function saveInstituteData() {
             instituteData.name = document.getElementById('instituteNameInput').value;
             instituteData.address = document.getElementById('instituteAddressInput').value;
             localStorage.setItem('instituteData', JSON.stringify(instituteData));
             updateInstituteDisplay();
-            showNotification('প্রতিষ্ঠানের তথ্য সংরক্ষিত হয়েছে');
+            showNotification('স্থানীয় স্টোরেজে সংরক্ষিত হয়েছে');
+            
+            // GitHub-এ সেভ করার অপশন
+            if (confirm('GitHub-এ সেভ করতে চান? (সব জায়গায় দেখাবে)')) {
+                saveInstituteConfig();
+            }
         }
 
         // হেডার আপডেট
@@ -1575,24 +1580,17 @@
             showNotification('ফন্ট পরিবর্তন করা হয়েছে');
         }
 
-        // ফন্ট সাইজ পরিবর্তন - এখানেই মূল সমাধান
+        // ফন্ট সাইজ পরিবর্তন
         function changeFontSize(size) {
-            // CSS ভেরিয়েবল সেট করুন
             document.documentElement.style.setProperty('--base-font-size', size + 'rem');
-            
-            // স্লাইডার ভ্যালু আপডেট
             document.getElementById('fontSizeValue').textContent = Math.round(size * 100) + '%';
-            
-            // বর্তমান সাইজ ইনফো আপডেট
             document.getElementById('currentFontSize').textContent = Math.round(size * 100) + '%';
             
-            // আউটপুট প্যানেলের ফন্ট সাইজ সরাসরি সেট করুন (নিশ্চিত করার জন্য)
             const outputPanel = document.getElementById('outputPanel');
             if (outputPanel) {
                 outputPanel.style.fontSize = size + 'rem';
             }
             
-            // টেবিলের ভিতরের সব এলিমেন্টের জন্য
             const routineTable = document.querySelector('.routine-table');
             if (routineTable) {
                 routineTable.style.fontSize = size + 'rem';
@@ -1945,6 +1943,118 @@
             }, 1500);
         }
 
+        // GitHub সংক্রান্ত ফাংশন
+        const GITHUB_USERNAME = "babulakterkhan";
+        const GITHUB_REPO = "school_class_rutine";
+        const CONFIG_FILE = "institute-config.json";
+
+        // GitHub থেকে কনফিগ লোড
+        async function loadInstituteConfig() {
+            const url = `https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/contents/${CONFIG_FILE}`;
+            
+            try {
+                const response = await fetch(url, {
+                    headers: {
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    const content = atob(data.content);
+                    instituteData = JSON.parse(content);
+                    updateInstituteDisplay();
+                    
+                    document.getElementById('instituteNameInput').value = instituteData.name;
+                    document.getElementById('instituteAddressInput').value = instituteData.address;
+                    
+                    if (instituteData.logo) {
+                        document.getElementById('logoPreview').src = instituteData.logo;
+                        document.getElementById('logoPreviewContainer').style.display = 'flex';
+                    }
+                    
+                    showNotification('কনফিগ লোড করা হয়েছে');
+                } else {
+                    console.log('কনফিগ ফাইল নেই, ডিফল্ট ব্যবহার করা হবে');
+                }
+            } catch (error) {
+                console.log('GitHub থেকে লোড করতে সমস্যা:', error);
+            }
+        }
+
+        // GitHub-এ কনফিগ সেভ
+        async function saveInstituteConfig() {
+            const url = `https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/contents/${CONFIG_FILE}`;
+            
+            // GitHub Personal Access Token চাওয়া
+            const GITHUB_TOKEN = prompt('GitHub Personal Access Token দিন:');
+            
+            if (!GITHUB_TOKEN) {
+                showNotification('টোকেন ছাড়া সেভ করা যাবে না', 'error');
+                return false;
+            }
+            
+            // কনফিগ ডাটা তৈরি
+            const configData = {
+                name: instituteData.name,
+                address: instituteData.address,
+                logo: instituteData.logo
+            };
+            
+            const content = btoa(JSON.stringify(configData, null, 2));
+            
+            try {
+                // প্রথমে ফাইলের SHA পেতে GET request
+                const getResponse = await fetch(url, {
+                    headers: {
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+                
+                let sha = null;
+                if (getResponse.ok) {
+                    const data = await getResponse.json();
+                    sha = data.sha;
+                }
+                
+                // PUT request দিয়ে ফাইল আপডেট
+                const putResponse = await fetch(url, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${GITHUB_TOKEN}`,
+                        'Accept': 'application/vnd.github.v3+json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: 'প্রতিষ্ঠানের তথ্য আপডেট',
+                        content: content,
+                        sha: sha
+                    })
+                });
+                
+                if (putResponse.ok) {
+                    showNotification('GitHub-এ সেভ করা হয়েছে');
+                    return true;
+                } else {
+                    const error = await putResponse.json();
+                    console.error('GitHub error:', error);
+                    showNotification('সেভ করতে সমস্যা হয়েছে: ' + (error.message || 'অজানা ত্রুটি'), 'error');
+                    return false;
+                }
+            } catch (error) {
+                console.error('Network error:', error);
+                showNotification('এরর হয়েছে: ' + error.message, 'error');
+                return false;
+            }
+        }
+
+        // পৃষ্ঠা লোড হওয়ার পর GitHub থেকে ডাটা লোড
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                loadInstituteConfig();
+            }, 1000); // ১ সেকেন্ড পর GitHub থেকে লোড করবে
+        });
+
         // ইনিশিয়াল লোড
         loadInstituteData();
         generateInputFields();
@@ -1952,8 +2062,6 @@
 
         // ডিফল্ট ফন্ট সাইজ সেট
         document.documentElement.style.setProperty('--base-font-size', '1rem');
-const GITHUB_USERNAME = "babulakterkhan"; // শুধু ইউজারনেম (URL না)
-const GITHUB_REPO = "school_class_rutine";
     </script>
 </body>
 </html>
