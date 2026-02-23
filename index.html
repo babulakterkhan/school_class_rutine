@@ -8,6 +8,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- Google Fonts - ডিফল্ট ফন্ট -->
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Firebase SDKs (ক্লাউড স্টোরেজের জন্য প্রয়োজন) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
     <style>
         * {
             margin: 0;
@@ -390,14 +395,8 @@
         }
 
         @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .settings-header {
@@ -412,9 +411,7 @@
             font-size: calc(var(--base-font-size, 1rem) * 1);
         }
 
-        .settings-header i {
-            color: #667eea;
-        }
+        .settings-header i { color: #667eea; }
 
         .settings-section {
             margin-bottom: 20px;
@@ -444,9 +441,7 @@
             font-size: calc(var(--base-font-size, 1rem) * 1.1);
         }
 
-        .setting-item {
-            margin-bottom: 15px;
-        }
+        .setting-item { margin-bottom: 15px; }
 
         .setting-label {
             display: flex;
@@ -548,9 +543,7 @@
             color: #a0aec0;
         }
 
-        .logo-info {
-            flex: 1;
-        }
+        .logo-info { flex: 1; }
 
         .logo-info p {
             color: #2d3748;
@@ -578,9 +571,7 @@
             font-family: inherit;
         }
 
-        .remove-logo-btn:hover {
-            background: #e53e3e;
-        }
+        .remove-logo-btn:hover { background: #e53e3e; }
 
         /* প্রিভিউ বক্স */
         .preview-box {
@@ -892,9 +883,7 @@
             margin-top: 8px;
         }
 
-        .day-input {
-            text-align: center;
-        }
+        .day-input { text-align: center; }
 
         .day-label {
             font-size: calc(var(--base-font-size, 1rem) * 0.7);
@@ -935,10 +924,10 @@
         }
 
         .save-btn {
-            background: linear-gradient(145deg, #667eea, #764ba2);
+            background: linear-gradient(145deg, #48bb78, #38a169);
             color: white;
         }
-
+        
         .reset-btn {
             background: #f56565;
             color: white;
@@ -1066,9 +1055,7 @@
             margin-top: 2px;
         }
 
-        .break-row {
-            background: #fef3c7;
-        }
+        .break-row { background: #fef3c7; }
 
         .break-row td {
             background: #fef3c7;
@@ -1105,9 +1092,7 @@
             box-shadow: 0 5px 15px rgba(72, 187, 120, 0.3);
         }
 
-        .notification.show {
-            transform: translateX(0);
-        }
+        .notification.show { transform: translateX(0); }
     </style>
 </head>
 <body>
@@ -1139,7 +1124,7 @@
         </div>
     </div>
 
-    <!-- হেডার - লোগো ও প্রতিষ্ঠানের নাম সহ -->
+    <!-- হেডার -->
     <div class="header" id="publicHeader">
         <div class="institute-info">
             <div class="institute-logo" id="headerLogoContainer">
@@ -1147,8 +1132,8 @@
                 <i class="fas fa-school" id="defaultLogoIcon"></i>
             </div>
             <div class="institute-text">
-                <h1 id="headerInstituteName">আদর্শ উচ্চ বিদ্যালয়</h1>
-                <p id="headerInstituteAddress">ঢাকা, বাংলাদেশ</p>
+                <h1 id="headerInstituteName">লোড হচ্ছে...</h1>
+                <p id="headerInstituteAddress">অনুগ্রহ করে অপেক্ষা করুন</p>
             </div>
         </div>
         <div class="header-controls">
@@ -1185,7 +1170,7 @@
                 </div>
             </div>
 
-            <!-- সেটিংস প্যানেল (লোগো ও প্রতিষ্ঠানের নাম সহ) -->
+            <!-- সেটিংস প্যানেল -->
             <div class="settings-panel" id="settingsPanel">
                 <div class="settings-header">
                     <i class="fas fa-sliders-h"></i>
@@ -1199,25 +1184,22 @@
                         <span>প্রতিষ্ঠানের তথ্য</span>
                     </div>
 
-                    <!-- প্রতিষ্ঠানের নাম -->
                     <div class="setting-item">
                         <div class="setting-label">
                             <i class="fas fa-font"></i>
                             <span>প্রতিষ্ঠানের নাম</span>
                         </div>
-                        <input type="text" class="text-input" id="instituteNameInput" placeholder="যেমন: আদর্শ উচ্চ বিদ্যালয়" value="আদর্শ উচ্চ বিদ্যালয়">
+                        <input type="text" class="text-input" id="instituteNameInput" placeholder="যেমন: আদর্শ উচ্চ বিদ্যালয়">
                     </div>
 
-                    <!-- প্রতিষ্ঠানের ঠিকানা -->
                     <div class="setting-item">
                         <div class="setting-label">
                             <i class="fas fa-map-marker-alt"></i>
                             <span>ঠিকানা</span>
                         </div>
-                        <input type="text" class="text-input" id="instituteAddressInput" placeholder="যেমন: ঢাকা, বাংলাদেশ" value="ঢাকা, বাংলাদেশ">
+                        <input type="text" class="text-input" id="instituteAddressInput" placeholder="যেমন: ঢাকা, বাংলাদেশ">
                     </div>
 
-                    <!-- লোগো আপলোড -->
                     <div class="setting-item">
                         <div class="setting-label">
                             <i class="fas fa-image"></i>
@@ -1226,11 +1208,10 @@
                         <div class="logo-upload-area" onclick="document.getElementById('logoInput').click()">
                             <i class="fas fa-cloud-upload-alt"></i>
                             <p>লোগো আপলোড করতে ক্লিক করুন</p>
-                            <small>PNG, JPG বা GIF (সর্বোচ্চ ১MB)</small>
+                            <small>PNG, JPG (সর্বোচ্চ ১MB)</small>
                         </div>
                         <input type="file" id="logoInput" accept="image/*" style="display: none;" onchange="handleLogoUpload(event)">
 
-                        <!-- লোগো প্রিভিউ (ডিফল্ট লুকানো) -->
                         <div class="logo-preview-container" id="logoPreviewContainer" style="display: none;">
                             <div class="logo-preview">
                                 <img id="logoPreview" src="" alt="প্রিভিউ">
@@ -1252,8 +1233,8 @@
                             <i class="fas fa-school" id="previewDefaultIcon"></i>
                         </div>
                         <div class="preview-text">
-                            <h4 id="previewName">আদর্শ উচ্চ বিদ্যালয়</h4>
-                            <p id="previewAddress">ঢাকা, বাংলাদেশ</p>
+                            <h4 id="previewName">...</h4>
+                            <p id="previewAddress">...</p>
                         </div>
                     </div>
                 </div>
@@ -1265,7 +1246,6 @@
                         <span>ফন্ট সেটিংস</span>
                     </div>
 
-                    <!-- ফন্ট সিলেক্টর -->
                     <div class="setting-item">
                         <div class="setting-label">
                             <i class="fas fa-font"></i>
@@ -1275,17 +1255,11 @@
                             <option value="Hind+Siliguri">হিন্দ সিলিগুরি (ডিফল্ট)</option>
                             <option value="Noto+Sans+Bengali">নোটো সান্স বাংলা</option>
                             <option value="Baloo+Da+2">বালু দা ২</option>
-                            <option value="Galada">গালাদা</option>
                             <option value="Anek+Bangla">অনেক বাংলা</option>
-                            <option value="Atma">আতমা</option>
-                            <option value="Mina">মিনা</option>
                             <option value="Poppins">পপিন্স (ইংরেজি)</option>
-                            <option value="Roboto">রোবোটো (ইংরেজি)</option>
-                            <option value="Open+Sans">ওপেন সান্স (ইংরেজি)</option>
                         </select>
                     </div>
 
-                    <!-- ফন্ট সাইজ স্লাইডার -->
                     <div class="setting-item">
                         <div class="setting-label">
                             <i class="fas fa-text-height"></i>
@@ -1295,19 +1269,11 @@
                             <input type="range" min="0.7" max="1.5" step="0.05" value="1" class="size-slider" id="fontSizeSlider" oninput="changeFontSize(this.value)">
                             <span class="size-value" id="fontSizeValue">100%</span>
                         </div>
-                        
-                        <!-- প্রিসেট বাটন -->
                         <div class="size-presets">
                             <button class="size-preset-btn" onclick="setFontSize(0.8)">ছোট</button>
                             <button class="size-preset-btn" onclick="setFontSize(1.0)">মাঝারি</button>
                             <button class="size-preset-btn" onclick="setFontSize(1.2)">বড়</button>
                         </div>
-                    </div>
-
-                    <!-- ফন্ট প্রিভিউ -->
-                    <div class="current-font-info" style="background: #edf2f7; padding: 10px; border-radius: 8px; margin-top: 10px;">
-                        <i class="fas fa-check-circle" style="color: #667eea;"></i>
-                        <span>বর্তমান ফন্ট: <span id="currentFontName">হিন্দ সিলিগুরি</span> | সাইজ: <span id="currentFontSize">100%</span></span>
                     </div>
                 </div>
             </div>
@@ -1336,8 +1302,8 @@
             <div id="dynamicInputs"></div>
 
             <div class="action-buttons">
-                <button class="save-btn" onclick="updateRoutine()">
-                    <i class="fas fa-save"></i> সংরক্ষণ
+                <button class="save-btn" onclick="saveToCloud()">
+                    <i class="fas fa-cloud-upload-alt"></i> ক্লাউডে সেভ
                 </button>
                 <button class="reset-btn" onclick="resetInputs()">
                     <i class="fas fa-undo"></i> রিসেট
@@ -1384,17 +1350,35 @@
     </div>
 
     <script>
-        // সঠিক পাসওয়ার্ড
-        const CORRECT_PASSWORD = "admin123";
-
-        // প্রতিষ্ঠানের ডাটা
-        let instituteData = {
-            name: "আদর্শ উচ্চ বিদ্যালয়",
-            address: "ঢাকা, বাংলাদেশ",
-            logo: null
+        // ==================== FIREBASE CONFIGURATION ====================
+        // এখানে আপনার Firebase এর তথ্য দিতে হবে
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com", 
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
         };
+        
+        // Firebase Initialize
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
 
-        // টাইম স্লট ডাটা
+        // ==================== APP VARIABLES ====================
+        const CORRECT_PASSWORD = "admin123";
+        let currentSchoolId = "default_school"; 
+        let isLoggedIn = false;
+        let currentClass = 'class7';
+        
+        // URL থেকে স্কুল আইডি নেওয়া
+        const urlParams = new URLSearchParams(window.location.search);
+        if(urlParams.has('id')) {
+            currentSchoolId = urlParams.get('id');
+        }
+
+        let instituteData = { name: "প্রতিষ্ঠানের নাম", address: "ঠিকানা", logo: null };
         let timeSlots = [
             { period: '১ম', start: '১০:০০', end: '১০:৫০', isBreak: false },
             { period: '২য়', start: '১০:৫০', end: '১১:৪০', isBreak: false },
@@ -1406,90 +1390,80 @@
         ];
 
         const daysShort = ['রবি', 'সোম', 'মঙ্গল', 'বুধ', 'বৃহ'];
-        let currentClass = 'class7';
-        let isLoggedIn = false;
-
-        // PDF ডাটা (সম্পূর্ণ)
+        
+        // ডাটা স্টোরেজ
         const pdfData = {
-            class6: [
-                ['বাংলা-রহিমা', 'ইংরেজি-করিম', 'গণিত-সাদেক', 'বিজ্ঞান-নাসির', 'সমাজ-ফাতেমা'],
-                ['ইংরেজি-করিম', 'গণিত-সাদেক', 'বাংলা-রহিমা', 'ধর্ম-হামিদ', 'কৃষি-জব্বার'],
-                ['গণিত-সাদেক', 'বিজ্ঞান-নাসির', 'ইংরেজি-করিম', 'বাংলা-রহিমা', 'শারীরিক-আলম'],
-                ['', '', '', '', ''],
-                ['বিজ্ঞান-নাসির', 'সমাজ-ফাতেমা', 'ধর্ম-হামিদ', 'কৃষি-জব্বার', 'বাংলা-রহিমা'],
-                ['ধর্ম-হামিদ', 'কৃষি-জব্বার', 'সমাজ-ফাতেমা', 'চারু-নাসিমা', 'ইংরেজি-করিম'],
-                ['কৃষি-জব্বার', 'শারীরিক-আলম', 'চারু-নাসিমা', 'গণিত-সাদেক', 'বিজ্ঞান-নাসির']
-            ],
-            class7: [
-                ['ইংরেজি ১ম-নাসিমা', '', '', '', 'ইংরেজি ১ম-নাসিমা'],
-                ['কৃষি-আঃ মজিদ', 'বাংলা ২য়-ছাইফুদ্দিন', '', '', 'বাংলা ২য়-ছাইফুদ্দিন'],
-                ['বাংলা ১ম-আমিনুল, আঃ মজিদ', 'তথ্য-ছাইফুদ্দিন', '', '', 'বাংলা ১ম-আমিনুল'],
-                ['', '', '', '', ''],
-                ['বাংলা ও বি-ছাদমার', '', '', '', 'বাংলা ও বি-ছাদমার'],
-                ['গণিত-ছাদমার', '', '', '', 'গণিত-ছাদমার'],
-                ['বিজ্ঞান-সেজান', 'তথ্য-মজোদেমল', '', '', 'বিজ্ঞান-সেজান']
-            ],
-            class8: [
-                ['গণিত-আল আমিন', '', '', '', 'গণিত-আল আমিন'],
-                ['বিজ্ঞান-শাহ আলম', '', '', '', 'বিজ্ঞান-শাহ আলম'],
-                ['ইংরেজি ২য়-প্রধান শিক্ষক', '', 'ইসলাম শিক্ষা-ছাইফুদ্দিন', '', 'তথ্য-রেকানুজ্জমান'],
-                ['', '', '', '', ''],
-                ['ইসলাম শিক্ষা-ছাইফুদ্দিন', 'বাংলা ২য়-নাসরিন', '', '', 'বাংলা ১ম-নাছরিন'],
-                ['বাংলা ১ম-নাছরিন', 'বাংলা ও বি-নাসিমা', '', '', 'কৃষি-আঃ মজিদ'],
-                ['ইংরেজি ১ম-মজোদেমল', 'বাংলা ১ম-নাসরিন', '', '', '']
-            ],
-            class9: [
-                ['ইংরেজি ১ম-মজোদেমল', '', '', '', 'ইংরেজি ১ম-মজোদেমল'],
-                ['বাংলা ২য়-মজোদেমল', 'বাংলা ও বি/বৃহগল-নাসিমা/আঃ মজিদ', 'ইতিহাস/জী-আমিনুল/শাহ আলম', '', 'বাংলা ২য়-মজোদেমল'],
-                ['গণিত-ছাদমার', 'তথ্য-রেকান, ছাদমার', 'ইংরেজি ২য়-আঃ রডক', '', 'গণিত-ছাদমার'],
-                ['', '', '', '', ''],
-                ['তথ্য-ছাদমার', 'বাংলা ২য়-রেকানুজ্জমান', 'ইসলাম শিক্ষা-ছাইফুদ্দিন', '', 'বাংলা ২য়-রেকানুজ্জমান'],
-                ['ইসলাম-ছাইফুদ্দিন', '', 'রসায়ন/অর্থনীতি-আল মিন/নাসরিন', '', 'ইসলাম-ছাইফুদ্দিন'],
-                ['কৃষি-আঃ মজিদ', 'কৃষি-আবুল মজিদ', 'বাংলা ১ম-শাহ আলম', '', 'শারীরিক/কারি-']
-            ],
-            class10: [
-                ['গণিত-ছাদমার', '', 'পদার্থ/অর্থনীতি-আল আমিন/নাছরিন', '', 'গণিত-ছাদমার'],
-                ['ইসলাম-ছাইফুদ্দিন', 'বাংলা ও বি/সা বি-নাসিমা/আল আমিন', 'ইংরেজি ১ম-মোজোদেমল', '', 'ইসলাম-ছাইফুদ্দিন'],
-                ['বাংলা ও বি/সা বি-নাসিমা/আল আমিন', 'কৃষি/উচ্চতর-আঃ মজিদ/আল আমিন', 'বাংলা ২য়-আঃ রডক', '', 'বাংলা ২য়-রেকানু'],
-                ['', '', '', '', ''],
-                ['রসায়ন/ভূগোল-আল আমিন/মোজোদেমল', 'জীব/ইতিহাস-শাহ আলম/আঃ রডক', 'বাংলা ১ম-আঃ রডক', '', 'ইসলাম-মোজোদেমল, ছাইফুদ্দিন'],
-                ['বাংলা ১ম-মোজোদেমল', 'ইংরেজি ১ম-মোজোদেমল', 'শারীরিক শিক্ষা-আঃ রডক', '', 'ইংরেজি ১ম-মোজোদেমল'],
-                ['কৃষি/উচ্চতর-আঃ মজিদ/আল আমিন', 'জীব/ইতিহাস-শাহ আলম/আঃ রডক', 'বাংলা ২য়-আঃ রডক', '', 'বাংলা ও বি/সাবি-নাসিমা/আল আমিন']
-            ]
+            class6: [ ['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', ''] ],
+            class7: [ ['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', ''] ],
+            class8: [ ['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', ''] ],
+            class9: [ ['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', ''] ],
+            class10: [ ['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', ''], ['', '', '', '', ''] ]
         };
 
-        // প্রতিষ্ঠানের ডাটা লোড
-        function loadInstituteData() {
-            const saved = localStorage.getItem('instituteData');
-            if (saved) {
-                instituteData = JSON.parse(saved);
-                updateInstituteDisplay();
-                
-                document.getElementById('instituteNameInput').value = instituteData.name;
-                document.getElementById('instituteAddressInput').value = instituteData.address;
-                
-                if (instituteData.logo) {
-                    document.getElementById('logoPreview').src = instituteData.logo;
-                    document.getElementById('logoPreviewContainer').style.display = 'flex';
+        // ==================== CLOUD FUNCTIONS ====================
+        
+        // লোড ডাটা
+        function loadFromCloud() {
+            const ref = database.ref('schools/' + currentSchoolId);
+            ref.on('value', (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    instituteData = data.instituteInfo || instituteData;
+                    
+                    // রুটিন ডাটা লোড
+                    if(data.routine) {
+                        // এখানে রুটিন ডাটা লোড লজিক বসাতে পারেন
+                    }
+                    
+                    updateInstituteDisplay();
+                    
+                    // ইনপুট ফিল্ড আপডেট
+                    document.getElementById('instituteNameInput').value = instituteData.name;
+                    document.getElementById('instituteAddressInput').value = instituteData.address;
+                    
+                    if(instituteData.logo) {
+                        document.getElementById('logoPreview').src = instituteData.logo;
+                        document.getElementById('logoPreviewContainer').style.display = 'flex';
+                        document.getElementById('logoFileName').textContent = "আপলোড করা লোগো";
+                    }
+                } else {
+                    updateInstituteDisplay();
+                    console.log("নতুন স্কুল সেটআপ।");
                 }
-            }
+            });
         }
 
-        // প্রতিষ্ঠানের ডাটা সেভ (আপডেট করা)
-        function saveInstituteData() {
+        // সেভ ডাটা
+        function saveToCloud() {
+            if (!isLoggedIn) {
+                showLoginModal();
+                return;
+            }
+
             instituteData.name = document.getElementById('instituteNameInput').value;
             instituteData.address = document.getElementById('instituteAddressInput').value;
-            localStorage.setItem('instituteData', JSON.stringify(instituteData));
-            updateInstituteDisplay();
-            showNotification('স্থানীয় স্টোরেজে সংরক্ষিত হয়েছে');
             
-            // GitHub-এ সেভ করার অপশন
-            if (confirm('GitHub-এ সেভ করতে চান? (সব জায়গায় দেখাবে)')) {
-                saveInstituteConfig();
-            }
+            // রুটিন ডাটা সংগ্রহ
+            updatePdfData();
+
+            const ref = database.ref('schools/' + currentSchoolId);
+            const dataToSave = {
+                instituteInfo: instituteData,
+                routine: pdfData,
+                timeSlots: timeSlots
+            };
+
+            ref.set(dataToSave, (error) => {
+                if (error) {
+                    showNotification('সেভ করতে সমস্যা হয়েছে!', 'error');
+                } else {
+                    showNotification('সফলভাবে অনলাইনে সংরক্ষিত হয়েছে!');
+                }
+            });
         }
 
-        // হেডার আপডেট
+        // ==================== UI FUNCTIONS ====================
+
         function updateInstituteDisplay() {
             document.getElementById('headerInstituteName').textContent = instituteData.name;
             document.getElementById('headerInstituteAddress').textContent = instituteData.address;
@@ -1507,96 +1481,55 @@
             } else {
                 document.getElementById('headerLogo').style.display = 'none';
                 document.getElementById('defaultLogoIcon').style.display = 'block';
-                
                 document.getElementById('previewLogo').style.display = 'none';
                 document.getElementById('previewDefaultIcon').style.display = 'block';
             }
         }
 
-        // লোগো আপলোড
         function handleLogoUpload(event) {
             const file = event.target.files[0];
             if (file) {
+                if(file.size > 1000000) {
+                    showNotification("ফাইল সাইজ ১MB এর বেশি হতে পারবে না!", "error");
+                    return;
+                }
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     instituteData.logo = e.target.result;
                     document.getElementById('logoPreview').src = e.target.result;
                     document.getElementById('logoPreviewContainer').style.display = 'flex';
-                    document.getElementById('logoFileName').textContent = file.name;
-                    
                     updateInstituteDisplay();
-                    saveInstituteData();
-                    showNotification('লোগো আপলোড করা হয়েছে');
                 };
                 reader.readAsDataURL(file);
             }
         }
 
-        // লোগো রিমুভ
         function removeLogo() {
             instituteData.logo = null;
             document.getElementById('logoPreviewContainer').style.display = 'none';
+            document.getElementById('headerLogo').style.display = 'none';
+            document.getElementById('defaultLogoIcon').style.display = 'block';
+            document.getElementById('previewLogo').style.display = 'none';
+            document.getElementById('previewDefaultIcon').style.display = 'block';
             document.getElementById('logoInput').value = '';
-            
-            updateInstituteDisplay();
-            saveInstituteData();
-            showNotification('লোগো সরানো হয়েছে');
         }
 
-        // সেটিংস প্যানেল টগল
-        function toggleSettings() {
-            const panel = document.getElementById('settingsPanel');
-            panel.classList.toggle('show');
-        }
-
-        // ফন্ট পরিবর্তন
+        // ফন্ট ও সাইজ
         function changeFont(fontName) {
             const link = document.createElement('link');
             link.href = `https://fonts.googleapis.com/css2?family=${fontName}:wght@300;400;500;600;700&display=swap`;
             link.rel = 'stylesheet';
             link.id = 'dynamic-font';
-            
             const old = document.getElementById('dynamic-font');
             if (old) old.remove();
-            
             document.head.appendChild(link);
-            
             const fontFamily = fontName.replace('+', ' ');
             document.body.style.fontFamily = `'${fontFamily}', 'Hind Siliguri', sans-serif`;
-            
-            const fontNames = {
-                'Hind+Siliguri': 'হিন্দ সিলিগুরি',
-                'Noto+Sans+Bengali': 'নোটো সান্স বাংলা',
-                'Baloo+Da+2': 'বালু দা ২',
-                'Galada': 'গালাদা',
-                'Anek+Bangla': 'অনেক বাংলা',
-                'Atma': 'আতমা',
-                'Mina': 'মিনা',
-                'Poppins': 'পপিন্স',
-                'Roboto': 'রোবোটো',
-                'Open+Sans': 'ওপেন সান্স'
-            };
-            document.getElementById('currentFontName').textContent = fontNames[fontName] || fontFamily;
-            showNotification('ফন্ট পরিবর্তন করা হয়েছে');
         }
 
-        // ফন্ট সাইজ পরিবর্তন
         function changeFontSize(size) {
             document.documentElement.style.setProperty('--base-font-size', size + 'rem');
             document.getElementById('fontSizeValue').textContent = Math.round(size * 100) + '%';
-            document.getElementById('currentFontSize').textContent = Math.round(size * 100) + '%';
-            
-            const outputPanel = document.getElementById('outputPanel');
-            if (outputPanel) {
-                outputPanel.style.fontSize = size + 'rem';
-            }
-            
-            const routineTable = document.querySelector('.routine-table');
-            if (routineTable) {
-                routineTable.style.fontSize = size + 'rem';
-            }
-            
-            showNotification('ফন্ট সাইজ পরিবর্তন করা হয়েছে');
         }
 
         function setFontSize(size) {
@@ -1604,55 +1537,41 @@
             changeFontSize(size);
         }
 
-        // পাসওয়ার্ড ফাংশন
-        function showLoginModal() {
-            document.getElementById('passwordModal').classList.add('show');
-            document.getElementById('passwordInput').focus();
+        function toggleSettings() {
+            document.getElementById('settingsPanel').classList.toggle('show');
         }
 
-        function closeModal() {
-            document.getElementById('passwordModal').classList.remove('show');
-        }
-
-        function handleKeyPress(e) {
-            if (e.key === 'Enter') checkPassword();
-        }
-
+        // পাসওয়ার্ড ও লগইন
+        function showLoginModal() { document.getElementById('passwordModal').classList.add('show'); document.getElementById('passwordInput').focus(); }
+        function closeModal() { document.getElementById('passwordModal').classList.remove('show'); }
+        function handleKeyPress(e) { if (e.key === 'Enter') checkPassword(); }
         function checkPassword() {
             if (document.getElementById('passwordInput').value === CORRECT_PASSWORD) {
-                document.getElementById('passwordModal').classList.remove('show');
-                login();
+                closeModal(); login();
             } else {
                 document.getElementById('passwordError').classList.add('show');
             }
         }
-
         function login() {
             isLoggedIn = true;
             document.getElementById('inputPanel').classList.remove('closed');
-            document.getElementById('editLoginBtn').innerHTML = '<i class="fas fa-edit"></i> <span>এডিটিং</span>';
+            document.getElementById('editLoginBtn').innerHTML = '<i class="fas fa-edit"></i> এডিটিং';
             document.getElementById('editLoginBtn').classList.add('logged-in');
-            showNotification('এডিট প্যানেল খোলা হয়েছে');
+            showNotification('এডিট মোড চালু');
         }
-
         function logout() {
             isLoggedIn = false;
             document.getElementById('inputPanel').classList.add('closed');
-            document.getElementById('editLoginBtn').innerHTML = '<i class="fas fa-pen-alt"></i> <span>এডিট</span>';
+            document.getElementById('editLoginBtn').innerHTML = '<i class="fas fa-pen-alt"></i> এডিট';
             document.getElementById('editLoginBtn').classList.remove('logged-in');
             document.getElementById('settingsPanel').classList.remove('show');
-            showNotification('লগআউট করা হয়েছে');
         }
+        function closePanel() { if (isLoggedIn) logout(); }
 
-        function closePanel() {
-            if (isLoggedIn) logout();
-        }
-
-        // ইনপুট ফিল্ড জেনারেট
+        // রুটিন জেনারেটর
         function generateInputFields() {
             const container = document.getElementById('dynamicInputs');
             if (!container) return;
-            
             container.innerHTML = '';
 
             timeSlots.forEach((slot, slotIndex) => {
@@ -1660,61 +1579,35 @@
                 card.className = 'time-slot-card';
                 card.id = `slot_${slotIndex}`;
 
-                const header = document.createElement('div');
-                header.className = 'slot-header';
-                header.innerHTML = `
-                    <div class="slot-title">
-                        <span class="slot-number">${slotIndex + 1}</span>
-                        <input type="text" value="${slot.period}" placeholder="পিরিয়ড নাম" id="period_${slotIndex}" style="width: 80px; padding: 4px; border: 1px solid #cbd5e0; border-radius: 4px; font-family: inherit; font-size: 0.9rem;">
-                    </div>
-                    <label class="break-checkbox">
-                        <input type="checkbox" ${slot.isBreak ? 'checked' : ''} onchange="toggleBreak(${slotIndex})">
-                        বিরতি
-                    </label>
-                `;
-                card.appendChild(header);
+                let headerHTML = `
+                    <div class="slot-header">
+                        <div class="slot-title">
+                            <span class="slot-number">${slotIndex + 1}</span>
+                            <input type="text" value="${slot.period}" placeholder="পিরিয়ড" id="period_${slotIndex}" style="width: 80px; padding: 4px; border: 1px solid #cbd5e0; border-radius: 4px; font-family: inherit;">
+                        </div>
+                        <label class="break-checkbox">
+                            <input type="checkbox" ${slot.isBreak ? 'checked' : ''} onchange="toggleBreak(${slotIndex})"> বিরতি
+                        </label>
+                    </div>`;
+                
+                let timeHTML = `
+                    <div class="time-inputs">
+                        <div class="time-input"><i class="far fa-clock"></i><input type="text" value="${slot.start}" id="start_${slotIndex}"></div>
+                        <div class="time-input"><i class="far fa-clock"></i><input type="text" value="${slot.end}" id="end_${slotIndex}"></div>
+                    </div>`;
 
-                const timeDiv = document.createElement('div');
-                timeDiv.className = 'time-inputs';
-                timeDiv.innerHTML = `
-                    <div class="time-input">
-                        <i class="far fa-clock"></i>
-                        <input type="text" value="${slot.start}" placeholder="শুরু" id="start_${slotIndex}">
-                    </div>
-                    <div class="time-input">
-                        <i class="far fa-clock"></i>
-                        <input type="text" value="${slot.end}" placeholder="শেষ" id="end_${slotIndex}">
-                    </div>
-                `;
-                card.appendChild(timeDiv);
-
-                const dayInputs = document.createElement('div');
-                dayInputs.className = 'day-inputs';
-
+                let dayInputsHTML = '<div class="day-inputs">';
                 daysShort.forEach((day, dayIndex) => {
-                    const dayDiv = document.createElement('div');
-                    dayDiv.className = 'day-input';
-
-                    const label = document.createElement('div');
-                    label.className = 'day-label';
-                    label.textContent = day;
-                    dayDiv.appendChild(label);
-
-                    const input = document.createElement('input');
-                    input.type = 'text';
-                    input.id = `input_${currentClass}_${slotIndex}_${dayIndex}`;
-                    input.placeholder = 'বিষয়-শিক্ষক';
-                    
-                    const classData = pdfData[currentClass];
-                    if (classData && classData[slotIndex] && classData[slotIndex][dayIndex]) {
-                        input.value = classData[slotIndex][dayIndex];
-                    }
-
-                    dayDiv.appendChild(input);
-                    dayInputs.appendChild(dayDiv);
+                    const val = (pdfData[currentClass] && pdfData[currentClass][slotIndex]) ? pdfData[currentClass][slotIndex][dayIndex] : '';
+                    dayInputsHTML += `
+                        <div class="day-input">
+                            <div class="day-label">${day}</div>
+                            <input type="text" id="input_${currentClass}_${slotIndex}_${dayIndex}" value="${val}" placeholder="বিষয়">
+                        </div>`;
                 });
+                dayInputsHTML += '</div>';
 
-                card.appendChild(dayInputs);
+                card.innerHTML = headerHTML + timeHTML + dayInputsHTML;
                 
                 if (timeSlots.length > 1) {
                     const deleteBtn = document.createElement('button');
@@ -1723,36 +1616,26 @@
                     deleteBtn.onclick = () => removeSlot(slotIndex);
                     card.appendChild(deleteBtn);
                 }
-
                 container.appendChild(card);
             });
-
             updateSlotCount();
         }
 
         function toggleBreak(slotIndex) {
-            const checkbox = document.getElementById(`period_${slotIndex}`);
-            if (checkbox) {
-                timeSlots[slotIndex].isBreak = checkbox.checked;
+            const slot = timeSlots[slotIndex];
+            const input = document.getElementById(`period_${slotIndex}`);
+            if(input) {
+                // Checkbox state is already toggled by browser, just update array
+                timeSlots[slotIndex].isBreak = !timeSlots[slotIndex].isBreak;
             }
         }
 
         function addTimeSlot() {
-            const newSlotNumber = timeSlots.length + 1;
-            timeSlots.push({
-                period: `${newSlotNumber}ম`,
-                start: '০০:০০',
-                end: '০০:০০',
-                isBreak: false
-            });
-            
-            if (!pdfData[currentClass][timeSlots.length - 1]) {
-                pdfData[currentClass][timeSlots.length - 1] = ['', '', '', '', ''];
-            }
-            
+            const idx = timeSlots.length + 1;
+            timeSlots.push({ period: `${idx}ম`, start: '০০:০০', end: '০০:০০', isBreak: false });
+            if (!pdfData[currentClass][timeSlots.length - 1]) pdfData[currentClass][timeSlots.length - 1] = ['', '', '', '', ''];
             generateInputFields();
-            updateRoutine();
-            showNotification('নতুন স্লট যোগ করা হয়েছে');
+            showNotification('স্লট যোগ হয়েছে');
         }
 
         function removeLastSlot() {
@@ -1760,8 +1643,7 @@
                 timeSlots.pop();
                 pdfData[currentClass].pop();
                 generateInputFields();
-                updateRoutine();
-                showNotification('শেষ স্লট সরানো হয়েছে');
+                showNotification('শেষ স্লট সরানো হয়েছে');
             }
         }
 
@@ -1770,8 +1652,7 @@
                 timeSlots.splice(index, 1);
                 pdfData[currentClass].splice(index, 1);
                 generateInputFields();
-                updateRoutine();
-                showNotification('স্লট সরানো হয়েছে');
+                showNotification('স্লট সরানো হয়েছে');
             }
         }
 
@@ -1780,14 +1661,14 @@
         }
 
         function updateRoutine() {
+            // সময় আপডেট
             timeSlots.forEach((slot, index) => {
-                const periodInput = document.getElementById(`period_${index}`);
-                const startInput = document.getElementById(`start_${index}`);
-                const endInput = document.getElementById(`end_${index}`);
-                
-                if (periodInput) slot.period = periodInput.value;
-                if (startInput) slot.start = startInput.value;
-                if (endInput) slot.end = endInput.value;
+                const p = document.getElementById(`period_${index}`);
+                const s = document.getElementById(`start_${index}`);
+                const e = document.getElementById(`end_${index}`);
+                if(p) slot.period = p.value;
+                if(s) slot.start = s.value;
+                if(e) slot.end = e.value;
             });
 
             const tbody = document.getElementById('routineBody');
@@ -1795,13 +1676,11 @@
 
             timeSlots.forEach((slot, slotIndex) => {
                 const row = document.createElement('tr');
-                if (slot.isBreak) {
-                    row.className = 'break-row';
-                }
+                if (slot.isBreak) row.className = 'break-row';
 
                 const timeCell = document.createElement('td');
                 timeCell.className = 'time-col';
-                timeCell.innerHTML = `${slot.period}<br><small>${slot.start}</small>`;
+                timeCell.innerHTML = `${slot.period}<br><small>${slot.start} - ${slot.end}</small>`;
                 row.appendChild(timeCell);
 
                 if (slot.isBreak) {
@@ -1812,7 +1691,6 @@
                 } else {
                     daysShort.forEach((day, dayIndex) => {
                         const cell = document.createElement('td');
-                        
                         const input = document.getElementById(`input_${currentClass}_${slotIndex}_${dayIndex}`);
                         let value = input ? input.value : '';
 
@@ -1820,24 +1698,16 @@
                             const parts = value.split('-');
                             const subject = parts[0] || '';
                             const teacher = parts[1] || '';
-                            
-                            cell.innerHTML = `
-                                <div class="subject-name">${subject}</div>
-                                <div class="teacher-name">${teacher}</div>
-                            `;
+                            cell.innerHTML = `<div class="subject-name">${subject}</div><div class="teacher-name">${teacher}</div>`;
                         } else {
                             cell.innerHTML = '<span class="empty-cell">-</span>';
                         }
-
                         row.appendChild(cell);
                     });
                 }
-
                 tbody.appendChild(row);
             });
-
             updatePdfData();
-            showNotification('রুটিন আপডেট হয়েছে');
         }
 
         function updatePdfData() {
@@ -1845,9 +1715,7 @@
                 daysShort.forEach((day, dayIndex) => {
                     const input = document.getElementById(`input_${currentClass}_${slotIndex}_${dayIndex}`);
                     if (input) {
-                        if (!pdfData[currentClass][slotIndex]) {
-                            pdfData[currentClass][slotIndex] = [];
-                        }
+                        if (!pdfData[currentClass][slotIndex]) pdfData[currentClass][slotIndex] = [];
                         pdfData[currentClass][slotIndex][dayIndex] = input.value;
                     }
                 });
@@ -1855,213 +1723,61 @@
         }
 
         function selectClass(classId, element) {
-            if (!isLoggedIn) {
-                showNotification('প্রথমে লগইন করুন', 'error');
-                showLoginModal();
-                return;
-            }
-            
+            if (!isLoggedIn) { showLoginModal(); return; }
             currentClass = classId;
-
             document.querySelectorAll('.class-btn').forEach(btn => btn.classList.remove('active'));
             element.classList.add('active');
-
             updateClassLabels();
             generateInputFields();
-            updateRoutine();
         }
 
         function selectClassPublic(classId, element) {
             currentClass = classId;
-
             document.querySelectorAll('.public-class-btn').forEach(btn => btn.classList.remove('active'));
             element.classList.add('active');
-
             document.querySelectorAll('.class-btn').forEach(btn => {
                 btn.classList.remove('active');
-                if (btn.textContent.includes(getClassNumber(classId))) {
-                    btn.classList.add('active');
-                }
+                if (btn.textContent.includes(getClassNumber(classId))) btn.classList.add('active');
             });
-
             updateClassLabels();
             generateInputFields();
             updateRoutine();
         }
 
         function getClassNumber(classId) {
-            const map = {
-                class6: '৬ষ্ঠ',
-                class7: '৭ম',
-                class8: '৮ম',
-                class9: '৯ম',
-                class10: '১০ম'
-            };
+            const map = { class6: '৬ষ্ঠ', class7: '৭ম', class8: '৮ম', class9: '৯ম', class10: '১০ম' };
             return map[classId];
         }
 
         function updateClassLabels() {
-            const classNames = {
-                class6: '৬ষ্ঠ',
-                class7: '৭ম',
-                class8: '৮ম',
-                class9: '৯ম',
-                class10: '১০ম'
-            };
-            document.getElementById('headerClass').textContent = classNames[currentClass];
-            document.getElementById('currentClassLarge').textContent = classNames[currentClass];
+            const names = { class6: '৬ষ্ঠ', class7: '৭ম', class8: '৮ম', class9: '৯ম', class10: '১০ম' };
+            document.getElementById('headerClass').textContent = names[currentClass];
+            document.getElementById('currentClassLarge').textContent = names[currentClass];
         }
 
         function resetInputs() {
-            if (!isLoggedIn) {
-                showNotification('প্রথমে লগইন করুন', 'error');
-                showLoginModal();
-                return;
-            }
-            
+            if (!isLoggedIn) { showLoginModal(); return; }
             generateInputFields();
             updateRoutine();
-            showNotification('রিসেট করা হয়েছে');
+            showNotification('রিসেট করা হয়েছে');
         }
 
         function showNotification(message, type = 'success') {
-            const notification = document.getElementById('notification');
-            const messageSpan = document.getElementById('notificationMessage');
-            
-            messageSpan.textContent = message;
-            
-            if (type === 'error') {
-                notification.style.background = '#f56565';
-            } else {
-                notification.style.background = '#48bb78';
-            }
-            
-            notification.classList.add('show');
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 1500);
+            const el = document.getElementById('notification');
+            const msg = document.getElementById('notificationMessage');
+            msg.textContent = message;
+            el.style.background = type === 'error' ? '#f56565' : '#48bb78';
+            el.classList.add('show');
+            setTimeout(() => el.classList.remove('show'), 1500);
         }
 
-        // GitHub সংক্রান্ত ফাংশন
-        const GITHUB_USERNAME = "babulakterkhan";
-        const GITHUB_REPO = "school_class_rutine";
-        const CONFIG_FILE = "institute-config.json";
+        // ইনিশিয়ালাইজ
+        window.onload = function() {
+            loadFromCloud();
+            generateInputFields();
+            updateRoutine();
+        };
 
-        // GitHub থেকে কনফিগ লোড
-        async function loadInstituteConfig() {
-            const url = `https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/contents/${CONFIG_FILE}`;
-            
-            try {
-                const response = await fetch(url, {
-                    headers: {
-                        'Accept': 'application/vnd.github.v3+json'
-                    }
-                });
-                
-                if (response.ok) {
-                    const data = await response.json();
-                    const content = atob(data.content);
-                    instituteData = JSON.parse(content);
-                    updateInstituteDisplay();
-                    
-                    document.getElementById('instituteNameInput').value = instituteData.name;
-                    document.getElementById('instituteAddressInput').value = instituteData.address;
-                    
-                    if (instituteData.logo) {
-                        document.getElementById('logoPreview').src = instituteData.logo;
-                        document.getElementById('logoPreviewContainer').style.display = 'flex';
-                    }
-                    
-                    showNotification('কনফিগ লোড করা হয়েছে');
-                } else {
-                    console.log('কনফিগ ফাইল নেই, ডিফল্ট ব্যবহার করা হবে');
-                }
-            } catch (error) {
-                console.log('GitHub থেকে লোড করতে সমস্যা:', error);
-            }
-        }
-
-        // GitHub-এ কনফিগ সেভ
-        async function saveInstituteConfig() {
-            const url = `https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/contents/${CONFIG_FILE}`;
-            
-            // GitHub Personal Access Token চাওয়া
-            const GITHUB_TOKEN = prompt('GitHub Personal Access Token দিন:');
-            
-            if (!GITHUB_TOKEN) {
-                showNotification('টোকেন ছাড়া সেভ করা যাবে না', 'error');
-                return false;
-            }
-            
-            // কনফিগ ডাটা তৈরি
-            const configData = {
-                name: instituteData.name,
-                address: instituteData.address,
-                logo: instituteData.logo
-            };
-            
-            const content = btoa(JSON.stringify(configData, null, 2));
-            
-            try {
-                // প্রথমে ফাইলের SHA পেতে GET request
-                const getResponse = await fetch(url, {
-                    headers: {
-                        'Accept': 'application/vnd.github.v3+json'
-                    }
-                });
-                
-                let sha = null;
-                if (getResponse.ok) {
-                    const data = await getResponse.json();
-                    sha = data.sha;
-                }
-                
-                // PUT request দিয়ে ফাইল আপডেট
-                const putResponse = await fetch(url, {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `token ${GITHUB_TOKEN}`,
-                        'Accept': 'application/vnd.github.v3+json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        message: 'প্রতিষ্ঠানের তথ্য আপডেট',
-                        content: content,
-                        sha: sha
-                    })
-                });
-                
-                if (putResponse.ok) {
-                    showNotification('GitHub-এ সেভ করা হয়েছে');
-                    return true;
-                } else {
-                    const error = await putResponse.json();
-                    console.error('GitHub error:', error);
-                    showNotification('সেভ করতে সমস্যা হয়েছে: ' + (error.message || 'অজানা ত্রুটি'), 'error');
-                    return false;
-                }
-            } catch (error) {
-                console.error('Network error:', error);
-                showNotification('এরর হয়েছে: ' + error.message, 'error');
-                return false;
-            }
-        }
-
-        // পৃষ্ঠা লোড হওয়ার পর GitHub থেকে ডাটা লোড
-        window.addEventListener('load', function() {
-            setTimeout(() => {
-                loadInstituteConfig();
-            }, 1000); // ১ সেকেন্ড পর GitHub থেকে লোড করবে
-        });
-
-        // ইনিশিয়াল লোড
-        loadInstituteData();
-        generateInputFields();
-        updateRoutine();
-
-        // ডিফল্ট ফন্ট সাইজ সেট
-        document.documentElement.style.setProperty('--base-font-size', '1rem');
     </script>
 </body>
 </html>
