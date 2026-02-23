@@ -2,9 +2,7 @@
 <html lang="bn" dir="ltr">
 <head>
     <meta charset="UTF-8">
-    <!-- গুরুত্বপূর্ণ: মোবাইল ভিউপোর্ট ট্যাগ -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>ক্লাস রুটিন | একাধিক প্রতিষ্ঠান</title>
     <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -26,7 +24,7 @@
             overflow-x: hidden;
         }
 
-        /* মোবাইল ফার্স্ট ডিজাইন */
+        /* হেডার */
         .header {
             display: flex;
             flex-direction: column;
@@ -42,7 +40,6 @@
             font-size: calc(var(--base-font-size, 1rem) * 0.9);
         }
 
-        /* ট্যাবলেট ও ডেস্কটপের জন্য */
         @media (min-width: 768px) {
             .header {
                 flex-direction: row;
@@ -51,15 +48,6 @@
                 padding: 10px 20px;
                 border-radius: 40px;
             }
-            
-            .institute-info {
-                width: auto;
-            }
-            
-            .header-controls {
-                width: auto;
-                justify-content: flex-end;
-            }
         }
 
         .institute-info {
@@ -67,6 +55,12 @@
             align-items: center;
             gap: 12px;
             width: 100%;
+        }
+
+        @media (min-width: 768px) {
+            .institute-info {
+                width: auto;
+            }
         }
 
         .institute-logo {
@@ -82,14 +76,6 @@
             flex-shrink: 0;
         }
 
-        @media (min-width: 768px) {
-            .institute-logo {
-                width: 50px;
-                height: 50px;
-                border-radius: 12px;
-            }
-        }
-
         .institute-logo img {
             width: 100%;
             height: 100%;
@@ -103,7 +89,7 @@
 
         .institute-text {
             flex: 1;
-            min-width: 0; /* টেক্সট ওভারফ্লো ঠেকাতে */
+            min-width: 0;
         }
 
         .institute-text h1 {
@@ -210,7 +196,142 @@
             white-space: nowrap;
         }
 
-        /* ফ্লেক্স কন্টেইনার - মোবাইলে কলাম */
+        /* পাসওয়ার্ড মোডাল */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .password-modal {
+            background: white;
+            border-radius: 30px;
+            padding: 30px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            transform: scale(0.9);
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.show .password-modal {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header i {
+            font-size: 3rem;
+            color: #667eea;
+            background: #f0f3f8;
+            width: 70px;
+            height: 70px;
+            border-radius: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+        }
+
+        .modal-header h2 {
+            color: #1a2a3a;
+            font-size: calc(var(--base-font-size, 1rem) * 1.5);
+            margin-bottom: 5px;
+        }
+
+        .modal-header p {
+            color: #718096;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+        }
+
+        .password-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-family: 'Hind Siliguri', sans-serif;
+            font-size: calc(var(--base-font-size, 1rem) * 1);
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .password-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Hind Siliguri', sans-serif;
+            font-size: calc(var(--base-font-size, 1rem) * 1);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .login-btn {
+            background: linear-gradient(145deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .cancel-btn {
+            background: #f0f3f8;
+            color: #4a5568;
+        }
+
+        .cancel-btn:hover {
+            background: #e2e8f0;
+        }
+
+        .error-message {
+            color: #f56565;
+            font-size: calc(var(--base-font-size, 1rem) * 0.85);
+            margin-top: 5px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        /* ফ্লেক্স কন্টেইনার */
         .flex-container {
             display: flex;
             flex-direction: column;
@@ -225,7 +346,7 @@
             }
         }
 
-        /* ইনপুট প্যানেল */
+        /* ===== ইনপুট প্যানেল ===== */
         .input-panel {
             width: 100%;
             background: #ffffff;
@@ -250,7 +371,663 @@
             display: none;
         }
 
-        /* আউটপুট প্যানেল */
+        .panel-header {
+            background: linear-gradient(145deg, #667eea, #764ba2);
+            margin: -15px -15px 15px -15px;
+            padding: 12px 15px;
+            border-radius: 20px 20px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            font-size: calc(var(--base-font-size, 1rem) * 1);
+        }
+
+        .panel-header-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .panel-header-left i {
+            font-size: calc(var(--base-font-size, 1rem) * 1.2);
+            color: #ffd700;
+        }
+
+        .panel-header-left h3 {
+            font-size: calc(var(--base-font-size, 1rem) * 1.1);
+            font-weight: 600;
+        }
+
+        .panel-header-right {
+            display: flex;
+            gap: 8px;
+        }
+
+        .settings-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: calc(var(--base-font-size, 1rem) * 1.1);
+            transition: all 0.3s ease;
+        }
+
+        .settings-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: rotate(90deg);
+        }
+
+        .logout-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-family: 'Hind Siliguri', sans-serif;
+            font-size: calc(var(--base-font-size, 1rem) * 0.8);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .minimize-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+            transition: all 0.3s ease;
+        }
+
+        /* সেটিংস প্যানেল */
+        .settings-panel {
+            background: #f8fafd;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid #e2e8f0;
+            display: none;
+            font-size: calc(var(--base-font-size, 1rem) * 0.95);
+        }
+
+        .settings-panel.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .settings-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 15px;
+            color: #4a5568;
+            font-weight: 600;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: calc(var(--base-font-size, 1rem) * 1);
+        }
+
+        .settings-header i {
+            color: #667eea;
+        }
+
+        .settings-section {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+
+        .settings-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .settings-section-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #2d3748;
+            font-size: calc(var(--base-font-size, 1rem) * 1);
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .settings-section-title i {
+            color: #667eea;
+            width: 24px;
+            font-size: calc(var(--base-font-size, 1rem) * 1.1);
+        }
+
+        .setting-item {
+            margin-bottom: 15px;
+        }
+
+        .setting-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            color: #4a5568;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+            font-weight: 500;
+        }
+
+        .setting-label i {
+            width: 20px;
+            color: #667eea;
+            font-size: calc(var(--base-font-size, 1rem) * 1);
+        }
+
+        .text-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #cbd5e0;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+            color: #2d3748;
+            background: white;
+        }
+
+        .text-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+        }
+
+        /* লোগো আপলোড */
+        .logo-upload-area {
+            border: 2px dashed #cbd5e0;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            background: #f7fafc;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .logo-upload-area:hover {
+            border-color: #667eea;
+            background: #ebf4ff;
+        }
+
+        .logo-upload-area i {
+            font-size: calc(var(--base-font-size, 1rem) * 2);
+            color: #667eea;
+            margin-bottom: 8px;
+        }
+
+        .logo-upload-area p {
+            color: #4a5568;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+            margin-bottom: 4px;
+        }
+
+        .logo-upload-area small {
+            color: #718096;
+            font-size: calc(var(--base-font-size, 1rem) * 0.75);
+        }
+
+        .logo-preview-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 10px;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .logo-preview {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            background: #f0f3f8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .logo-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .logo-preview i {
+            font-size: calc(var(--base-font-size, 1rem) * 1.8);
+            color: #a0aec0;
+        }
+
+        .logo-info {
+            flex: 1;
+        }
+
+        .logo-info p {
+            color: #2d3748;
+            font-weight: 500;
+            margin-bottom: 2px;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+        }
+
+        .logo-info small {
+            color: #718096;
+            font-size: calc(var(--base-font-size, 1rem) * 0.7);
+        }
+
+        .remove-logo-btn {
+            background: #f56565;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: calc(var(--base-font-size, 1rem) * 0.8);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-family: inherit;
+        }
+
+        .remove-logo-btn:hover {
+            background: #e53e3e;
+        }
+
+        /* প্রিভিউ বক্স */
+        .preview-box {
+            background: linear-gradient(145deg, #667eea, #764ba2);
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: white;
+            margin-top: 10px;
+        }
+
+        .preview-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .preview-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .preview-logo i {
+            font-size: calc(var(--base-font-size, 1rem) * 2);
+            color: #667eea;
+        }
+
+        .preview-text h4 {
+            font-size: calc(var(--base-font-size, 1rem) * 1.1);
+            margin: 0 0 4px 0;
+        }
+
+        .preview-text p {
+            font-size: calc(var(--base-font-size, 1rem) * 0.8);
+            opacity: 0.9;
+            margin: 0;
+        }
+
+        /* ফন্ট সেটিংস */
+        .font-selector {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #cbd5e0;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+            color: #2d3748;
+            background: white;
+            cursor: pointer;
+        }
+
+        .size-slider-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .size-slider {
+            flex: 1;
+            height: 6px;
+            -webkit-appearance: none;
+            background: linear-gradient(to right, #667eea, #764ba2);
+            border-radius: 3px;
+            outline: none;
+        }
+
+        .size-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .size-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            background: #667eea;
+        }
+
+        .size-value {
+            min-width: 50px;
+            text-align: center;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 4px 10px;
+            font-size: calc(var(--base-font-size, 1rem) * 0.85);
+            color: #2d3748;
+            font-weight: 600;
+        }
+
+        .size-presets {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .size-preset-btn {
+            flex: 1;
+            padding: 6px 0;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            background: white;
+            color: #4a5568;
+            font-family: inherit;
+            font-size: calc(var(--base-font-size, 1rem) * 0.8);
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .size-preset-btn:hover {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .class-selector {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .class-btn {
+            flex: 1;
+            min-width: 50px;
+            padding: 6px 0;
+            border: none;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: calc(var(--base-font-size, 1rem) * 0.85);
+            font-weight: 600;
+            background: #f0f3f8;
+            color: #4a5568;
+            cursor: pointer;
+        }
+
+        .class-btn.active {
+            background: linear-gradient(145deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .time-controls {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .add-slot-btn {
+            background: #48bb78;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .remove-slot-btn {
+            background: #f56565;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .slot-count {
+            background: #edf2f7;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+            color: #4a5568;
+            font-weight: 600;
+        }
+
+        /* টাইম স্লট ইনপুট */
+        .time-slots {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .time-slot-card {
+            background: #f8fafd;
+            border-radius: 12px;
+            padding: 10px;
+            border: 1px solid #e2e8f0;
+            position: relative;
+        }
+
+        .slot-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+
+        .slot-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .slot-number {
+            background: #667eea;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: calc(var(--base-font-size, 1rem) * 0.8);
+            font-weight: 600;
+        }
+
+        .break-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: calc(var(--base-font-size, 1rem) * 0.8);
+            color: #4a5568;
+        }
+
+        .break-checkbox input {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .time-inputs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+
+        .time-input {
+            flex: 1;
+            min-width: 80px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: white;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            padding: 4px 8px;
+        }
+
+        .time-input i {
+            color: #718096;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+        }
+
+        .time-input input {
+            width: 100%;
+            border: none;
+            outline: none;
+            font-family: inherit;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+        }
+
+        .delete-slot {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #f56565;
+            color: white;
+            border: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: calc(var(--base-font-size, 1rem) * 0.8);
+        }
+
+        .day-inputs {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 3px;
+            margin-top: 8px;
+        }
+
+        .day-input {
+            text-align: center;
+        }
+
+        .day-label {
+            font-size: calc(var(--base-font-size, 1rem) * 0.7);
+            color: #718096;
+            margin-bottom: 2px;
+        }
+
+        .day-input input {
+            width: 100%;
+            padding: 4px 2px;
+            border: 1px solid #cbd5e0;
+            border-radius: 5px;
+            background: white;
+            font-family: inherit;
+            font-size: calc(var(--base-font-size, 1rem) * 0.75);
+            text-align: center;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .save-btn, .reset-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: calc(var(--base-font-size, 1rem) * 0.95);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .save-btn {
+            background: linear-gradient(145deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .reset-btn {
+            background: #f56565;
+            color: white;
+        }
+
+        /* ===== আউটপুট প্যানেল ===== */
         .output-panel {
             width: 100%;
             background: white;
@@ -269,53 +1046,40 @@
             }
         }
 
-        /* টেবিল স্ক্রল করার জন্য */
-        .table-wrapper {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            margin: 0 -15px;
-            padding: 0 15px;
-            width: calc(100% + 30px);
+        .output-header {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
         }
 
-        .routine-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: calc(var(--base-font-size, 1rem) * 0.9);
-            table-layout: auto;
-            min-width: 600px; /* মোবাইলে স্ক্রল হবে */
+        @media (min-width: 768px) {
+            .output-header {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
         }
 
-        .routine-table th {
-            background: #2d3748;
+        .output-header h2 {
+            color: #1a2a3a;
+            font-size: calc(var(--base-font-size, 1rem) * 1.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .current-class-large {
+            background: linear-gradient(145deg, #667eea, #764ba2);
             color: white;
-            padding: 8px 5px;
-            font-size: calc(var(--base-font-size, 1rem) * 0.85);
-            white-space: nowrap;
-        }
-
-        .routine-table td {
-            padding: 8px 5px;
-            text-align: center;
-            border: 1px solid #e2e8f0;
-            word-break: break-word;
-        }
-
-        .routine-table .time-col {
-            background: #edf2f7;
+            padding: 5px 15px;
+            border-radius: 25px;
+            font-size: calc(var(--base-font-size, 1rem) * 1);
             font-weight: 600;
-            font-size: calc(var(--base-font-size, 1rem) * 0.85);
-            color: #2d3748;
-            white-space: nowrap;
+            align-self: flex-start;
         }
 
-        .routine-table .time-col small {
-            display: block;
-            font-size: calc(var(--base-font-size, 1rem) * 0.7);
-            color: #718096;
-        }
-
-        /* পাবলিক ক্লাস সিলেক্টর - মোবাইলে গ্রিড */
+        /* পাবলিক ক্লাস সিলেক্টর */
         .public-class-selector {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -349,48 +1113,110 @@
             color: white;
         }
 
-        /* টাইম স্লট ইনপুট - মোবাইলে */
-        .time-slot-card {
-            background: #f8fafd;
-            border-radius: 12px;
-            padding: 10px;
-            border: 1px solid #e2e8f0;
-            position: relative;
-            margin-bottom: 10px;
+        /* টেবিল মোড়ানো জন্য wrapper */
+        .table-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin: 0 -15px;
+            padding: 0 15px;
+            width: calc(100% + 30px);
         }
 
-        .day-inputs {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 3px;
-        }
-
-        .day-input input {
+        .routine-table {
             width: 100%;
-            padding: 6px 2px;
-            border: 1px solid #cbd5e0;
-            border-radius: 5px;
-            background: white;
-            font-family: inherit;
-            font-size: calc(var(--base-font-size, 1rem) * 0.75);
+            border-collapse: collapse;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+            table-layout: auto;
+            min-width: 600px;
+        }
+
+        .routine-table th {
+            background: #2d3748;
+            color: white;
+            padding: 8px 5px;
+            font-size: calc(var(--base-font-size, 1rem) * 0.85);
+            white-space: nowrap;
+        }
+
+        .routine-table td {
+            padding: 8px 5px;
             text-align: center;
+            border: 1px solid #e2e8f0;
+            word-break: break-word;
         }
 
-        /* নিচের সব স্টাইল আগের মতোই থাকবে */
-        .panel-header, .settings-panel, .class-selector, .time-controls,
-        .action-buttons, .modal-overlay, .password-modal, .preview-box,
-        .logo-upload-area, .logo-preview-container, .font-selector,
-        .size-slider-container, .size-presets, .current-font-info,
+        .routine-table .time-col {
+            background: #edf2f7;
+            font-weight: 600;
+            font-size: calc(var(--base-font-size, 1rem) * 0.85);
+            color: #2d3748;
+            white-space: nowrap;
+        }
+
+        .routine-table .time-col small {
+            display: block;
+            font-size: calc(var(--base-font-size, 1rem) * 0.7);
+            color: #718096;
+        }
+
+        .subject-name {
+            font-weight: 600;
+            color: #2d3748;
+            font-size: calc(var(--base-font-size, 1rem) * 0.85);
+            line-height: 1.2;
+        }
+
+        .teacher-name {
+            font-size: calc(var(--base-font-size, 1rem) * 0.7);
+            color: #667eea;
+            line-height: 1.1;
+            margin-top: 2px;
+        }
+
+        .break-row {
+            background: #fef3c7;
+        }
+
+        .break-row td {
+            background: #fef3c7;
+            color: #b45309;
+            font-size: calc(var(--base-font-size, 1rem) * 0.85);
+            padding: 8px 5px;
+        }
+
+        .empty-cell {
+            color: #a0aec0;
+            font-size: calc(var(--base-font-size, 1rem) * 0.8);
+        }
+
+        .footer {
+            margin-top: 10px;
+            text-align: right;
+            color: #718096;
+            font-size: calc(var(--base-font-size, 1rem) * 0.8);
+        }
+
         .notification {
-            /* আগের সব স্টাইল থাকবে */
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background: #48bb78;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: calc(var(--base-font-size, 1rem) * 0.85);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 5px 15px rgba(72, 187, 120, 0.3);
         }
 
-        /* বাকি স্টাইল আপনার আগের কোড থেকে নিতে হবে */
-        /* এখানে শুধু মোবাইল ফিক্স দেখালাম */
+        .notification.show {
+            transform: translateX(0);
+        }
     </style>
 </head>
 <body>
-    <!-- আপনার আগের HTML কোড এখানে থাকবে -->
     <div class="notification" id="notification">
         <i class="fas fa-check-circle"></i>
         <span id="notificationMessage">আপডেট হয়েছে</span>
@@ -419,7 +1245,7 @@
         </div>
     </div>
 
-    <!-- হেডার -->
+    <!-- হেডার - প্রতিষ্ঠান সিলেক্টর সহ -->
     <div class="header" id="publicHeader">
         <div class="institute-info">
             <div class="institute-logo" id="headerLogoContainer">
@@ -432,6 +1258,7 @@
             </div>
         </div>
         <div class="header-controls">
+            <!-- প্রতিষ্ঠান সিলেক্টর -->
             <div class="institute-selector">
                 <i class="fas fa-building"></i>
                 <select id="instituteSelector" onchange="changeInstitute(this.value)">
@@ -489,6 +1316,7 @@
                         <span>প্রতিষ্ঠানের তথ্য</span>
                     </div>
 
+                    <!-- প্রতিষ্ঠানের আইডি -->
                     <div class="setting-item">
                         <div class="setting-label">
                             <i class="fas fa-id-card"></i>
@@ -497,6 +1325,7 @@
                         <div style="background: #e9ecef; padding: 8px 12px; border-radius: 8px; font-weight: 600;" id="instituteIdDisplay">school1</div>
                     </div>
 
+                    <!-- প্রতিষ্ঠানের নাম -->
                     <div class="setting-item">
                         <div class="setting-label">
                             <i class="fas fa-font"></i>
@@ -505,6 +1334,7 @@
                         <input type="text" class="text-input" id="instituteNameInput" value="আদর্শ উচ্চ বিদ্যালয়">
                     </div>
 
+                    <!-- প্রতিষ্ঠানের ঠিকানা -->
                     <div class="setting-item">
                         <div class="setting-label">
                             <i class="fas fa-map-marker-alt"></i>
@@ -565,6 +1395,12 @@
                             <option value="Noto+Sans+Bengali">নোটো সান্স বাংলা</option>
                             <option value="Baloo+Da+2">বালু দা ২</option>
                             <option value="Galada">গালাদা</option>
+                            <option value="Anek+Bangla">অনেক বাংলা</option>
+                            <option value="Atma">আতমা</option>
+                            <option value="Mina">মিনা</option>
+                            <option value="Poppins">পপিন্স</option>
+                            <option value="Roboto">রোবোটো</option>
+                            <option value="Open+Sans">ওপেন সান্স</option>
                         </select>
                     </div>
 
@@ -662,7 +1498,6 @@
     </div>
 
     <script>
-        // আপনার সম্পূর্ণ JavaScript কোড এখানে থাকবে
         // সঠিক পাসওয়ার্ড
         const CORRECT_PASSWORD = "admin123";
 
@@ -698,31 +1533,59 @@
         // PDF ডাটা
         let pdfData = {};
 
-        // পৃষ্ঠা লোড হওয়ার পর
-        window.addEventListener('load', function() {
-            // URL থেকে প্রতিষ্ঠান আইডি নেওয়ার চেষ্টা
-            const urlParams = new URLSearchParams(window.location.search);
-            const urlInstitute = urlParams.get('institute');
-            
-            if (urlInstitute) {
-                currentInstitute = urlInstitute;
-                document.getElementById('instituteSelector').value = urlInstitute;
-            }
-            
-            // লোকাল স্টোরেজ থেকে ডাটা লোড
-            loadInstituteData();
-            
-            // ইনপুট ফিল্ড জেনারেট
-            generateInputFields();
-            
-            // রুটিন আপডেট
-            updateRoutine();
-            
-            // GitHub থেকে লোড
-            setTimeout(() => {
-                loadInstituteConfig(currentInstitute);
-            }, 1000);
-        });
+        // PDF ডাটা ইনিশিয়ালাইজ
+        function initializePdfData() {
+            pdfData = {
+                class6: [
+                    ['বাংলা-রহিমা', 'ইংরেজি-করিম', 'গণিত-সাদেক', 'বিজ্ঞান-নাসির', 'সমাজ-ফাতেমা'],
+                    ['ইংরেজি-করিম', 'গণিত-সাদেক', 'বাংলা-রহিমা', 'ধর্ম-হামিদ', 'কৃষি-জব্বার'],
+                    ['গণিত-সাদেক', 'বিজ্ঞান-নাসির', 'ইংরেজি-করিম', 'বাংলা-রহিমা', 'শারীরিক-আলম'],
+                    ['', '', '', '', ''],
+                    ['বিজ্ঞান-নাসির', 'সমাজ-ফাতেমা', 'ধর্ম-হামিদ', 'কৃষি-জব্বার', 'বাংলা-রহিমা'],
+                    ['ধর্ম-হামিদ', 'কৃষি-জব্বার', 'সমাজ-ফাতেমা', 'চারু-নাসিমা', 'ইংরেজি-করিম'],
+                    ['কৃষি-জব্বার', 'শারীরিক-আলম', 'চারু-নাসিমা', 'গণিত-সাদেক', 'বিজ্ঞান-নাসির']
+                ],
+                class7: [
+                    ['ইংরেজি ১ম-নাসিমা', '', '', '', 'ইংরেজি ১ম-নাসিমা'],
+                    ['কৃষি-আঃ মজিদ', 'বাংলা ২য়-ছাইফুদ্দিন', '', '', 'বাংলা ২য়-ছাইফুদ্দিন'],
+                    ['বাংলা ১ম-আমিনুল, আঃ মজিদ', 'তথ্য-ছাইফুদ্দিন', '', '', 'বাংলা ১ম-আমিনুল'],
+                    ['', '', '', '', ''],
+                    ['বাংলা ও বি-ছাদমার', '', '', '', 'বাংলা ও বি-ছাদমার'],
+                    ['গণিত-ছাদমার', '', '', '', 'গণিত-ছাদমার'],
+                    ['বিজ্ঞান-সেজান', 'তথ্য-মজোদেমল', '', '', 'বিজ্ঞান-সেজান']
+                ],
+                class8: [
+                    ['গণিত-আল আমিন', '', '', '', 'গণিত-আল আমিন'],
+                    ['বিজ্ঞান-শাহ আলম', '', '', '', 'বিজ্ঞান-শাহ আলম'],
+                    ['ইংরেজি ২য়-প্রধান শিক্ষক', '', 'ইসলাম শিক্ষা-ছাইফুদ্দিন', '', 'তথ্য-রেকানুজ্জমান'],
+                    ['', '', '', '', ''],
+                    ['ইসলাম শিক্ষা-ছাইফুদ্দিন', 'বাংলা ২য়-নাসরিন', '', '', 'বাংলা ১ম-নাছরিন'],
+                    ['বাংলা ১ম-নাছরিন', 'বাংলা ও বি-নাসিমা', '', '', 'কৃষি-আঃ মজিদ'],
+                    ['ইংরেজি ১ম-মজোদেমল', 'বাংলা ১ম-নাসরিন', '', '', '']
+                ],
+                class9: [
+                    ['ইংরেজি ১ম-মজোদেমল', '', '', '', 'ইংরেজি ১ম-মজোদেমল'],
+                    ['বাংলা ২য়-মজোদেমল', 'বাংলা ও বি/বৃহগল-নাসিমা/আঃ মজিদ', 'ইতিহাস/জী-আমিনুল/শাহ আলম', '', 'বাংলা ২য়-মজোদেমল'],
+                    ['গণিত-ছাদমার', 'তথ্য-রেকান, ছাদমার', 'ইংরেজি ২য়-আঃ রডক', '', 'গণিত-ছাদমার'],
+                    ['', '', '', '', ''],
+                    ['তথ্য-ছাদমার', 'বাংলা ২য়-রেকানুজ্জমান', 'ইসলাম শিক্ষা-ছাইফুদ্দিন', '', 'বাংলা ২য়-রেকানুজ্জমান'],
+                    ['ইসলাম-ছাইফুদ্দিন', '', 'রসায়ন/অর্থনীতি-আল মিন/নাসরিন', '', 'ইসলাম-ছাইফুদ্দিন'],
+                    ['কৃষি-আঃ মজিদ', 'কৃষি-আবুল মজিদ', 'বাংলা ১ম-শাহ আলম', '', 'শারীরিক/কারি-']
+                ],
+                class10: [
+                    ['গণিত-ছাদমার', '', 'পদার্থ/অর্থনীতি-আল আমিন/নাছরিন', '', 'গণিত-ছাদমার'],
+                    ['ইসলাম-ছাইফুদ্দিন', 'বাংলা ও বি/সা বি-নাসিমা/আল আমিন', 'ইংরেজি ১ম-মোজোদেমল', '', 'ইসলাম-ছাইফুদ্দিন'],
+                    ['বাংলা ও বি/সা বি-নাসিমা/আল আমিন', 'কৃষি/উচ্চতর-আঃ মজিদ/আল আমিন', 'বাংলা ২য়-আঃ রডক', '', 'বাংলা ২য়-রেকানু'],
+                    ['', '', '', '', ''],
+                    ['রসায়ন/ভূগোল-আল আমিন/মোজোদেমল', 'জীব/ইতিহাস-শাহ আলম/আঃ রডক', 'বাংলা ১ম-আঃ রডক', '', 'ইসলাম-মোজোদেমল, ছাইফুদ্দিন'],
+                    ['বাংলা ১ম-মোজোদেমল', 'ইংরেজি ১ম-মোজোদেমল', 'শারীরিক শিক্ষা-আঃ রডক', '', 'ইংরেজি ১ম-মোজোদেমল'],
+                    ['কৃষি/উচ্চতর-আঃ মজিদ/আল আমিন', 'জীব/ইতিহাস-শাহ আলম/আঃ রডক', 'বাংলা ২য়-আঃ রডক', '', 'বাংলা ও বি/সাবি-নাসিমা/আল আমিন']
+                ]
+            };
+        }
+
+        // ইনিশিয়ালাইজ
+        initializePdfData();
 
         // প্রতিষ্ঠানের ডাটা লোড
         function loadInstituteData() {
@@ -742,6 +1605,17 @@
             }
             
             document.getElementById('instituteIdDisplay').textContent = currentInstitute;
+        }
+
+        // প্রতিষ্ঠানের ডাটা সেভ
+        function saveInstituteData() {
+            instituteData.name = document.getElementById('instituteNameInput').value;
+            instituteData.address = document.getElementById('instituteAddressInput').value;
+            
+            const key = `instituteData_${currentInstitute}`;
+            localStorage.setItem(key, JSON.stringify(instituteData));
+            updateInstituteDisplay();
+            showNotification('স্থানীয় স্টোরেজে সংরক্ষিত হয়েছে');
         }
 
         // হেডার আপডেট
@@ -797,22 +1671,12 @@
             }
         }
 
-        // প্রতিষ্ঠানের ডাটা সেভ
-        function saveInstituteData() {
-            instituteData.name = document.getElementById('instituteNameInput').value;
-            instituteData.address = document.getElementById('instituteAddressInput').value;
-            
-            const key = `instituteData_${currentInstitute}`;
-            localStorage.setItem(key, JSON.stringify(instituteData));
-            updateInstituteDisplay();
-            showNotification('স্থানীয় স্টোরেজে সংরক্ষিত হয়েছে');
-        }
-
         // লোগো রিমুভ
         function removeLogo() {
             instituteData.logo = null;
             document.getElementById('logoPreviewContainer').style.display = 'none';
             document.getElementById('logoInput').value = '';
+            
             updateInstituteDisplay();
             saveInstituteData();
             showNotification('লোগো সরানো হয়েছে');
@@ -969,7 +1833,7 @@
                     input.id = `input_${currentClass}_${slotIndex}_${dayIndex}`;
                     input.placeholder = 'বিষয়-শিক্ষক';
                     
-                    if (pdfData && pdfData[currentClass] && pdfData[currentClass][slotIndex] && pdfData[currentClass][slotIndex][dayIndex]) {
+                    if (pdfData[currentClass] && pdfData[currentClass][slotIndex] && pdfData[currentClass][slotIndex][dayIndex]) {
                         input.value = pdfData[currentClass][slotIndex][dayIndex];
                     }
 
@@ -1009,6 +1873,13 @@
                 isBreak: false
             });
             
+            if (!pdfData[currentClass]) {
+                pdfData[currentClass] = [];
+            }
+            if (!pdfData[currentClass][timeSlots.length - 1]) {
+                pdfData[currentClass][timeSlots.length - 1] = ['', '', '', '', ''];
+            }
+            
             generateInputFields();
             updateRoutine();
             showNotification('নতুন স্লট যোগ করা হয়েছে');
@@ -1017,6 +1888,9 @@
         function removeLastSlot() {
             if (timeSlots.length > 1) {
                 timeSlots.pop();
+                if (pdfData[currentClass]) {
+                    pdfData[currentClass].pop();
+                }
                 generateInputFields();
                 updateRoutine();
                 showNotification('শেষ স্লট সরানো হয়েছে');
@@ -1026,6 +1900,9 @@
         function removeSlot(index) {
             if (timeSlots.length > 1) {
                 timeSlots.splice(index, 1);
+                if (pdfData[currentClass]) {
+                    pdfData[currentClass].splice(index, 1);
+                }
                 generateInputFields();
                 updateRoutine();
                 showNotification('স্লট সরানো হয়েছে');
@@ -1104,8 +1981,10 @@
             }
             
             currentClass = classId;
+
             document.querySelectorAll('.class-btn').forEach(btn => btn.classList.remove('active'));
             element.classList.add('active');
+
             updateClassLabels();
             generateInputFields();
             updateRoutine();
@@ -1113,14 +1992,17 @@
 
         function selectClassPublic(classId, element) {
             currentClass = classId;
+
             document.querySelectorAll('.public-class-btn').forEach(btn => btn.classList.remove('active'));
             element.classList.add('active');
+
             document.querySelectorAll('.class-btn').forEach(btn => {
                 btn.classList.remove('active');
                 if (btn.textContent.includes(getClassNumber(classId))) {
                     btn.classList.add('active');
                 }
             });
+
             updateClassLabels();
             generateInputFields();
             updateRoutine();
@@ -1155,6 +2037,7 @@
                 showLoginModal();
                 return;
             }
+            
             generateInputFields();
             updateRoutine();
             showNotification('রিসেট করা হয়েছে');
@@ -1179,51 +2062,27 @@
             }, 1500);
         }
 
-        // GitHub ফাংশন
-        async function loadInstituteConfig(instituteId) {
-            const configFile = `institute-${instituteId}.json`;
-            const url = `https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/contents/${configFile}`;
+        // পৃষ্ঠা লোড হওয়ার পর
+        window.addEventListener('load', function() {
+            // URL থেকে প্রতিষ্ঠান আইডি নেওয়ার চেষ্টা
+            const urlParams = new URLSearchParams(window.location.search);
+            const urlInstitute = urlParams.get('institute');
             
-            try {
-                const response = await fetch(url, {
-                    headers: { 'Accept': 'application/vnd.github.v3+json' }
-                });
-                
-                if (response.ok) {
-                    const data = await response.json();
-                    const content = atob(data.content);
-                    const config = JSON.parse(content);
-                    
-                    instituteData = {
-                        name: config.name,
-                        address: config.address,
-                        logo: config.logo
-                    };
-                    
-                    if (config.routine) {
-                        pdfData = config.routine;
-                    }
-                    
-                    updateInstituteDisplay();
-                    document.getElementById('instituteNameInput').value = instituteData.name;
-                    document.getElementById('instituteAddressInput').value = instituteData.address;
-                    
-                    if (instituteData.logo) {
-                        document.getElementById('logoPreview').src = instituteData.logo;
-                        document.getElementById('logoPreviewContainer').style.display = 'flex';
-                    }
-                    
-                    localStorage.setItem(`instituteData_${instituteId}`, JSON.stringify(instituteData));
-                    
-                    generateInputFields();
-                    updateRoutine();
-                    
-                    showNotification(`${instituteId} - GitHub থেকে লোড করা হয়েছে`);
-                }
-            } catch (error) {
-                console.log(`${instituteId} - GitHub থেকে লোড করতে সমস্যা:`, error);
+            if (urlInstitute && ['school1', 'school2', 'school3', 'school4', 'school5'].includes(urlInstitute)) {
+                currentInstitute = urlInstitute;
+                document.getElementById('instituteSelector').value = urlInstitute;
             }
-        }
+            
+            // প্রতিষ্ঠানের ডাটা লোড
+            loadInstituteData();
+            
+            // UI আপডেট
+            generateInputFields();
+            updateRoutine();
+        });
+
+        // ডিফল্ট ফন্ট সাইজ সেট
+        document.documentElement.style.setProperty('--base-font-size', '1rem');
     </script>
 </body>
 </html>
