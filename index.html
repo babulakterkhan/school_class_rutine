@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>ক্লাস রুটিন | ফুল স্ক্রিন ল্যান্ডস্কেপ</title>
+    <title>ক্লাস রুটিন | ফন্ট কাস্টমাইজার</title>
     <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     
@@ -19,29 +18,20 @@
             box-sizing: border-box;
         }
 
-        html, body {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-        }
-
         body {
             font-family: 'Hind Siliguri', 'Arial', sans-serif;
             background: linear-gradient(145deg, #667eea, #764ba2);
-            padding: 10px;
-            height: 100vh;
-            width: 100vw;
-            display: flex;
-            flex-direction: column;
+            min-height: 100vh;
+            padding: 15px;
             transition: font-family 0.3s ease;
         }
 
         /* Firebase স্ট্যাটাস বার */
         .firebase-status {
-            background: rgba(0,0,0,0.9);
+            background: rgba(0,0,0,0.8);
             color: white;
             padding: 8px 15px;
-            border-radius: 40px;
+            border-radius: 30px;
             margin-bottom: 10px;
             display: flex;
             align-items: center;
@@ -49,7 +39,6 @@
             font-size: 14px;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.2);
-            flex-shrink: 0;
         }
 
         .status-indicator {
@@ -82,33 +71,40 @@
             gap: 5px;
         }
 
+        .save-status.saving {
+            background: #ed8936;
+        }
+
+        .save-status.error {
+            background: #f56565;
+        }
+
         /* হেডার */
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 8px;
+            margin-bottom: 15px;
             color: white;
             background: rgba(255,255,255,0.2);
             backdrop-filter: blur(10px);
-            padding: 8px 15px;
+            padding: 10px 20px;
             border-radius: 40px;
             border: 1px solid rgba(255,255,255,0.2);
             width: 100%;
-            font-size: 14px;
-            flex-shrink: 0;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
         }
 
         .institute-info {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 15px;
         }
 
         .institute-logo {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
             background: white;
             display: flex;
             align-items: center;
@@ -117,491 +113,68 @@
             border: 2px solid #ffd700;
         }
 
+        .institute-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .institute-logo i {
+            font-size: 2rem;
+            color: #667eea;
+        }
+
         .institute-text h1 {
-            font-size: 18px;
+            font-size: calc(var(--base-font-size, 1rem) * 1.3);
             margin: 0;
             line-height: 1.2;
         }
 
         .institute-text p {
-            font-size: 12px;
+            font-size: calc(var(--base-font-size, 1rem) * 0.8);
             opacity: 0.9;
             margin: 0;
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 10px;
         }
 
         .edit-login-btn {
             background: #ffd700;
             color: #1a2a3a;
             border: none;
-            padding: 6px 12px;
+            padding: 8px 16px;
             border-radius: 30px;
             font-family: 'Hind Siliguri', sans-serif;
-            font-size: 13px;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
             font-weight: 600;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .edit-login-btn.logged-in {
+            background: #48bb78;
+            color: white;
         }
 
         .class-badge {
             background: rgba(255,255,255,0.2);
             color: white;
-            padding: 4px 10px;
+            padding: 5px 12px;
             border-radius: 30px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            border: 1px solid rgba(255,255,255,0.3);
-            font-size: 13px;
-        }
-
-        /* ফ্লেক্স কন্টেইনার */
-        .flex-container {
-            display: flex;
-            gap: 10px;
-            width: 100%;
-            flex: 1;
-            min-height: 0;
-        }
-
-        /* ইনপুট প্যানেল */
-        .input-panel {
-            width: 400px;
-            background: #ffffff;
-            border-radius: 16px;
-            padding: 12px;
-            box-shadow: 0 12px 25px rgba(0,0,0,0.15);
-            overflow-y: auto;
-            flex-shrink: 0;
-        }
-
-        .input-panel.closed {
-            display: none;
-        }
-
-        .panel-header {
-            background: linear-gradient(145deg, #667eea, #764ba2);
-            margin: -12px -12px 12px -12px;
-            padding: 10px 12px;
-            border-radius: 16px 16px 0 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: white;
-        }
-
-        /* ক্লাস ম্যানেজার বাটন */
-        .manage-classes-btn {
-            background: #ffd700;
-            color: #1a2a3a;
-            border: none;
-            padding: 8px 10px;
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            margin-bottom: 10px;
-            width: 100%;
-            justify-content: center;
-        }
-
-        /* ক্লাস সিলেক্টর */
-        .class-selector, .public-class-selector {
-            display: flex;
-            gap: 4px;
-            margin-bottom: 10px;
-            flex-wrap: wrap;
-        }
-
-        .class-btn, .public-class-btn {
-            flex: 1;
-            min-width: 45px;
-            padding: 5px 0;
-            border: none;
-            border-radius: 6px;
-            font-family: inherit;
-            font-size: 12px;
-            font-weight: 600;
-            background: #f0f3f8;
-            color: #4a5568;
-            cursor: pointer;
-        }
-
-        .class-btn.active, .public-class-btn.active {
-            background: linear-gradient(145deg, #667eea, #764ba2);
-            color: white;
-        }
-
-        /* টাইম স্লট কন্ট্রোল */
-        .time-controls {
-            display: flex;
-            gap: 5px;
-            margin-bottom: 10px;
-            align-items: center;
-        }
-
-        .add-slot-btn, .remove-slot-btn {
-            background: #48bb78;
-            color: white;
-            border: none;
-            padding: 6px 8px;
-            border-radius: 6px;
-            font-family: inherit;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 3px;
-        }
-
-        .remove-slot-btn {
-            background: #f56565;
-        }
-
-        .slot-count {
-            background: #edf2f7;
-            padding: 4px 8px;
-            border-radius: 20px;
-            font-size: 12px;
-            color: #4a5568;
-            font-weight: 600;
-        }
-
-        /* টাইম স্লট কার্ড */
-        .time-slot-card {
-            background: #f8fafd;
-            border-radius: 8px;
-            padding: 8px;
-            border: 1px solid #e2e8f0;
-            position: relative;
-            margin-bottom: 6px;
-        }
-
-        .slot-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 5px;
-        }
-
-        .slot-title {
             display: flex;
             align-items: center;
             gap: 6px;
+            border: 1px solid rgba(255,255,255,0.3);
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
         }
 
-        .slot-number {
-            background: #667eea;
-            color: white;
-            width: 20px;
-            height: 20px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        .slot-title input {
-            width: 60px;
-            padding: 3px 4px;
-            border: 1px solid #cbd5e0;
-            border-radius: 4px;
-            font-size: 12px;
-        }
-
-        .break-checkbox {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            font-size: 12px;
-            color: #4a5568;
-        }
-
-        .time-inputs {
-            display: flex;
-            gap: 5px;
-            margin-bottom: 8px;
-        }
-
-        .time-input {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            gap: 3px;
-            background: white;
-            border: 1px solid #cbd5e0;
-            border-radius: 4px;
-            padding: 3px 5px;
-        }
-
-        .time-input i {
-            font-size: 11px;
-            color: #718096;
-        }
-
-        .time-input input {
-            width: 100%;
-            border: none;
-            outline: none;
-            font-size: 12px;
-        }
-
-        .day-inputs {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 3px;
-        }
-
-        .day-label {
-            font-size: 10px;
-            color: #718096;
-            text-align: center;
-            margin-bottom: 2px;
-        }
-
-        .day-input input {
-            width: 100%;
-            padding: 3px 2px;
-            border: 1px solid #cbd5e0;
-            border-radius: 4px;
-            font-size: 11px;
-            text-align: center;
-        }
-
-        .delete-slot {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            background: #f56565;
-            color: white;
-            border: none;
-            width: 20px;
-            height: 20px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 8px;
-            margin-top: 15px;
-        }
-
-        .save-btn, .reset-btn {
-            flex: 1;
-            padding: 8px;
-            border: none;
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-        }
-
-        .save-btn {
-            background: linear-gradient(145deg, #48bb78, #38a169);
-            color: white;
-        }
-        
-        .reset-btn {
-            background: #f56565;
-            color: white;
-        }
-
-        /* ========== আউটপুট প্যানেল ========== */
-        .output-panel {
-            flex: 1;
-            background: white;
-            border-radius: 16px;
-            padding: 15px;
-            box-shadow: 0 12px 25px rgba(0,0,0,0.2);
-            display: flex;
-            flex-direction: column;
-            min-height: 0;
-        }
-
-        .output-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-            flex-shrink: 0;
-        }
-
-        .output-header h2 {
-            color: #1a2a3a;
-            font-size: 20px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .current-class-large {
-            background: linear-gradient(145deg, #667eea, #764ba2);
-            color: white;
-            padding: 5px 15px;
-            border-radius: 25px;
-            font-size: 16px;
-            font-weight: 600;
-        }
-
-        /* বর্তমান সময় ডিসপ্লে */
-        .current-time-display {
-            text-align: center;
-            margin-bottom: 10px;
-            padding: 6px;
-            background: #f0f3f8;
-            border-radius: 30px;
-            font-size: 14px;
-            font-weight: 500;
-            flex-shrink: 0;
-        }
-
-        /* ===== টেবিল কন্টেইনার (স্ক্রল হবে) ===== */
-        .routine-table-container {
-            flex: 1;
-            overflow: auto;
-            border: 2px solid #e2e8f0;  /* বর্ধিত বর্ডার */
-            border-radius: 12px;
-            background: white;
-            min-height: 0;
-        }
-
-        /* ===== টেবিল স্টাইল ===== */
-        .routine-table {
-            width: 100%;
-            border-collapse: collapse;  /* এইটা গুরুত্বপূর্ণ */
-            font-size: 13px;
-            table-layout: fixed;
-            min-width: 800px;
-            background: white;
-        }
-
-        /* টেবিলের বর্ডার ফিক্স */
-        .routine-table, 
-        .routine-table th, 
-        .routine-table td {
-            border: 2px solid #cbd5e0;  /* ঘন বর্ডার */
-        }
-
-        .routine-table th {
-            background: #2d3748;
-            color: white;
-            padding: 10px 5px;
-            font-size: 14px;
-            font-weight: 600;
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            border: 2px solid #4a5568;  /* হেডারের বর্ডার */
-        }
-
-        .routine-table th:first-child {
-            width: 110px;
-            position: sticky;
-            left: 0;
-            z-index: 20;
-            background: #1a2634;
-        }
-
-        .routine-table td {
-            padding: 10px 5px;
-            text-align: center;
-            vertical-align: middle;
-            background: white;
-            border: 2px solid #e2e8f0;  /* প্রতিটি সেলে বর্ডার */
-        }
-
-        .routine-table .time-col {
-            background: #f1f5f9;
-            font-weight: 600;
-            font-size: 12px;
-            padding: 10px 5px;
-            color: #1e293b;
-            position: sticky;
-            left: 0;
-            z-index: 5;
-            border: 2px solid #cbd5e0;
-        }
-
-        .routine-table .time-col small {
-            display: block;
-            font-size: 10px;
-            color: #475569;
-            margin-top: 2px;
-        }
-
-        /* বিরতির সারি */
-        .break-row {
-            background: #fef9c3;
-        }
-
-        .break-row td {
-            background: #fef9c3;
-            color: #b45309;
-            font-weight: 600;
-            border: 2px solid #fcd34d;
-        }
-
-        /* খালি সেল */
-        .empty-cell {
-            color: #94a3b8;
-            font-style: italic;
-        }
-
-        /* বিষয় ও শিক্ষকের নাম */
-        .subject-name {
-            font-weight: 700;
-            color: #0f172a;
-            font-size: 13px;
-            line-height: 1.3;
-        }
-
-        .teacher-name {
-            font-size: 11px;
-            color: #2563eb;
-            line-height: 1.2;
-            margin-top: 3px;
-        }
-
-        /* ব্লিংক ইফেক্ট */
-        @keyframes blink {
-            0% { background-color: #fef08a; color: #1e293b; border-color: #eab308; }
-            50% { background-color: #f97316; color: white; border-color: #dc2626; }
-            100% { background-color: #fef08a; color: #1e293b; border-color: #eab308; }
-        }
-
-        .current-class-blink {
-            animation: blink 1s infinite !important;
-            font-weight: bold;
-            border-width: 3px !important;
-        }
-
-        .footer {
-            margin-top: 8px;
-            text-align: right;
-            color: #64748b;
-            font-size: 12px;
-            flex-shrink: 0;
-        }
-
-        /* মোডাল */
+        /* পাসওয়ার্ড মোডাল */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -627,10 +200,16 @@
         .password-modal {
             background: white;
             border-radius: 30px;
-            padding: 25px;
+            padding: 30px;
             width: 90%;
-            max-width: 380px;
+            max-width: 400px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            transform: scale(0.9);
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.show .password-modal {
+            transform: scale(1);
         }
 
         .modal-header {
@@ -651,14 +230,32 @@
             margin: 0 auto 15px;
         }
 
+        .modal-header h2 {
+            color: #1a2a3a;
+            font-size: calc(var(--base-font-size, 1rem) * 1.5);
+            margin-bottom: 5px;
+        }
+
+        .modal-header p {
+            color: #718096;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+        }
+
         .password-input {
             width: 100%;
-            padding: 10px 15px;
+            padding: 12px 15px;
             border: 2px solid #e2e8f0;
             border-radius: 12px;
             font-family: 'Hind Siliguri', sans-serif;
-            font-size: 14px;
+            font-size: calc(var(--base-font-size, 1rem) * 1);
             margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .password-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
         .modal-buttons {
@@ -668,17 +265,18 @@
 
         .modal-btn {
             flex: 1;
-            padding: 10px;
+            padding: 12px;
             border: none;
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 14px;
+            border-radius: 10px;
+            font-family: 'Hind Siliguri', sans-serif;
+            font-size: calc(var(--base-font-size, 1rem) * 1);
             font-weight: 600;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 5px;
+            gap: 8px;
+            transition: all 0.3s ease;
         }
 
         .login-btn {
@@ -686,14 +284,23 @@
             color: white;
         }
 
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
         .cancel-btn {
             background: #f0f3f8;
             color: #4a5568;
         }
 
+        .cancel-btn:hover {
+            background: #e2e8f0;
+        }
+
         .error-message {
             color: #f56565;
-            font-size: 13px;
+            font-size: calc(var(--base-font-size, 1rem) * 0.85);
             margin-top: 5px;
             display: none;
         }
@@ -702,71 +309,955 @@
             display: block;
         }
 
-        /* ক্লাস ম্যানেজার মোডাল */
+        /* ক্লাস ম্যানেজমেন্ট মোডাল */
+        .class-manager-modal {
+            max-width: 500px;
+        }
+
         .class-list {
-            max-height: 250px;
+            max-height: 300px;
             overflow-y: auto;
             margin-bottom: 15px;
             border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 8px;
+            border-radius: 10px;
+            padding: 10px;
         }
 
         .class-item {
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 6px;
+            gap: 10px;
+            padding: 8px;
             background: #f8fafd;
-            border-radius: 6px;
-            margin-bottom: 5px;
+            border-radius: 8px;
+            margin-bottom: 8px;
             border: 1px solid #e2e8f0;
         }
 
+        .class-item:last-child {
+            margin-bottom: 0;
+        }
+
         .class-item input {
-            flex: 1;
-            padding: 5px 8px;
-            border: 1px solid #cbd5e0;
-            border-radius: 4px;
-            font-family: inherit;
-            font-size: 13px;
-        }
-
-        .remove-class {
-            background: #f56565;
-            color: white;
-            border: none;
-            width: 24px;
-            height: 24px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .add-class-form {
-            display: flex;
-            gap: 5px;
-            margin-bottom: 15px;
-        }
-
-        .add-class-form input {
             flex: 1;
             padding: 6px 10px;
             border: 1px solid #cbd5e0;
             border-radius: 6px;
             font-family: inherit;
-            font-size: 13px;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+        }
+
+        .class-item .class-handle {
+            cursor: move;
+            color: #718096;
+            font-size: 1.2rem;
+        }
+
+        .class-item .remove-class {
+            background: #f56565;
+            color: white;
+            border: none;
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .class-item .remove-class:hover {
+            background: #e53e3e;
+        }
+
+        .add-class-form {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .add-class-form input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #cbd5e0;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
         }
 
         .add-class-btn {
             background: #48bb78;
             color: white;
             border: none;
-            padding: 6px 12px;
-            border-radius: 6px;
+            padding: 8px 16px;
+            border-radius: 8px;
             cursor: pointer;
+            font-family: inherit;
             font-weight: 600;
         }
 
+        .add-class-btn:hover {
+            background: #38a169;
+        }
+
+        /* ফ্লেক্স কন্টেইনার */
+        .flex-container {
+            display: flex;
+            gap: 15px;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        /* ইনপুট প্যানেল */
+        .input-panel {
+            width: 800px;
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 15px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+            border: 1px solid rgba(255,255,255,0.5);
+            overflow-y: auto;
+            height: calc(100vh - 180px);
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .input-panel.closed {
+            width: 0;
+            padding: 0;
+            opacity: 0;
+            visibility: hidden;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .panel-header {
+            background: linear-gradient(145deg, #667eea, #764ba2);
+            margin: -15px -15px 15px -15px;
+            padding: 12px 15px;
+            border-radius: 20px 20px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            font-size: calc(var(--base-font-size, 1rem) * 1);
+        }
+
+        .panel-header-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .panel-header-left i {
+            font-size: calc(var(--base-font-size, 1rem) * 1.2);
+            color: #ffd700;
+        }
+
+        .panel-header-left h3 {
+            font-size: calc(var(--base-font-size, 1rem) * 1.1);
+            font-weight: 600;
+        }
+
+        .panel-header-right {
+            display: flex;
+            gap: 8px;
+        }
+
+        .settings-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: calc(var(--base-font-size, 1rem) * 1.1);
+            transition: all 0.3s ease;
+        }
+
+        .settings-btn:hover {
+            background: rgba(255,255,255,0.3);
+            transform: rotate(90deg);
+        }
+
+        .logout-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-family: 'Hind Siliguri', sans-serif;
+            font-size: calc(var(--base-font-size, 1rem) * 0.8);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .minimize-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+            transition: all 0.3s ease;
+        }
+
+        .minimize-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        /* সেটিংস প্যানেল */
+        .settings-panel {
+            background: #f8fafd;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid #e2e8f0;
+            display: none;
+            font-size: calc(var(--base-font-size, 1rem) * 0.95);
+        }
+
+        .settings-panel.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .settings-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 15px;
+            color: #4a5568;
+            font-weight: 600;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: calc(var(--base-font-size, 1rem) * 1);
+        }
+
+        .settings-header i { color: #667eea; }
+
+        .settings-section {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+
+        .settings-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .settings-section-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #2d3748;
+            font-size: calc(var(--base-font-size, 1rem) * 1);
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .settings-section-title i {
+            color: #667eea;
+            width: 24px;
+            font-size: calc(var(--base-font-size, 1rem) * 1.1);
+        }
+
+        .setting-item { margin-bottom: 15px; }
+
+        .setting-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            color: #4a5568;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+            font-weight: 500;
+        }
+
+        .setting-label i {
+            width: 20px;
+            color: #667eea;
+            font-size: calc(var(--base-font-size, 1rem) * 1);
+        }
+
+        .text-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #cbd5e0;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+            color: #2d3748;
+            background: white;
+        }
+
+        .text-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.1);
+        }
+
+        /* লোগো আপলোড - ফিক্সড */
+        .logo-upload-area {
+            border: 2px dashed #cbd5e0;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            background: #f7fafc;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .logo-upload-area:hover {
+            border-color: #667eea;
+            background: #ebf4ff;
+        }
+
+        .logo-upload-area i {
+            font-size: calc(var(--base-font-size, 1rem) * 2);
+            color: #667eea;
+            margin-bottom: 8px;
+        }
+
+        .logo-upload-area p {
+            color: #4a5568;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+            margin-bottom: 4px;
+        }
+
+        .logo-upload-area small {
+            color: #718096;
+            font-size: calc(var(--base-font-size, 1rem) * 0.75);
+        }
+
+        .logo-preview-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 10px;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .logo-preview {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            background: #f0f3f8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .logo-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .logo-preview i {
+            font-size: calc(var(--base-font-size, 1rem) * 1.8);
+            color: #a0aec0;
+        }
+
+        .logo-info { flex: 1; }
+
+        .logo-info p {
+            color: #2d3748;
+            font-weight: 500;
+            margin-bottom: 2px;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+        }
+
+        .logo-info small {
+            color: #718096;
+            font-size: calc(var(--base-font-size, 1rem) * 0.7);
+        }
+
+        .remove-logo-btn {
+            background: #f56565;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: calc(var(--base-font-size, 1rem) * 0.8);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-family: inherit;
+        }
+
+        .remove-logo-btn:hover { background: #e53e3e; }
+
+        .preview-box {
+            background: linear-gradient(145deg, #667eea, #764ba2);
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: white;
+            margin-top: 10px;
+        }
+
+        .preview-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .preview-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .preview-logo i {
+            font-size: calc(var(--base-font-size, 1rem) * 2);
+            color: #667eea;
+        }
+
+        .preview-text h4 {
+            font-size: calc(var(--base-font-size, 1rem) * 1.1);
+            margin: 0 0 4px 0;
+        }
+
+        .preview-text p {
+            font-size: calc(var(--base-font-size, 1rem) * 0.8);
+            opacity: 0.9;
+            margin: 0;
+        }
+
+        .font-selector {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #cbd5e0;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+            color: #2d3748;
+            background: white;
+            cursor: pointer;
+        }
+
+        .size-slider-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .size-slider {
+            flex: 1;
+            height: 6px;
+            -webkit-appearance: none;
+            background: linear-gradient(to right, #667eea, #764ba2);
+            border-radius: 3px;
+            outline: none;
+        }
+
+        .size-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .size-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            background: #667eea;
+        }
+
+        .size-value {
+            min-width: 50px;
+            text-align: center;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            padding: 4px 10px;
+            font-size: calc(var(--base-font-size, 1rem) * 0.85);
+            color: #2d3748;
+            font-weight: 600;
+        }
+
+        .size-presets {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .size-preset-btn {
+            flex: 1;
+            padding: 6px 0;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            background: white;
+            color: #4a5568;
+            font-family: inherit;
+            font-size: calc(var(--base-font-size, 1rem) * 0.8);
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .size-preset-btn:hover {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        /* ক্লাস ম্যানেজার বাটন */
+        .manage-classes-btn {
+            background: #ffd700;
+            color: #1a2a3a;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 15px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .manage-classes-btn i {
+            color: #667eea;
+        }
+
+        .class-selector {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .class-btn {
+            flex: 1;
+            min-width: 60px;
+            padding: 6px 0;
+            border: none;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: calc(var(--base-font-size, 1rem) * 0.85);
+            font-weight: 600;
+            background: #f0f3f8;
+            color: #4a5568;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .class-btn.active {
+            background: linear-gradient(145deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .time-controls {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+
+        .add-slot-btn {
+            background: #48bb78;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .remove-slot-btn {
+            background: #f56565;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .slot-count {
+            background: #edf2f7;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+            color: #4a5568;
+            font-weight: 600;
+        }
+
+        .time-slots {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .time-slot-card {
+            background: #f8fafd;
+            border-radius: 12px;
+            padding: 10px;
+            border: 1px solid #e2e8f0;
+            position: relative;
+        }
+
+        .slot-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .slot-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .slot-number {
+            background: #667eea;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: calc(var(--base-font-size, 1rem) * 0.8);
+            font-weight: 600;
+        }
+
+        .break-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: calc(var(--base-font-size, 1rem) * 0.8);
+            color: #4a5568;
+        }
+
+        .break-checkbox input {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+
+        .time-inputs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .time-input {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: white;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            padding: 4px 8px;
+        }
+
+        .time-input i {
+            color: #718096;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+        }
+
+        .time-input input {
+            width: 100%;
+            border: none;
+            outline: none;
+            font-family: inherit;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+        }
+
+        .delete-slot {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #f56565;
+            color: white;
+            border: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: calc(var(--base-font-size, 1rem) * 0.8);
+        }
+
+        .day-inputs {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 4px;
+            margin-top: 8px;
+        }
+
+        .day-input { text-align: center; }
+
+        .day-label {
+            font-size: calc(var(--base-font-size, 1rem) * 0.7);
+            color: #718096;
+            margin-bottom: 2px;
+        }
+
+        .day-input input {
+            width: 100%;
+            padding: 4px 2px;
+            border: 1px solid #cbd5e0;
+            border-radius: 5px;
+            background: white;
+            font-family: inherit;
+            font-size: calc(var(--base-font-size, 1rem) * 0.8);
+            text-align: center;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .save-btn, .reset-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: calc(var(--base-font-size, 1rem) * 0.95);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .save-btn {
+            background: linear-gradient(145deg, #48bb78, #38a169);
+            color: white;
+        }
+        
+        .reset-btn {
+            background: #f56565;
+            color: white;
+        }
+
+        /* আউটপুট প্যানেল */
+        .output-panel {
+            flex: 1;
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            overflow-y: auto;
+            height: calc(100vh - 180px);
+            transition: all 0.3s ease;
+            font-size: calc(var(--base-font-size, 1rem) * 1);
+        }
+
+        .output-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .output-header h2 {
+            color: #1a2a3a;
+            font-size: calc(var(--base-font-size, 1rem) * 1.5);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .current-class-large {
+            background: linear-gradient(145deg, #667eea, #764ba2);
+            color: white;
+            padding: 5px 18px;
+            border-radius: 25px;
+            font-size: calc(var(--base-font-size, 1rem) * 1.1);
+            font-weight: 600;
+        }
+
+        .public-class-selector {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .public-class-btn {
+            padding: 5px 12px;
+            border: none;
+            border-radius: 18px;
+            font-family: inherit;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+            font-weight: 600;
+            background: #f0f3f8;
+            color: #4a5568;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .public-class-btn.active {
+            background: linear-gradient(145deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        /* বর্তমান সময় ডিসপ্লে */
+        .current-time-display {
+            text-align: center;
+            margin-bottom: 10px;
+            padding: 8px;
+            background: #f0f3f8;
+            border-radius: 30px;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+            font-weight: 500;
+        }
+
+        /* ব্লিংক ইফেক্ট */
+        @keyframes blink {
+            0% { background-color: #fef08a; color: #1e293b; border-color: #eab308; }
+            50% { background-color: #f97316; color: white; border-color: #dc2626; }
+            100% { background-color: #fef08a; color: #1e293b; border-color: #eab308; }
+        }
+
+        .current-class-blink {
+            animation: blink 1s infinite !important;
+            font-weight: bold;
+            border-width: 2px !important;
+        }
+
+        .routine-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: calc(var(--base-font-size, 1rem) * 1);
+            table-layout: fixed;
+        }
+
+        .routine-table th:first-child {
+            width: 100px;
+            background: #2d3748;
+            color: white;
+            padding: 8px 2px;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+        }
+
+        .routine-table th:not(:first-child) {
+            background: #2d3748;
+            color: white;
+            padding: 8px 2px;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+        }
+
+        .routine-table td {
+            padding: 8px 2px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+            word-break: break-word;
+        }
+
+        .routine-table .time-col {
+            background: #edf2f7;
+            font-weight: 600;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+            padding: 8px 2px;
+            color: #2d3748;
+        }
+
+        .routine-table .time-col small {
+            display: block;
+            font-size: calc(var(--base-font-size, 1rem) * 0.75);
+            color: #718096;
+        }
+
+        .subject-name {
+            font-weight: 600;
+            color: #2d3748;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+            line-height: 1.2;
+        }
+
+        .teacher-name {
+            font-size: calc(var(--base-font-size, 1rem) * 0.75);
+            color: #667eea;
+            line-height: 1.1;
+            margin-top: 2px;
+        }
+
+        .break-row { background: #fef3c7; }
+
+        .break-row td {
+            background: #fef3c7;
+            color: #b45309;
+            font-size: calc(var(--base-font-size, 1rem) * 0.9);
+            padding: 8px 2px;
+        }
+
+        .empty-cell {
+            color: #a0aec0;
+            font-size: calc(var(--base-font-size, 1rem) * 0.85);
+        }
+
+        .footer {
+            margin-top: 10px;
+            text-align: right;
+            color: #718096;
+            font-size: calc(var(--base-font-size, 1rem) * 0.8);
+        }
+
+        /* নোটিফিকেশন */
         .notification {
             position: fixed;
             top: 15px;
@@ -775,16 +1266,14 @@
             color: white;
             padding: 8px 16px;
             border-radius: 30px;
-            font-size: 14px;
+            font-size: calc(var(--base-font-size, 1rem) * 0.85);
             transform: translateX(400px);
             transition: transform 0.3s ease;
             z-index: 1000;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 5px 15px rgba(72, 187, 120, 0.3);
         }
 
-        .notification.show {
-            transform: translateX(0);
-        }
+        .notification.show { transform: translateX(0); }
     </style>
 </head>
 <body>
@@ -903,24 +1392,113 @@
                 </div>
             </div>
 
-            <!-- সেটিংস প্যানেল (সংক্ষিপ্ত) -->
-            <div class="settings-panel" id="settingsPanel" style="display: none; padding: 10px; background: #f8fafd; border-radius: 10px; margin-bottom: 15px;">
-                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 10px; color: #4a5568; font-weight: 600;">
-                    <i class="fas fa-sliders-h"></i> <span>সেটিংস</span>
+            <!-- সেটিংস প্যানেল -->
+            <div class="settings-panel" id="settingsPanel">
+                <div class="settings-header">
+                    <i class="fas fa-sliders-h"></i>
+                    <span>সব সেটিংস</span>
                 </div>
-                <div style="margin-bottom: 10px;">
-                    <label style="display: block; margin-bottom: 5px; font-size: 12px;">প্রতিষ্ঠানের নাম</label>
-                    <input type="text" class="text-input" id="instituteNameInput" style="width: 100%; padding: 5px; border: 1px solid #cbd5e0; border-radius: 5px;" placeholder="যেমন: আদর্শ উচ্চ বিদ্যালয়">
+                
+                <!-- প্রতিষ্ঠান সেটিংস সেকশন -->
+                <div class="settings-section">
+                    <div class="settings-section-title">
+                        <i class="fas fa-building"></i>
+                        <span>প্রতিষ্ঠানের তথ্য</span>
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <i class="fas fa-font"></i>
+                            <span>প্রতিষ্ঠানের নাম</span>
+                        </div>
+                        <input type="text" class="text-input" id="instituteNameInput" placeholder="যেমন: আদর্শ উচ্চ বিদ্যালয়">
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>ঠিকানা</span>
+                        </div>
+                        <input type="text" class="text-input" id="instituteAddressInput" placeholder="যেমন: ঢাকা, বাংলাদেশ">
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <i class="fas fa-image"></i>
+                            <span>লোগো আপলোড</span>
+                        </div>
+                        <!-- ফিক্সড লোগো আপলোড এরিয়া -->
+                        <div class="logo-upload-area" onclick="document.getElementById('logoInput').click()">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>লোগো আপলোড করতে ক্লিক করুন</p>
+                            <small>PNG, JPG (সর্বোচ্চ ১MB)</small>
+                        </div>
+                        <input type="file" id="logoInput" accept="image/*" style="display: none;" onchange="handleLogoUpload(event)">
+
+                        <!-- লোগো প্রিভিউ কন্টেইনার -->
+                        <div class="logo-preview-container" id="logoPreviewContainer" style="display: none;">
+                            <div class="logo-preview">
+                                <img id="logoPreview" src="" alt="প্রিভিউ">
+                            </div>
+                            <div class="logo-info">
+                                <p id="logoFileName">logo.png</p>
+                                <small>লোগো প্রিভিউ</small>
+                            </div>
+                            <button class="remove-logo-btn" onclick="removeLogo()">
+                                <i class="fas fa-times"></i> সরান
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- লাইভ প্রিভিউ -->
+                    <div class="preview-box">
+                        <div class="preview-logo" id="previewLogoContainer">
+                            <img id="previewLogo" src="" style="display: none;">
+                            <i class="fas fa-school" id="previewDefaultIcon"></i>
+                        </div>
+                        <div class="preview-text">
+                            <h4 id="previewName">...</h4>
+                            <p id="previewAddress">...</p>
+                        </div>
+                    </div>
                 </div>
-                <div style="margin-bottom: 10px;">
-                    <label style="display: block; margin-bottom: 5px; font-size: 12px;">ঠিকানা</label>
-                    <input type="text" class="text-input" id="instituteAddressInput" style="width: 100%; padding: 5px; border: 1px solid #cbd5e0; border-radius: 5px;" placeholder="যেমন: ঢাকা, বাংলাদেশ">
-                </div>
-                <div style="margin-bottom: 10px;">
-                    <button onclick="document.getElementById('logoInput').click()" style="width: 100%; padding: 8px; background: #667eea; color: white; border: none; border-radius: 5px; cursor: pointer;">
-                        <i class="fas fa-cloud-upload-alt"></i> লোগো আপলোড
-                    </button>
-                    <input type="file" id="logoInput" accept="image/*" style="display: none;" onchange="handleLogoUpload(event)">
+
+                <!-- ফন্ট সেটিংস সেকশন -->
+                <div class="settings-section">
+                    <div class="settings-section-title">
+                        <i class="fas fa-paint-brush"></i>
+                        <span>ফন্ট সেটিংস</span>
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <i class="fas fa-font"></i>
+                            <span>ফন্ট স্টাইল</span>
+                        </div>
+                        <select class="font-selector" id="fontSelector" onchange="changeFont(this.value)">
+                            <option value="Hind+Siliguri">হিন্দ সিলিগুরি (ডিফল্ট)</option>
+                            <option value="Noto+Sans+Bengali">নোটো সান্স বাংলা</option>
+                            <option value="Baloo+Da+2">বালু দা ২</option>
+                            <option value="Anek+Bangla">অনেক বাংলা</option>
+                            <option value="Poppins">পপিন্স (ইংরেজি)</option>
+                        </select>
+                    </div>
+
+                    <div class="setting-item">
+                        <div class="setting-label">
+                            <i class="fas fa-text-height"></i>
+                            <span>ফন্ট সাইজ</span>
+                        </div>
+                        <div class="size-slider-container">
+                            <input type="range" min="0.7" max="1.5" step="0.05" value="1" class="size-slider" id="fontSizeSlider" oninput="changeFontSize(this.value)">
+                            <span class="size-value" id="fontSizeValue">100%</span>
+                        </div>
+                        <div class="size-presets">
+                            <button class="size-preset-btn" onclick="setFontSize(0.8)">ছোট</button>
+                            <button class="size-preset-btn" onclick="setFontSize(1.0)">মাঝারি</button>
+                            <button class="size-preset-btn" onclick="setFontSize(1.2)">বড়</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -974,24 +1552,19 @@
                 🕒 লোড হচ্ছে...
             </div>
 
-            <!-- রুটিন টেবিলের জন্য কন্টেইনার (স্ক্রলযোগ্য) -->
-            <div class="routine-table-container">
-                <table class="routine-table">
-                    <thead>
-                        <tr>
-                            <th>সময়</th>
-                            <th>রবিবার</th>
-                            <th>সোমবার</th>
-                            <th>মঙ্গলবার</th>
-                            <th>বুধবার</th>
-                            <th>বৃহস্পতিবার</th>
-                        </tr>
-                    </thead>
-                    <tbody id="routineBody">
-                        <!-- ডাইনামিকভাবে রুটিন দেখাবে -->
-                    </tbody>
-                </table>
-            </div>
+            <table class="routine-table">
+                <thead>
+                    <tr>
+                        <th>সময়</th>
+                        <th>রবিবার</th>
+                        <th>সোমবার</th>
+                        <th>মঙ্গলবার</th>
+                        <th>বুধবার</th>
+                        <th>বৃহস্পতিবার</th>
+                    </tr>
+                </thead>
+                <tbody id="routineBody"></tbody>
+            </table>
 
             <div class="footer">
                 <i class="fas fa-clock"></i> বর্তমান ক্লাস <span style="color: #f56565; font-weight: bold;">ঝলকাবে</span>
@@ -1021,7 +1594,7 @@
         let currentSchoolId = "default_school"; 
         let isLoggedIn = false;
         
-        // ক্লাস লিস্ট (ডাইনামিক)
+        // ক্লাস লিস্ট (ডাইনামিক) - HSC এবং ডিগ্রী সহ
         let classes = [
             { id: 'class1', name: '৬ষ্ঠ' },
             { id: 'class2', name: '৭ম' },
@@ -1288,7 +1861,6 @@
         }
 
         function renderClassSelectors() {
-            // এডিটর প্যানেলের ক্লাস সিলেক্টর
             const selector = document.getElementById('classSelector');
             selector.innerHTML = '';
             
@@ -1300,7 +1872,6 @@
                 selector.appendChild(btn);
             });
             
-            // পাবলিক ক্লাস সিলেক্টর
             const publicSelector = document.getElementById('publicClassSelector');
             publicSelector.innerHTML = '';
             
@@ -1311,6 +1882,101 @@
                 btn.onclick = () => selectClassPublic(cls.id, btn);
                 publicSelector.appendChild(btn);
             });
+        }
+
+        // ==================== LOGO FUNCTIONS (FIXED) ====================
+        
+        function handleLogoUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            // ফাইল সাইজ চেক (১MB)
+            if (file.size > 1000000) {
+                showNotification('ফাইল সাইজ ১MB এর বেশি হতে পারবে না!', 'error');
+                return;
+            }
+            
+            // ফাইল টাইপ চেক
+            if (!file.type.match('image.*')) {
+                showNotification('শুধুমাত্র ছবি আপলোড করতে পারবেন!', 'error');
+                return;
+            }
+            
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                // লোগো ডাটা সেভ
+                instituteData.logo = e.target.result;
+                
+                // প্রিভিউ দেখান
+                const previewImg = document.getElementById('logoPreview');
+                previewImg.src = e.target.result;
+                document.getElementById('logoPreviewContainer').style.display = 'flex';
+                document.getElementById('logoFileName').textContent = file.name;
+                
+                // হেডার ও প্রিভিউ আপডেট
+                updateInstituteDisplay();
+                
+                showNotification('✅ লোগো আপলোড হয়েছে');
+            };
+            
+            reader.onerror = function() {
+                showNotification('ফাইল পড়তে সমস্যা হয়েছে!', 'error');
+            };
+            
+            reader.readAsDataURL(file);
+            
+            // ইনপুট রিসেট (যাতে একই ফাইল আবার সিলেক্ট করলে কাজ করে)
+            event.target.value = '';
+        }
+
+        function removeLogo() {
+            instituteData.logo = null;
+            
+            // প্রিভিউ লুকান
+            document.getElementById('logoPreviewContainer').style.display = 'none';
+            document.getElementById('logoInput').value = '';
+            
+            // হেডার আপডেট
+            updateInstituteDisplay();
+            
+            showNotification('লোগো সরানো হয়েছে');
+        }
+
+        function updateInstituteDisplay() {
+            // হেডার আপডেট
+            document.getElementById('headerInstituteName').textContent = instituteData.name || "প্রতিষ্ঠানের নাম";
+            document.getElementById('headerInstituteAddress').textContent = instituteData.address || "ঠিকানা";
+            
+            // প্রিভিউ টেক্সট আপডেট
+            document.getElementById('previewName').textContent = instituteData.name || "...";
+            document.getElementById('previewAddress').textContent = instituteData.address || "...";
+            
+            // লোগো দেখান/লুকান (হেডার)
+            const headerLogo = document.getElementById('headerLogo');
+            const defaultIcon = document.getElementById('defaultLogoIcon');
+            
+            if (instituteData.logo) {
+                headerLogo.src = instituteData.logo;
+                headerLogo.style.display = 'block';
+                defaultIcon.style.display = 'none';
+            } else {
+                headerLogo.style.display = 'none';
+                defaultIcon.style.display = 'block';
+            }
+            
+            // প্রিভিউ বক্স আপডেট
+            const previewLogo = document.getElementById('previewLogo');
+            const previewDefaultIcon = document.getElementById('previewDefaultIcon');
+            
+            if (instituteData.logo) {
+                previewLogo.src = instituteData.logo;
+                previewLogo.style.display = 'block';
+                previewDefaultIcon.style.display = 'none';
+            } else {
+                previewLogo.style.display = 'none';
+                previewDefaultIcon.style.display = 'block';
+            }
         }
 
         // ==================== FIREBASE DATA FUNCTIONS ====================
@@ -1329,6 +1995,15 @@
                     
                     if (data.instituteInfo) {
                         instituteData = data.instituteInfo;
+                        
+                        // লোগো থাকলে প্রিভিউ দেখান
+                        if (instituteData.logo) {
+                            setTimeout(() => {
+                                document.getElementById('logoPreview').src = instituteData.logo;
+                                document.getElementById('logoPreviewContainer').style.display = 'flex';
+                                document.getElementById('logoFileName').textContent = "আপলোড করা লোগো";
+                            }, 100);
+                        }
                     }
                     
                     if (data.timeSlots && data.timeSlots.length > 0) {
@@ -1358,12 +2033,6 @@
                 document.getElementById('instituteNameInput').value = instituteData.name || '';
                 document.getElementById('instituteAddressInput').value = instituteData.address || '';
                 
-                if(instituteData.logo) {
-                    document.getElementById('logoPreview').src = instituteData.logo;
-                    document.getElementById('logoPreviewContainer').style.display = 'flex';
-                    document.getElementById('logoFileName').textContent = "আপলোড করা লোগো";
-                }
-                
                 generateInputFields();
                 updateRoutine();
                 updateClassLabels();
@@ -1381,7 +2050,6 @@
             }
 
             showSaveStatus('saving', 'সেভ হচ্ছে...');
-            showNotification('সেভ শুরু হচ্ছে...');
 
             const nameInput = document.getElementById('instituteNameInput');
             const addressInput = document.getElementById('instituteAddressInput');
@@ -1431,7 +2099,7 @@
             ref.set(dataToSave)
                 .then(() => {
                     showSaveStatus('success', 'সেভ হয়েছে');
-                    showNotification('✅ সফলভাবে ক্লাউডে সংরক্ষিত হয়েছে!');
+                    showNotification('✅ ক্লাউডে সংরক্ষিত হয়েছে!');
                 })
                 .catch((error) => {
                     showSaveStatus('error', 'সেভ হয়নি');
@@ -1441,51 +2109,8 @@
 
         // ==================== UI FUNCTIONS ====================
 
-        function updateInstituteDisplay() {
-            document.getElementById('headerInstituteName').textContent = instituteData.name || "প্রতিষ্ঠানের নাম";
-            document.getElementById('headerInstituteAddress').textContent = instituteData.address || "ঠিকানা";
-            
-            if (instituteData.logo) {
-                document.getElementById('headerLogo').src = instituteData.logo;
-                document.getElementById('headerLogo').style.display = 'block';
-                document.getElementById('defaultLogoIcon').style.display = 'none';
-            } else {
-                document.getElementById('headerLogo').style.display = 'none';
-                document.getElementById('defaultLogoIcon').style.display = 'block';
-            }
-        }
-
-        function handleLogoUpload(event) {
-            const file = event.target.files[0];
-            if (file) {
-                if(file.size > 1000000) {
-                    showNotification("ফাইল সাইজ ১MB এর বেশি হতে পারবে না!", "error");
-                    return;
-                }
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    instituteData.logo = e.target.result;
-                    document.getElementById('logoPreview').src = e.target.result;
-                    document.getElementById('logoPreviewContainer').style.display = 'flex';
-                    updateInstituteDisplay();
-                    showNotification('লোগো আপলোড হয়েছে');
-                };
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function removeLogo() {
-            instituteData.logo = null;
-            document.getElementById('logoPreviewContainer').style.display = 'none';
-            document.getElementById('headerLogo').style.display = 'none';
-            document.getElementById('defaultLogoIcon').style.display = 'block';
-            document.getElementById('logoInput').value = '';
-            showNotification('লোগো সরানো হয়েছে');
-        }
-
         function toggleSettings() {
-            const panel = document.getElementById('settingsPanel');
-            panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+            document.getElementById('settingsPanel').classList.toggle('show');
         }
 
         // পাসওয়ার্ড ও লগইন
@@ -1526,7 +2151,7 @@
             document.getElementById('inputPanel').classList.add('closed');
             document.getElementById('editLoginBtn').innerHTML = '<i class="fas fa-pen-alt"></i> এডিট';
             document.getElementById('editLoginBtn').classList.remove('logged-in');
-            document.getElementById('settingsPanel').style.display = 'none';
+            document.getElementById('settingsPanel').classList.remove('show');
         }
         
         function closePanel() { 
